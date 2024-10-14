@@ -1,0 +1,51 @@
+package com.springboot.cinemasystem.model.entity;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
+
+
+public class Feedback {
+
+	Movie movie;
+	Ticket ticket;
+	private int feedbackID;
+	private String text;
+	private LocalDateTime date;
+
+	public int getFeedbackID() {
+		return this.feedbackID;
+	}
+
+	/**
+	 * 
+	 * @param feedbackID
+	 */
+	public void setFeedbackID(int feedbackID) {
+		this.feedbackID = feedbackID;
+	}
+
+	public String getText() {
+		return this.text;
+	}
+
+	/**
+	 * 
+	 * @param text
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public LocalDateTime getDate() {
+		return this.date;
+	}
+
+	/**
+	 * 
+	 * @param date
+	 */
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
+}
