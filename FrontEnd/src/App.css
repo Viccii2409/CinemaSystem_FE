@@ -1,0 +1,39 @@
+/* app.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .content {
+    padding: 20px;
+    background-color: #f4f4f4;
+    width: 90%;
+    margin: auto;
+  }
+  
+  .admin-layout {
+    display: flex;
+    height: 100vh;
+    background-color: rgba(237, 249, 231, 1);
+  }
+  
+  .main-container {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 15%;
+  }
+
+  .admin-content {
+    margin-top: 20px;
+  }
+  
+  

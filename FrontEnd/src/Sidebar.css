@@ -1,0 +1,45 @@
+
+.header-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sidebar {
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin: 15px 0;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: flex; /* Sử dụng flex để căn chỉnh icon và text */
+    align-items: center;
+    padding: 8px 15px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .sidebar ul li a svg {
+    margin-right: 10px; /* Thêm khoảng cách giữa icon và văn bản */
+    font-size: 1.2em; /* Đặt kích thước cho icon */
+  }
+  
+  
+  .sidebar ul li a:hover {
+    background-color: rgba(47, 216, 4, 0.24);
+  }
+
+  
+  

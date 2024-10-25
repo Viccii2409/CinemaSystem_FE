@@ -1,0 +1,200 @@
+
+  .slideshow {
+    background-color: #000;
+    color: #fff;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .movie-section {
+    margin-bottom: 40px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section-title a {
+    text-decoration: none;
+    color: #00C853;
+    margin-right: 10px;
+  }
+  
+  .movie-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .movie-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .movie-thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .movie-details {
+    margin-top: 10px;
+  }
+  
+  .buy-ticket-button {
+    background-color: #00C853;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .buy-ticket-button:hover {
+    background-color: #004d40;
+  }
+  
+  .movie-item-placeholder {
+    background-color: #e0e0e0;
+    height: 200px;
+    border-radius: 10px;
+  }
+  
+  .promotions-section {
+    margin-top: 40px;
+  }
+  
+  .promotions-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00C853;
+  }
+  
+  .promotion-carousel {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .promotion-item {
+    background-color: #e0e0e0;
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+  }
+
+  .showtime-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .showtime-modal {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .movie-title {
+    color: #66bb6a;
+  }
+  
+  h3 {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .date-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .date-tab {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-bottom 0.3s;
+  }
+  
+  .date-tab.active {
+    border-bottom: 3px solid #66bb6a;
+  }
+  
+  .showtime-list {
+    text-align: center;
+  }
+  
+  .showtime-item h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .time-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .time-button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .time-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .seats-info {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  
+  
