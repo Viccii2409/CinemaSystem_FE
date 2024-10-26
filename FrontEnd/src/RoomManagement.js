@@ -4,20 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 function RoomManagement() {
-    const [rooms, setRooms] = useState([
+    const [rooms] = useState([
         { id: 1, name: 'PHÒNG 1', type: '2D', seats: 50, status: true },
         { id: 2, name: 'PHÒNG 2', type: '2D', seats: 60, status: true },
         { id: 3, name: 'PHÒNG 3', type: '2D', seats: 50, status: false },
         { id: 4, name: 'PHÒNG 4', type: '3D', seats: 60, status: true },
     ]);
-
-    const toggleStatus = (id) => {
-        setRooms(
-            rooms.map((room) =>
-                room.id === id ? { ...room, status: !room.status } : room
-            )
-        );
-    };
 
 
     const [showAddModal, setShowAddModal] = useState(false);

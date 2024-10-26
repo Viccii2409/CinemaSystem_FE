@@ -1,0 +1,68 @@
+
+.ticket-price-management {
+  font-family: Arial, sans-serif;
+  color: #333;
+  text-align: left;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 1.8em;
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+.ticket-price-table {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.price-table,
+.surcharge-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price-table th,
+.surcharge-table th {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.price-table td,
+.surcharge-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.price-table input,
+.surcharge-table input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}

@@ -17,6 +17,13 @@ import MovieDetail from './MovieDetail';
 import CinemaSystem from './CinemaSystem';
 import CinemaDetails from './CinemaDetails';
 import RoomManagement from './RoomManagement';
+import TicketPriceManagement from './TicketPriceManagement';
+import ScheduleManagement from './ScheduleManagement';
+import EmployeeManagement from './EmployeeManagement';
+import AccessPermission from './AccessPermission';
+import CustomerManagement from './CustomerManagement';
+import CustomerDetail from './CustomerDetail';
+import DiscountManagement from './DiscountManagement';
 
 function App() {
   return (
@@ -64,14 +71,16 @@ function AdminLayout() {
             <Route path="" element={<CinemaManagement />} />
             <Route path="cinema-management" element={<CinemaManagement />} />
             <Route path="rooms-and-seats" element={<RoomManagement />} />
-            <Route path="ticket-prices" element={<div>Giá vé Content</div>} />
+            <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
-            <Route path="showtimes" element={<div>Lịch chiếu Content</div>} />
-            <Route path="promotions" element={<div>Ưu đãi Content</div>} />
+            <Route path="showtimes" element={<ScheduleManagement />} />
+            <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<div>Bán vé Content</div>} />
-            <Route path="staff" element={<div>Nhân viên Content</div>} />
-            <Route path="customers" element={<div>Khách hàng Content</div>} />
+            <Route path="staff" element={<EmployeeManagement />} />
+            <Route path="staff/access-permission" element={<AccessPermission />} />
+            <Route path="customers" element={<CustomerManagement />} />
+            <Route path="customers/customer-detail" element={<CustomerDetail />} />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
             <Route path="account" element={<div>Tài khoản Content</div>} />
             <Route path="logout" element={<div>Thoát Content</div>} />

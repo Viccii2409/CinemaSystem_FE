@@ -1,5 +1,6 @@
 import React from 'react';
 import './CinemaDetails.css';
+import { Link } from 'react-router-dom';
 
 const CinemaDetails = () => {
   return (
@@ -11,8 +12,8 @@ const CinemaDetails = () => {
       <div className="other-locations">
         <h3>Địa điểm khác</h3>
         <ul className="location-list">
-          <li><a href="#">LAL Phạm Ngọc Thạch</a></li>
-          <li><a href="#">LAL Mỹ Đình</a></li>
+          <li><Link to="/">LAL Phạm Ngọc Thạch</Link></li>
+          <li><Link to="/">LAL Mỹ Đình</Link></li>
         </ul>
       </div>
     </div>
