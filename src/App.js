@@ -1,29 +1,30 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import HeaderAdmin from './HeaderAdmin';
-import Sidebar from './Sidebar';
-import CinemaManagement from './CinemaManagement';
-import MovieCategories from './MovieCategories';
-import Movies from './Movies';
-import HeaderCustomer from './HeaderCustomer';
-import HomePage from './HomePage';
-import LoginPage from './LoginPage';
-import RegisterPage from './RegisterPage';
-import Footer from './Footer';
-import SeatSelection from './SeatSelection';
-import PaymentInfo from './PaymentInfo';
-import MovieDetail from './MovieDetail';
-import CinemaSystem from './CinemaSystem';
-import CinemaDetails from './CinemaDetails';
-import RoomManagement from './RoomManagement';
-import TicketPriceManagement from './TicketPriceManagement';
-import ScheduleManagement from './ScheduleManagement';
-import EmployeeManagement from './EmployeeManagement';
-import AccessPermission from './AccessPermission';
-import CustomerManagement from './CustomerManagement';
-import CustomerDetail from './CustomerDetail';
-import DiscountManagement from './DiscountManagement';
+import HeaderAdmin from './admin/HeaderAdmin';
+import Sidebar from './admin/Sidebar';
+import CinemaManagement from './admin/CinemaManagement';
+import MovieCategories from './admin/MovieCategories';
+import Movies from './admin/Movies';
+import CinemaSystem from './admin/CinemaSystem';
+import CinemaDetails from './admin/CinemaDetails';
+import RoomManagement from './admin/RoomManagement';
+import TicketPriceManagement from './admin/TicketPriceManagement';
+import ScheduleManagement from './admin/ScheduleManagement';
+import EmployeeManagement from './admin/EmployeeManagement';
+import AccessPermission from './admin/AccessPermission';
+import CustomerManagement from './admin/CustomerManagement';
+import CustomerDetail from './admin/CustomerDetail';
+import DiscountManagement from './admin/DiscountManagement';
+
+import HeaderCustomer from './customer/HeaderCustomer';
+import HomePage from './customer/HomePage';
+import LoginPage from './customer/LoginPage';
+import RegisterPage from './customer/RegisterPage';
+import Footer from './customer/Footer';
+import SeatSelection from './customer/SeatSelection';
+import PaymentInfo from './customer/PaymentInfo';
+import MovieDetail from './customer/MovieDetail';
 
 function App() {
   return (
