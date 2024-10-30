@@ -1,112 +1,113 @@
+/* Styles for Register Page Component */
 .register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-  }
-  
-  .register-form-container {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    flex: 1;
-    padding: 10px;
-    background-color: #e6e6e6;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .tabs .active-tab {
-    background-color: #66bb6a;
-    color: #fff;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .gender-options {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .gender-options label {
-    font-weight: normal;
-  }
-  
-  .form-group.terms {
-    display: flex;
-    align-items: center;
-  }
-  
-  .form-group.terms label {
-    font-weight: normal;
-  }
-  
-  .register-button {
-    width: 100%;
-    padding: 15px;
-    background-color: #66bb6a;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .social-login {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .social-login-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .social-login-button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    background-color: #e6e6e6;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .social-login-button.facebook {
-    background-color: #3b5998;
-    color: #fff;
-  }
-  
-  .social-login-button.google {
-    background-color: #db4437;
-    color: #fff;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.register-page .register-form-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.register-page .tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.register-page .tabs button {
+  flex: 1;
+  padding: 10px;
+  background-color: #e6e6e6;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.register-page .tabs .active-tab {
+  background-color: #66bb6a;
+  color: #fff;
+}
+
+.register-page .form-group {
+  margin-bottom: 20px;
+}
+
+.register-page .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.register-page .form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-page .gender-options {
+  display: flex;
+  gap: 10px;
+}
+
+.register-page .gender-options label {
+  font-weight: normal;
+}
+
+.register-page .form-group.terms {
+  display: flex;
+  align-items: center;
+}
+
+.register-page .form-group.terms label {
+  font-weight: normal;
+}
+
+.register-page .register-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #66bb6a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.register-page .social-login {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-page .social-login-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.register-page .social-login-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.register-page .social-login-button.facebook {
+  background-color: #3b5998;
+  color: #fff;
+}
+
+.register-page .social-login-button.google {
+  background-color: #db4437;
+  color: #fff;
+}

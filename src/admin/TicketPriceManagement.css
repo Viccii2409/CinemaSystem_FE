@@ -1,4 +1,4 @@
-
+/* Styles for Ticket Price Management Component */
 .ticket-price-management {
   font-family: Arial, sans-serif;
   color: #333;
@@ -6,54 +6,54 @@
   padding: 20px;
 }
 
-h2 {
+.ticket-price-management h2 {
   font-size: 1.8em;
   color: #28a745;
   margin-bottom: 20px;
 }
 
-.ticket-price-table {
+.ticket-price-management .ticket-price-table {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.price-table,
-.surcharge-table {
+.ticket-price-management .price-table,
+.ticket-price-management .surcharge-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.price-table th,
-.surcharge-table th {
+.ticket-price-management .price-table th,
+.ticket-price-management .surcharge-table th {
   background-color: #28a745;
   color: white;
   padding: 10px;
   text-align: center;
 }
 
-.price-table td,
-.surcharge-table td {
+.ticket-price-management .price-table td,
+.ticket-price-management .surcharge-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
 }
 
-.price-table input,
-.surcharge-table input {
+.ticket-price-management .price-table input,
+.ticket-price-management .surcharge-table input {
   width: 100%;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.form-actions {
+.ticket-price-management .form-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
-.save-button {
+.ticket-price-management .save-button {
   background-color: #28a745;
   color: white;
   border: none;
@@ -63,6 +63,6 @@ h2 {
   transition: background-color 0.3s;
 }
 
-.save-button:hover {
+.ticket-price-management .save-button:hover {
   background-color: #218838;
 }

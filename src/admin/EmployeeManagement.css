@@ -10,7 +10,7 @@
   margin-bottom: 20px;
 }
 
-.employee-management-container {
+.employee-management .employee-management-container {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -18,27 +18,28 @@
 }
 
 /* Search Section Styles */
-.search-section {
+.employee-management .search-section {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.search-section input[type="text"] {
+.employee-management .search-section input[type="text"] {
   padding: 10px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.search-section select {
+.employee-management .search-section select {
   padding: 10px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.search-button, .add-button {
+.employee-management .search-button,
+.employee-management .add-button {
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -46,49 +47,50 @@
   margin-right: 10px;
 }
 
-.search-button {
+.employee-management .search-button {
   background-color: #007bff;
   color: #fff;
 }
 
-.add-button {
+.employee-management .add-button {
   background-color: #28a745;
   color: #fff;
 }
 
 /* Employee Table Styles */
-.employee-table {
+.employee-management .employee-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-.employee-table th, .employee-table td {
+.employee-management .employee-table th,
+.employee-management .employee-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
-.employee-table th {
+.employee-management .employee-table th {
   background-color: #f1f1f1;
   font-weight: bold;
 }
 
 /* Switch Button Styles */
-.switch {
+.employee-management .switch {
   position: relative;
   display: inline-block;
   width: 34px;
   height: 20px;
 }
 
-.switch input {
+.employee-management .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.employee-management .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -100,7 +102,7 @@
   border-radius: 20px;
 }
 
-.slider:before {
+.employee-management .slider:before {
   position: absolute;
   content: "";
   height: 14px;
@@ -112,16 +114,16 @@
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.employee-management input:checked + .slider {
   background-color: #28a745;
 }
 
-input:checked + .slider:before {
+.employee-management input:checked + .slider:before {
   transform: translateX(14px);
 }
 
 /* Modal Styles */
-.modal-overlay {
+.employee-management .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -133,7 +135,7 @@ input:checked + .slider:before {
   align-items: center;
 }
 
-.modal-content {
+.employee-management .modal-content {
   background: #fff;
   padding: 20px;
   width: 400px;
@@ -141,21 +143,21 @@ input:checked + .slider:before {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.modal-content h3 {
+.employee-management .modal-content h3 {
   margin-top: 0;
   font-size: 20px;
 }
 
-.modal-content form label {
+.employee-management .modal-content form label {
   display: block;
   margin-top: 10px;
   margin-bottom: 5px;
 }
 
-.modal-content form input[type="text"],
-.modal-content form input[type="date"],
-.modal-content form input[type="email"],
-.modal-content form select {
+.employee-management .modal-content form input[type="text"],
+.employee-management .modal-content form input[type="date"],
+.employee-management .modal-content form input[type="email"],
+.employee-management .modal-content form select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -163,12 +165,13 @@ input:checked + .slider:before {
   border-radius: 4px;
 }
 
-.modal-buttons {
+.employee-management .modal-buttons {
   display: flex;
   justify-content: flex-end;
 }
 
-.cancel-button, .add-button {
+.employee-management .cancel-button,
+.employee-management .add-button {
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -176,12 +179,14 @@ input:checked + .slider:before {
   margin-left: 10px;
 }
 
-.cancel-button {
+.employee-management .cancel-button {
   background-color: #6c757d;
   color: #fff;
 }
 
-.add-button {
+.employee-management .add-button {
   background-color: #28a745;
   color: #fff;
 }
+
+

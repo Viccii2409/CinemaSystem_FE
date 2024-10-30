@@ -1,52 +1,53 @@
+/* Styles for Homepage Header Component */
 .homepage-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #77dd77;
-    padding: 10px;
-  }
-  
-  .header-title {
-    font-size: 1.5em;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #77dd77;
+  padding: 10px;
+}
 
-  .header-title a {
-    color: white;
-  }
+.homepage-header .header-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
-  .navbar {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .navbar a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-  }
-  
-  .navbar a:hover {
-    color: white;
-  }
-  
-  .location-selector {
-    padding: 8px;
-    font-size: 14px;
-  }
-  
-  .login-button {
-    background-color: #006400;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .login-button:hover {
-    background-color: #004c00;
-  }
+.homepage-header .header-title a {
+  color: white;
+}
+
+.homepage-header .navbar {
+  display: flex;
+  gap: 15px;
+}
+
+.homepage-header .navbar a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.homepage-header .navbar a:hover {
+  color: white;
+}
+
+.homepage-header .location-selector {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.homepage-header .login-button {
+  background-color: #006400;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.homepage-header .login-button:hover {
+  background-color: #004c00;
+}

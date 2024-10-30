@@ -1,0 +1,59 @@
+/* Styles for Cinema Details Container */
+.cinema-details-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.cinema-details-container .cinema-info {
+  flex: 3;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-details-container .cinema-name {
+  font-size: 2em;
+  color: #28a745;
+  margin-bottom: 10px;
+}
+
+.cinema-details-container .cinema-description {
+  font-weight: bold;
+  color: #333;
+}
+
+.cinema-details-container .other-locations {
+  flex: 1;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-details-container .other-locations h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.cinema-details-container .location-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cinema-details-container .location-list li {
+  margin-bottom: 10px;
+}
+
+.cinema-details-container .location-list a {
+  text-decoration: none;
+  color: #28a745;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.cinema-details-container .location-list a:hover {
+  color: #218838;
+}

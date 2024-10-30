@@ -1,12 +1,13 @@
 .cinema-management-system {
     background-color:  #f4f4f4;
     padding: 20px;
+    padding-bottom: 100px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     min-height: 47em;
 }
-.add-button {
+.cinema-management-system .add-button {
     background-color: rgba(47, 216, 4, 1);
     color: white;
     border-radius: 10px;
@@ -20,43 +21,43 @@
     font-weight: bold;
   }
   
-  .add-button:hover {
+  .cinema-management-system .add-button:hover {
     background-color: rgba(57, 193, 23, 1);
   }
   
-  .cinema-table {
+  .cinema-management-system .cinema-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
   }
   
-  .cinema-table th,
-  .cinema-table td {
+  .cinema-management-system .cinema-table th,
+  .cinema-management-system .cinema-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
   }
   
-  .cinema-table th {
+  .cinema-management-system .cinema-table th {
     background-color: rgba(57, 193, 23, 1);
     color: white;
     text-transform: uppercase;
   }
 
-  .switch {
+  .cinema-management-system .switch {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 26px;
   }
   
-  .switch input {
+  .cinema-management-system .switch input {
     opacity: 0;
     width: 0;
     height: 0;
   }
   
-  .slider {
+  .cinema-management-system .slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -69,7 +70,7 @@
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   }
 
-  .slider:before {
+  .cinema-management-system .slider:before {
     position: absolute;
     content: "";
     height: 20px;
@@ -82,26 +83,26 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   }
   
-  input:checked + .slider {
+  .cinema-management-system input:checked + .slider {
     background-color: #4caf50;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   }
   
-  input:checked + .slider:before {
+  .cinema-management-system input:checked + .slider:before {
     transform: translateX(24px);
   }
   
-  .slider.round {
+  .cinema-management-system .slider.round {
     border-radius: 34px;
   }
   
-  .slider.round:before {
+  .cinema-management-system .slider.round:before {
     border-radius: 50%;
   }
 
-  .view-button,
-  .edit-button,
-.delete-button {
+  .cinema-management-system .view-button,
+  .cinema-management-system .edit-button,
+  .cinema-management-system .delete-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -110,37 +111,37 @@
   transition: color 0.3s;
 }
 
-.view-button i {
+.cinema-management-system .view-button i {
   color: #17a2b8; /* Màu xanh cho nút xem */
 }
 
-.edit-button {
+.cinema-management-system .edit-button {
   color: #007bff;
 }
 
-.delete-button {
+.cinema-management-system .delete-button {
   color: #dc3545;
 }
 
-.view-button:hover i {
+.cinema-management-system .view-button:hover i {
   color: #138496; /* Thay đổi màu khi hover */
 }
 
-.edit-button:hover {
+.cinema-management-system .edit-button:hover {
   color: #0056b3;
 }
 
-.delete-button:hover {
+.cinema-management-system .delete-button:hover {
   color: #c82333;
 }
 
 
-.modal {
+.cinema-management-system .modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
+    width: 50em;
     background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -148,7 +149,7 @@
     z-index: 1000;
   }
 
-  .modal-overlay {
+  .cinema-management-system .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -159,13 +160,13 @@
   }
   
   
-  .modal-header {
+  .cinema-management-system .modal-header {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 15px;
   }
   
-  .modal-input {
+  .cinema-management-system .modal-input {
     width: 95%;
     padding: 10px;
     margin-bottom: 15px;
@@ -173,12 +174,12 @@
     border-radius: 5px;
   }
   
-  .modal-buttons {
+  .cinema-management-system .modal-buttons {
     display: flex;
     justify-content: flex-end;
   }
 
-  .close-button {
+  .cinema-management-system .close-button {
     background-color: #6c757d;
     color: white;
     border: none;
@@ -188,11 +189,11 @@
     transition: background-color 0.3s;
   }
   
-  .close-button:hover {
+  .cinema-management-system .close-button:hover {
     background-color: #5a6268;
   }
   
-  .submit-button {
+  .cinema-management-system .submit-button {
     background-color: #28a745;
     color: white;
     border: none;
@@ -201,10 +202,22 @@
     transition: background-color 0.3s;
   }
   
-  .submit-button:hover {
+  .cinema-management-system .submit-button:hover {
     background-color: #218838;
   }
   
   
-
+  .cinema-management-system .form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .cinema-management-system .form-column {
+    flex: 1;
+  }
    
+  .modal-image {
+    width: 100%;
+    height: 12em;
+  }

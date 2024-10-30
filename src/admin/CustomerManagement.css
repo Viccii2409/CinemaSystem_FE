@@ -1,58 +1,57 @@
 /* Styles for Customer Management Component */
 .customer-management {
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .customer-management h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .search-bar {
-    margin-bottom: 20px;
-  }
-  
-  .search-bar input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .customer-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .customer-table th,
-  .customer-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .customer-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  .customer-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .action-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: #007bff;
-  }
-  
-  .action-button:hover {
-    color: #0056b3;
-  }
-  
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.customer-management h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.customer-management .search-bar {
+  margin-bottom: 20px;
+}
+
+.customer-management .search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.customer-management .customer-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.customer-management .customer-table th,
+.customer-management .customer-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.customer-management .customer-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.customer-management .customer-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.customer-management .action-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #007bff;
+}
+
+.customer-management .action-button:hover {
+  color: #0056b3;
+}

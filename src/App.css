@@ -1,39 +1,44 @@
-/* app.css */
-
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
 
-  a {
-    text-decoration: none;
-  }
+a {
+  text-decoration: none;
+}
 
-  .content {
-    padding: 20px;
-    background-color: #f4f4f4;
-    width: 90%;
-    margin: auto;
-  }
-  
-  .admin-layout {
-    display: flex;
-    height: 100vh;
-    background-color: rgba(237, 249, 231, 1);
-  }
-  
-  .main-container {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .sidebar {
-    width: 15%;
-  }
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  background-color: rgba(237, 249, 231, 1);
+}
 
-  .admin-content {
-    margin-top: 20px;
-  }
-  
-  
+.header {
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed; /* Cố định sidebar */
+  top: 0;
+  left: 0;
+  width: 12%; /* Đặt chiều rộng cho sidebar */
+  height: 100%; /* Chiều cao đầy đủ của màn hình */
+  background-color: #f4f4f4;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao */
+  z-index: 1000; /* Đảm bảo sidebar nằm trên các phần tử khác */
+}
+
+/* Main Content (Không bị che khuất bởi sidebar) */
+.main-container {
+  margin-left: 14%; /* Đảm bảo không bị che khuất bởi sidebar (thêm một chút để tạo khoảng cách) */
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.admin-content {
+  margin-top: 20px;
+}

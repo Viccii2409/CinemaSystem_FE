@@ -1,154 +1,153 @@
-/* General styles for the seat selection component */
+/* Styles for Seat Selection Component */
 .seat-selection {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Seat selection container styles */
-  .seat-selection-container {
-    flex: 2;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    color: #333;
-  }
-  
-  /* Seat legend styles */
-  .seat-info {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  .seat-legend {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 4px;
-  }
-  
-  .seat-legend.normal {
-    background-color: #f0c674;
-  }
-  
-  .seat-legend.vip {
-    background-color: #f09c42;
-  }
-  
-  .seat-legend.couple {
-    background-color: #e78ac3;
-  }
-  
-  .seat-legend.selected {
-    background-color: #6cc644;
-  }
-  
-  .seat-legend.sold {
-    background-color: #d9534f;
-  }
-  
-  .seat-legend.maintenance {
-    background-color: #6c757d;
-  }
-  
-  /* Seat grid styles */
-  .seat-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 10px;
-  }
-  
-  .seat {
-    padding: 15px;
-    text-align: center;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .seat.normal {
-    background-color: #f0c674;
-  }
-  
-  .seat.vip {
-    background-color: #f09c42;
-  }
-  
-  .seat.couple {
-    background-color: #e78ac3;
-  }
-  
-  .seat.selected {
-    background-color: #6cc644;
-    color: #fff;
-  }
-  
-  .seat.sold {
-    background-color: #d9534f;
-    cursor: not-allowed;
-  }
-  
-  .seat.maintenance {
-    background-color: #6c757d;
-    cursor: not-allowed;
-  }
-  
-  /* Ticket summary styles */
-  .ticket-summary {
-    flex: 1;
-    padding: 20px;
-    margin-left: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .ticket-details {
-    margin-bottom: 20px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  
-  .movie-title {
-    font-weight: bold;
-    color: #28a745;
-  }
-  
-  button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .next-button {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  .back-button {
-    background-color: #6c757d;
-    color: #fff;
-    margin-right: 10px;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  .timer {
-    color: #d9534f;
-    font-size: 14px;
-    margin-top: 15px;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Seat selection container styles */
+.seat-selection .seat-selection-container {
+  flex: 2;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.seat-selection h2 {
+  text-align: center;
+  color: #333;
+}
+
+/* Seat legend styles */
+.seat-selection .seat-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.seat-selection .seat-legend {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.seat-selection .seat-legend.normal {
+  background-color: #f0c674;
+}
+
+.seat-selection .seat-legend.vip {
+  background-color: #f09c42;
+}
+
+.seat-selection .seat-legend.couple {
+  background-color: #e78ac3;
+}
+
+.seat-selection .seat-legend.selected {
+  background-color: #6cc644;
+}
+
+.seat-selection .seat-legend.sold {
+  background-color: #d9534f;
+}
+
+.seat-selection .seat-legend.maintenance {
+  background-color: #6c757d;
+}
+
+/* Seat grid styles */
+.seat-selection .seat-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+}
+
+.seat-selection .seat {
+  padding: 15px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.seat-selection .seat.normal {
+  background-color: #f0c674;
+}
+
+.seat-selection .seat.vip {
+  background-color: #f09c42;
+}
+
+.seat-selection .seat.couple {
+  background-color: #e78ac3;
+}
+
+.seat-selection .seat.selected {
+  background-color: #6cc644;
+  color: #fff;
+}
+
+.seat-selection .seat.sold {
+  background-color: #d9534f;
+  cursor: not-allowed;
+}
+
+.seat-selection .seat.maintenance {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Ticket summary styles */
+.seat-selection .ticket-summary {
+  flex: 1;
+  padding: 20px;
+  margin-left: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.seat-selection .ticket-details {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.seat-selection .movie-title {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.seat-selection button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.seat-selection .next-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.seat-selection .back-button {
+  background-color: #6c757d;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.seat-selection button:hover {
+  background-color: #218838;
+}
+
+.seat-selection .timer {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 15px;
+}

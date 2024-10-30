@@ -1,71 +1,71 @@
 /* Styles for Access Permission Form */
 .access-permission {
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .access-permission h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .access-permission form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .access-permission form label {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .access-permission form input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .permission-list {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .permission-list label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .permission-list input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
-  .form-buttons {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .cancel-button, .save-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .cancel-button {
-    background-color: #6c757d;
-    color: #fff;
-  }
-  
-  .save-button {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.access-permission h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.access-permission form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.access-permission form label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.access-permission form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.access-permission .permission-list {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.access-permission .permission-list label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.access-permission .permission-list input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.access-permission .form-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.access-permission .cancel-button,
+.access-permission .save-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.access-permission .cancel-button {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.access-permission .save-button {
+  background-color: #28a745;
+  color: #fff;
+}

@@ -1,5 +1,4 @@
-
-
+/* Styles for Schedule Management Component */
 .schedule-management {
   font-family: Arial, sans-serif;
   color: #333;
@@ -7,30 +6,30 @@
   padding: 20px;
 }
 
-h2 {
+.schedule-management h2 {
   font-size: 1.8em;
   color: #28a745;
   margin-bottom: 20px;
 }
 
-.schedule-table {
+.schedule-management .schedule-table {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.schedule-header {
+.schedule-management .schedule-header {
   display: flex;
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.schedule-header label {
+.schedule-management .schedule-header label {
   font-weight: bold;
 }
 
-.room-schedule {
+.schedule-management .room-schedule {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
@@ -38,46 +37,46 @@ h2 {
   background-color: #f9f9f9;
 }
 
-.room-info {
+.schedule-management .room-info {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.schedule-detail {
+.schedule-management .schedule-detail {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
 }
 
-.schedule-detail th {
+.schedule-management .schedule-detail th {
   background-color: #28a745;
   color: white;
   padding: 10px;
   text-align: center;
 }
 
-.schedule-detail td {
+.schedule-management .schedule-detail td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
 }
 
-.switch {
+.schedule-management .switch {
   position: relative;
   display: inline-block;
   width: 40px;
   height: 20px;
 }
 
-.switch input {
+.schedule-management .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.schedule-management .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -89,7 +88,7 @@ h2 {
   border-radius: 34px;
 }
 
-.slider:before {
+.schedule-management .slider:before {
   position: absolute;
   content: "";
   height: 14px;
@@ -101,15 +100,15 @@ h2 {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+.schedule-management input:checked + .slider {
   background-color: #28a745;
 }
 
-input:checked + .slider:before {
+.schedule-management input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-.edit-button {
+.schedule-management .edit-button {
   background-color: #ffc107;
   color: white;
   border: none;
@@ -119,11 +118,11 @@ input:checked + .slider:before {
   transition: background-color 0.3s;
 }
 
-.edit-button:hover {
+.schedule-management .edit-button:hover {
   background-color: #e0a800;
 }
 
-.add-button {
+.schedule-management .add-button {
   background-color: #28a745;
   color: white;
   border: none;
@@ -133,6 +132,6 @@ input:checked + .slider:before {
   transition: background-color 0.3s;
 }
 
-.add-button:hover {
+.schedule-management .add-button:hover {
   background-color: #218838;
 }

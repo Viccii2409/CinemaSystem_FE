@@ -6,7 +6,7 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
-.user-info {
+  .header .user-info {
     font-size: 1em;
     text-transform: uppercase;
   }
