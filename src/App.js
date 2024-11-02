@@ -15,6 +15,9 @@ import AccessPermission from './admin/AccessPermission';
 import CustomerManagement from './admin/CustomerManagement';
 import CustomerDetail from './admin/CustomerDetail';
 import DiscountManagement from './admin/DiscountManagement';
+import AddRoom from './admin/AddRoom';
+import ViewRoom from './admin/ViewRoom';
+import EditRoom from './admin/EditRoom';
 
 import HeaderCustomer from './customer/HeaderCustomer';
 import HomePage from './customer/HomePage';
@@ -72,6 +75,9 @@ function AdminLayout() {
             <Route path="" element={<CinemaManagement />} />
             <Route path="cinema-management" element={<CinemaManagement />} />
             <Route path="rooms-and-seats" element={<RoomManagement />} />
+            <Route path="rooms-and-seats/add-room" element={<AddRoom />} />
+            <Route path="rooms-and-seats/view-room" element={<ViewRoom />} />
+            <Route path="rooms-and-seats/edit-room" element={<EditRoom />} />
             <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
@@ -83,7 +89,7 @@ function AdminLayout() {
             <Route path="customers" element={<CustomerManagement />} />
             <Route path="customers/customer-detail" element={<CustomerDetail />} />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
-            <Route path="account" element={<div>Tài khoản Content</div>} />
+            <Route path="account" element={<AddRoom />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>
         </div>

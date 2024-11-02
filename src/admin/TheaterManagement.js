@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'; // Thêm useEffect
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater } from '../Api.js';
+import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater } from '../config/TheaterConfig.js';
 
 const CinemaManagement = () => {
   const [theaters, setTheaters] = useState([]); // Khởi tạo state cinemas để lưu dữ liệu từ API
@@ -341,7 +341,8 @@ const CinemaManagement = () => {
   return (
     <div className="cinema-management-system">
       <h2>Quản lý rạp</h2>
-      <button className="add-button" onClick={handleAddCinema}>Thêm</button>
+      <button className="add-button button" onClick={handleAddCinema}>Thêm</button>
+      {theaters.length > 0 ? (
       <table className="cinema-table">
         <thead>
           <tr>
@@ -384,7 +385,9 @@ const CinemaManagement = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> ) : (
+        <p>Không có rạp</p> 
+      )}
 
       {showAddModal && (
         <>
@@ -662,10 +665,12 @@ const CinemaManagement = () => {
                     <input type="text" name="email" className="modal-input" value={formDataState.email} onChange={handleChange} /><br />
                   </label>
                 </div>
-                <div className="form-column">
+                <div className="form-column image_old">
                   <label>
-                    <strong>Hình ảnh:</strong>
-                    <input type="file" name="image" className="modal-input" onChange={handleFileChange} /><br />
+                    <strong>Hình ảnh:</strong><br/>
+                    
+                    <img src={formDataState.image} alt="Theater" className="modal-image_2" />
+                    <input type="file" name="image" className='fileImage' onChange={handleFileChange} /><br/>
                   </label>
                 </div>
               </div>
