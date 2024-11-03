@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #77dd77;
+  background-color: #7add58;
   padding: 10px;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .homepage-header .login-button {
-  background-color: #006400;
+  background-color: #0cad0c;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -49,5 +49,5 @@
 }
 
 .homepage-header .login-button:hover {
-  background-color: #004c00;
+  background-color: #088d08;
 }
