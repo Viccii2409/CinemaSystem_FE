@@ -1,23 +1,83 @@
 import api from '../Api.js';
 
+
+
+export const deleteRoom = (id, roomid) => {
+    try {
+        return api.delete(`/theater/${id}/room/${roomid}/delete`);
+    } catch (error) {
+        console.error("Error delete room", error);
+    }
+}
+
+export const deleteTheater = (id) => {
+    try {
+        return api.delete(`/theater/${id}/delete`);
+    } catch (error) {
+        console.error("Error delete theater", error);
+    }
+}
+
+
 export const getTheater = () => api.get('/theater');
 
 export const getTheaterById = (id) => {
     return api.get(`/theater/${id}`);
 };
 
+
+// export const getTheaterRoomDto = async () => {
+//     try {
+//         const response = await api.get('/theater/room');
+//         return response.data;
+//     } catch (error) {
+//         console.error("Error get theaterroomdto", error);
+//         return null;  // Có thể trả về null hoặc xử lý khác nếu cần
+//     }
+// };
+
+// Không cần async/await trong getTheaterById vì hàm chỉ trả về một Promise từ api.get().
+// Xử lý Promise: Khi gọi getTheaterById, bạn có thể xử lý kết quả với .then() và .catch(), 
+// hoặc sử dụng await trong một hàm async.
+
+// Nếu bạn muốn sử dụng await, hãy chắc chắn rằng hàm của bạn là async
+
+
+
+
+export const getTheaterRoomDto = () => {
+    return api.get('/theater/room')
+        .then(response => response.data)
+        .catch(error => {
+            console.error("Error get theaterroomdto", error);
+            return null;  // Có thể trả về null hoặc xử lý khác nếu cần
+        });
+};
+
+
+
+
 export const getRoomByTheater = async (id) => api.get(`/theater/${id}/room`);
 
-export const getTypeRoom = async () => api.get('/theater/typeroom');
 
 export const getTypeSeat = async () => api.get('/theater/typeseat');
 
 export const getRoomById = async (id) => {
-    try {
-        return api.get(`theater/room/${id}`);
-    } catch (error) {
+    return api.get(`theater/room/${id}`)
+    .then(response => response.data)
+    .catch(error => {
         console.error("Error get room by id: ", error);
-    }
+        return null;
+    });
+;}
+
+export const getTypeRoom = async () => {
+    return api.get('/theater/typeroom')
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error get typeroom: ", error);
+        return null;
+    })
 }
 
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { getTheater, getRoomByTheater, updateStatusRoom } from '../config/TheaterConfig';
+import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { getTheaterRoomDto, updateStatusRoom, deleteRoom } from '../config/TheaterConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function RoomManagement() {
@@ -15,49 +15,33 @@ function RoomManagement() {
 
     useEffect(() => {
         const fetchTheater = async () => {
-            try {
-                const response = await getTheater();
-                const filteredTheaters = response.data.filter(theater => theater.status === true);
-                setTheaters(filteredTheaters);
-            } catch (error) {
-                console.error("Lỗi khi lấy danh sách rạp:", error);
+            const response_theater = await getTheaterRoomDto();
+            const filteredTheaters = response_theater.filter(theater => theater.status === true);
+            setTheaters(filteredTheaters);
+
+            if (id) {
+                const theater = filteredTheaters.find(x => x.id === parseInt(id));
+                if (theater) {
+                    setTheaterID(theater.id);
+                    setRooms(theater.room);
+                } else {
+                    console.warn("No theater found with the given ID:", id);
+                    setTheaterID(null);
+                    setRooms([]);
+                }
             }
         };
 
-        const getTheaterInfor = async (id) => {
-            try {
-                const response = await getRoomByTheater(id);
-                setRooms(response.data);
-            } catch (error) {
-                console.error("Lỗi khi lấy rạp: ", error);
-            }
-        };
-
-        if (id) {
-            console.log("TheaterID: " + id);
-            setTheaterID(parseInt(id));
-            getTheaterInfor(id);
-        }
         fetchTheater();
     }, [id], navigate);
 
 
 
 
-    const handleListRoom = async (id) => {
-        if (!id) {
-            console.error("ID không hợp lệ:", id);
-            return;
-        }
-
-        try {
-            setTheaterID(parseInt(id));
-            const response = await getRoomByTheater(id);
-            setRooms(response.data);
-        } catch (error) {
-            console.error("Lỗi khi lấy danh sách phòng:", error);
-        }
-
+    const handleListRoom = (id) => {
+        setTheaterID(id);
+        const theaterInfor = theaters.find(x => x.id === Number(id));
+        setRooms(theaterInfor ? theaterInfor.room : []);
     }
 
     const handleAddRoom = (theaterid) => {
@@ -65,13 +49,14 @@ function RoomManagement() {
             return;
         }
         console.log(theaterid);
-        navigate('add-room', { state: { id: theaterid } });
+        const theater = theaters.find(x => x.id === parseInt(theaterid));
+        navigate('add-room', { state: { id: theaterid, theaterName : theater.name } });
     };
 
     const handleStatusChange = async (id, currentStatus) => {
         try {
-            const updatedStatus = !currentStatus; 
-            await updateStatusRoom(id); 
+            const updatedStatus = !currentStatus;
+            await updateStatusRoom(id);
             setRooms(rooms.map(room =>
                 room.id === id ? { ...room, status: updatedStatus } : room
             ));
@@ -81,12 +66,23 @@ function RoomManagement() {
     };
 
     const handleViewRoom = (id) => {
-        navigate('view-room', {state : {id : id, theaterid : theaterID}});
+        navigate('view-room', { state: { id: id, theaterid: theaterID } });
     }
 
     const handleEditRoom = (id) => {
-        console.log(id + " " + theaterID);
-        navigate('edit-room', {state : {id : id, theaterid : theaterID}});
+        // console.log(id + " " + theaterID);
+        navigate('edit-room', { state: { id: id, theaterid: theaterID } });
+    }
+
+    const handleDeleteRoom = async (id) => {
+        const confirmed = window.confirm("Bạn có chắc muốn xóa phòng không?");
+        if (confirmed) {
+            await deleteRoom(theaterID, id);
+            setRooms(prevRooms => prevRooms.filter(room => room.id !== parseInt(id)));
+            alert("Phòng đã được xóa thành công.");
+        } else {
+            alert("Hủy xóa phòng.");
+        }
     }
 
 
@@ -139,6 +135,9 @@ function RoomManagement() {
                                     </button>
                                     <button className="edit-button" onClick={() => handleEditRoom(room.id)}>
                                         <FontAwesomeIcon icon={faEdit} />
+                                    </button>
+                                    <button className="delete-button" onClick={() => handleDeleteRoom(room.id)}>
+                                        <FontAwesomeIcon icon={faTrashAlt} />
                                     </button>
                                 </td>
                             </tr>

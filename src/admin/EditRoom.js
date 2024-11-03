@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './AddRoom.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getTheaterById, getTypeRoom, getRoomById, editRoom, updateSeat } from '../config/TheaterConfig';
+import { getTypeRoom, getRoomById, editRoom, updateSeat } from '../config/TheaterConfig';
 
 function EditRoom() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id, theaterid } = location.state || {};
 
-  const [theaterName, setTheaterName] = useState('');
-  const [roomID, setRoomID] = useState([]);
+  const [room, setRoom] = useState('');
   const [seats, setSeats] = useState([]);
   const [typeRooms, setTypeRooms] = useState([]);
 
@@ -29,34 +28,22 @@ function EditRoom() {
         navigate('/admin/rooms-and-seats');
         return;
       }
-      try {
-        const response_theater = await getTheaterById(theaterid);
-        setTheaterName(response_theater.data.name);
-
-        const response_typeroom = await getTypeRoom();
-        setTypeRooms(response_typeroom.data);
-
-        const response_room = await getRoomById(id);
-        setRoomName(response_room.data.name);
-        setTypeRoomID(response_room.data.typeRoom.id);
-        setNumRows(response_room.data.numRows);
-        setNumSeats(response_room.data.numColumn);
-        setRoomID(response_room.data.id);
-
-        if (response_room.data && Array.isArray(response_room.data.seat)) {
-          const formattedSeatsData = formattedSeats(response_room.data.seat, response_room.data.numRows, response_room.data.numColumn);
-          console.log(formattedSeatsData);
-          const seatsWithTypes = changeTypeSeat(formattedSeatsData);
-          setSeats(seatsWithTypes || []);
-        } else {
-          console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
-          setSeats([]);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin phòng:", error);
-        if (error.code === 'ERR_NETWORK') {
-          console.error("Lỗi mạng: Không thể kết nối tới server.");
-        }
+      const listtyperoom = await getTypeRoom();
+      setTypeRooms(listtyperoom);
+      const roomInfor = await getRoomById(id);
+      setRoom(roomInfor);
+      setRoomName(roomInfor.name);
+      setTypeRoomID(roomInfor.typeRoom.name);
+      setNumRows(roomInfor.numRows);
+      setNumSeats(roomInfor.numColumn);
+      if (roomInfor && Array.isArray(roomInfor.seat)) {
+        const formattedSeatsData = formattedSeats(roomInfor.seat, roomInfor.numRows, roomInfor.numColumn);
+        // console.log(formattedSeatsData);
+        const seatsWithTypes = changeTypeSeat(formattedSeatsData);
+        setSeats(seatsWithTypes || []);
+      } else {
+        console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
+        setSeats([]);
       }
     };
 
@@ -98,6 +85,7 @@ function EditRoom() {
           });
         }
       }
+      listseat_reduce[row].sort((a, b) => a.seatNum - b.seatNum);
     }
   
     return listseat_reduce;
@@ -201,7 +189,7 @@ function EditRoom() {
     }
 
     const newRoom = {
-      id: roomID,
+      id: room.id,
       name: roomName,
       numRows: parseInt(numRows),
       numColumn: parseInt(numSeats),
@@ -259,7 +247,7 @@ function EditRoom() {
       console.log(JSON.stringify(newListSeat, null, 2));
 
       try {
-        const check = await updateSeat(roomID, newListSeat);
+        const check = await updateSeat(room.id, newListSeat);
         if (check) {
           alert("Sửa phòng thành công!");
           navigate('/admin/rooms-and-seats', { state: { id: theaterid } });
@@ -328,7 +316,7 @@ function EditRoom() {
             PHÒNG VÀ GHẾ
           </Link>
         </span>
-        <span> / </span> {theaterName} - SỬA PHÒNG</h2>
+        <span> / </span> {room.theaterName} - SỬA PHÒNG</h2>
       <div className="input-group-container" >
         <div className="input-group">
           <label className="label">Tên phòng:</label>

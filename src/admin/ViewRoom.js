@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AddRoom.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getRoomById, getTheaterById } from '../config/TheaterConfig';
+import { getRoomById } from '../config/TheaterConfig';
 
 function ViewRoom() {
 
@@ -9,7 +9,6 @@ function ViewRoom() {
   const location = useLocation();
   const { id, theaterid } = location.state || {};
 
-  const [theaterName, setTheaterName] = useState('');
   const [room, setRoom] = useState([]);
   const [seats, setSeats] = useState([]);
 
@@ -20,30 +19,16 @@ function ViewRoom() {
         navigate('/admin/rooms-and-seats');
         return;
       }
-      try {
-        console.log(id + " " + theaterid);
-        const response_theater = await getTheaterById(theaterid);
-        setTheaterName(response_theater.data.name);
-
-        const response_room = await getRoomById(id);
-        console.log(id + " " + theaterid);
-
-        if (response_room.data && Array.isArray(response_room.data.seat)) {
-          const formattedSeatsData = formattedSeats(response_room.data.seat, response_room.data.numRows, response_room.data.numColumn);
-          console.log(formattedSeatsData);
-          const seatsWithTypes = changeTypeSeat(formattedSeatsData);
-          setSeats(seatsWithTypes || []);
-        } else {
-          console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
-          setSeats([]);
-        }
-
-        setRoom(response_room.data);
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin phòng:", error);
-        if (error.code === 'ERR_NETWORK') {
-          console.error("Lỗi mạng: Không thể kết nối tới server.");
-        }
+      const roomInfor = await getRoomById(id);
+      setRoom(roomInfor);
+      if (roomInfor && Array.isArray(roomInfor.seat)) {
+        const formattedSeatsData = formattedSeats(roomInfor.seat, roomInfor.numRows, roomInfor.numColumn);
+        // console.log(formattedSeatsData);
+        const seatsWithTypes = changeTypeSeat(formattedSeatsData);
+        setSeats(seatsWithTypes || []);
+      } else {
+        console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
+        setSeats([]);
       }
     };
 
@@ -68,7 +53,7 @@ function ViewRoom() {
     }, []);
 
     for (let row = 0; row < numRows; row++) {
-      if (!listseat_reduce[row]) listseat_reduce[row] = []; 
+      if (!listseat_reduce[row]) listseat_reduce[row] = [];
 
       for (let column = 0; column < numSeats; column++) {
         const seat = listseat_reduce[row].find((s) => s.seatNum === column);
@@ -116,9 +101,9 @@ function ViewRoom() {
 
 
 
-  useEffect(() => {
-    console.log('Seats đã được cập nhật:', seats);
-  }, [seats]);
+  // useEffect(() => {
+  //   console.log('Seats đã được cập nhật:', seats);
+  // }, [seats]);
 
   return (
     <div className="room-manager">
@@ -128,7 +113,7 @@ function ViewRoom() {
             PHÒNG VÀ GHẾ
           </Link>
         </span>
-        <span> / </span> {theaterName} - {room.name}</h2>
+        <span> / </span> {room.theaterName} - {room.name}</h2>
       <div className="input-group-container" >
         <div className="input-group">
           <label className="label">Tên phòng:</label>

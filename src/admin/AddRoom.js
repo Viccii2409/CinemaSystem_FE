@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './AddRoom.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getTheaterById, getTypeRoom, addRoom, addSeat } from '../config/TheaterConfig';
+import { getTypeRoom, addRoom, addSeat } from '../config/TheaterConfig';
 
 function AddRoom() {
   const location = useLocation();
-  const { id } = location.state || {};
-  const [theater, setTheater] = useState([]);
+  const { id, theaterName } = location.state || {};
   const [typeRooms, setTypeRooms] = useState([]);
 
   const [roomName, setRoomName] = useState(''); // Lưu tên phòng
@@ -21,30 +20,25 @@ function AddRoom() {
   useEffect(() => {
     // Lấy thông tin rạp nếu id tồn tại
     const getTheaterInfor = async () => {
-      if (!id) {
+      if (!id || !theaterName) {
         console.warn("ID của rạp không tồn tại.");
         return;
       }
-      try {
-        const response = await getTheaterById(id);
-        setTheater(response.data);
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin rạp:", error);
-      }
+      console.log(id + " " + theaterName);
     };
 
     // Lấy danh sách loại phòng
     const fetchTypeRooms = async () => {
       try {
         const response = await getTypeRoom();
-        setTypeRooms(response.data);
+        setTypeRooms(response);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách loại phòng:", error);
       }
     };
     getTheaterInfor();
     fetchTypeRooms();
-  }, [id]);
+  }, [id, theaterName]);
 
 
   // Tạo mô hình ghê 
@@ -156,7 +150,7 @@ function AddRoom() {
     };
 
     try {
-      const roomid = await addRoom(newRoom, theater.id);
+      const roomid = await addRoom(newRoom, id);
       console.log(roomid);
 
       // Gửi updatedListSeat để thêm các seat
@@ -164,7 +158,7 @@ function AddRoom() {
 
       if (check) {
         alert("Thêm phòng thành công!");
-        navigate('/admin/rooms-and-seats', { state: { id: theater.id } });
+        navigate('/admin/rooms-and-seats', { state: { id: id } });
       } else {
         alert("Thêm phòng thất bại!");
         return;
@@ -219,11 +213,11 @@ function AddRoom() {
     <div className="room-manager">
       <h2 className="title">
         <span>
-          <Link to="/admin/rooms-and-seats" state={{ id: theater.id }}>
+          <Link to="/admin/rooms-and-seats" state={{ id: id }}>
             PHÒNG VÀ GHẾ
           </Link>
         </span>
-        <span> / </span> {theater.name} - THÊM PHÒNG</h2>
+        <span> / </span> {theaterName} - THÊM PHÒNG</h2>
       <div className="input-group-container" >
         <div className="input-group">
           <label className="label">Tên phòng:</label>
