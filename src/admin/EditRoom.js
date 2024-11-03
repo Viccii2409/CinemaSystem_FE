@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AddRoom.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getTheaterById, getTypeRoom, getRoomById, addSeat, editRoom } from '../config/TheaterConfig';
+import { getTheaterById, getTypeRoom, getRoomById, editRoom, updateSeat } from '../config/TheaterConfig';
 
 function EditRoom() {
   const navigate = useNavigate();
@@ -17,7 +17,8 @@ function EditRoom() {
   const [typeRoomID, setTypeRoomID] = useState('');
   const [numRows, setNumRows] = useState('');   // Lưu số hàng ghế
   const [numSeats, setNumSeats] = useState('');
-  const [createSeat, setCreateSeat] = useState(0);
+
+  const [putSeat, setPutSeat] = useState([]);
 
 
 
@@ -43,11 +44,9 @@ function EditRoom() {
         setRoomID(response_room.data.id);
 
         if (response_room.data && Array.isArray(response_room.data.seat)) {
-          console.log("Dữ liệu ghế ban đầu:", response_room.data.seat);
-          const formattedSeatsData = formattedSeats(response_room.data.seat);
-          console.log("Dữ liệu ghế sau khi định dạng:", formattedSeatsData);
+          const formattedSeatsData = formattedSeats(response_room.data.seat, response_room.data.numRows, response_room.data.numColumn);
+          console.log(formattedSeatsData);
           const seatsWithTypes = changeTypeSeat(formattedSeatsData);
-          console.log("Dữ liệu ghế sau khi cập nhật loại ghế:", seatsWithTypes);
           setSeats(seatsWithTypes || []);
         } else {
           console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
@@ -64,22 +63,47 @@ function EditRoom() {
     getRoomInfor();
   }, [id, theaterid, navigate]);
 
-  const formattedSeats = (listseat) => {
+  const formattedSeats = (listseat, numRows, numSeats) => {
     if (!Array.isArray(listseat)) {
       console.warn("Dữ liệu ghế không phải là mảng.");
       console.log(listseat);
       return {};
     }
-
-    return listseat.reduce((newlistseat, seat) => {
-      const rowIndex = seat.rowNum;
-      if (!newlistseat[rowIndex]) {
-        newlistseat[rowIndex] = [];
+  
+    // Step 1: Group seats by rows
+    const listseat_reduce = listseat.reduce((newlistseat, seat) => {
+      if (seat.status) {
+        const rowIndex = seat.rowNum;
+  
+        if (!newlistseat[rowIndex]) {
+          newlistseat[rowIndex] = [];
+        }
+  
+        newlistseat[rowIndex].push(seat);
       }
-      newlistseat[rowIndex].push(seat);
       return newlistseat;
     }, []);
+  
+    console.log(numRows + " " + numSeats);
+    for (let row = 0; row < numRows; row++) {
+      if (!listseat_reduce[row]) listseat_reduce[row] = [];
+      
+      for (let column = 0; column < numSeats; column++) {
+        const seat = listseat_reduce[row].find((s) => s.seatNum === column);
+        if (!seat) {
+          listseat_reduce[row].push({
+            rowNum: row,
+            seatNum: column,
+            status: false,
+          });
+        }
+      }
+    }
+  
+    return listseat_reduce;
   };
+  
+  
 
   const changeTypeSeat = (listseat) => {
     if (!Array.isArray(listseat)) {
@@ -99,7 +123,7 @@ function EditRoom() {
           typeSeat = 'double-seat';
           break;
         default:
-          typeSeat = null;
+          typeSeat = 'regular';
       }
       return { ...seat, typeSeat }; // Cập nhật loại ghế
     }));
@@ -112,10 +136,13 @@ function EditRoom() {
     console.log('Seats đã được cập nhật:', seats);
   }, [seats]);
 
+  useEffect(() => {
+    console.log('Seats đã được gửi:', putSeat);
+  }, [putSeat]);
+
 
   // Tạo mô hình ghê 
   const handleGenerateSeats = () => {
-    setCreateSeat(1);
     if (!roomName) {
       alert('Vui lòng nhập tên phòng.');
       return;
@@ -184,7 +211,7 @@ function EditRoom() {
 
     const check = await editRoom(newRoom);
     console.log(check);
-    if (createSeat === 1 && check === true) {
+    if (check === true) {
       const updateSeats = seats.map((row, rowIndex) => {
         let seatIndexCounter = 0; // Đặt biến đếm bên trong mỗi hàng để đếm từ đầu cho từng hàng.
 
@@ -220,11 +247,19 @@ function EditRoom() {
           return { ...seat, rowNum: rowIndex, seatNum: seatIndex, name: seatName, typeSeat }; // Cập nhật ghế với tên mới
         });
       });
+      
       const newListSeat = updateSeats.flatMap(row =>
-        row.map(seat => ({ ...seat, typeSeat: { id: seat.typeSeat } }))
+        row.map(seat => ({
+          ...seat,
+          typeSeat: { id: seat.typeSeat },
+        }))
       );
+
+      setPutSeat(newListSeat);
+      console.log(JSON.stringify(newListSeat, null, 2));
+
       try {
-        const check = await addSeat(newListSeat, roomID);
+        const check = await updateSeat(roomID, newListSeat);
         if (check) {
           alert("Sửa phòng thành công!");
           navigate('/admin/rooms-and-seats', { state: { id: theaterid } });
@@ -235,14 +270,11 @@ function EditRoom() {
 
       } catch (error) {
         console.error("Error adding list seat: ", error);
+        return;
       }
     }
-    else if(check === true) {
-      alert("Sửa phòng thành công!");
-      navigate('/admin/rooms-and-seats', { state: { id: theaterid } });
-    }
     else {
-      console.warn("Sửa thất bại!");
+      console.warn("Lỗi sửa phòng");
       return;
     }
 

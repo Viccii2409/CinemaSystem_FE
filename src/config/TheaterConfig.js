@@ -3,17 +3,22 @@ import api from '../Api.js';
 export const getTheater = () => api.get('/theater');
 
 export const getTheaterById = (id) => {
-    console.log(`Gọi API với ID: ${id}`);
     return api.get(`/theater/${id}`);
 };
 
-export const getRoomByTheater = async (id) => api.get(`/theater/${id}/room`)
+export const getRoomByTheater = async (id) => api.get(`/theater/${id}/room`);
 
 export const getTypeRoom = async () => api.get('/theater/typeroom');
 
 export const getTypeSeat = async () => api.get('/theater/typeseat');
 
-export const getRoomById = async (id) => api.get(`theater/room/${id}`);
+export const getRoomById = async (id) => {
+    try {
+        return api.get(`theater/room/${id}`);
+    } catch (error) {
+        console.error("Error get room by id: ", error);
+    }
+}
 
 
 
@@ -89,6 +94,15 @@ export const editRoom = (room) => {
     } catch (error) {
         console.error('Edit room failed:', error);
         throw error; // Ném lỗi để xử lý ở nơi gọi hàm nếu cần
+    }
+}
+
+export const updateSeat = (id, seats) => {
+    try {
+        api.put(`/theater/room/${id}/seat/update`, seats);
+        return true;
+    } catch (error) {
+        console.error("Update seats failed: ", error);
     }
 }
 

@@ -21,17 +21,17 @@ function ViewRoom() {
         return;
       }
       try {
+        console.log(id + " " + theaterid);
         const response_theater = await getTheaterById(theaterid);
         setTheaterName(response_theater.data.name);
 
         const response_room = await getRoomById(id);
+        console.log(id + " " + theaterid);
 
         if (response_room.data && Array.isArray(response_room.data.seat)) {
-          console.log("Dữ liệu ghế ban đầu:", response_room.data.seat);
-          const formattedSeatsData = formattedSeats(response_room.data.seat);
-          console.log("Dữ liệu ghế sau khi định dạng:", formattedSeatsData);
+          const formattedSeatsData = formattedSeats(response_room.data.seat, response_room.data.numRows, response_room.data.numColumn);
+          console.log(formattedSeatsData);
           const seatsWithTypes = changeTypeSeat(formattedSeatsData);
-          console.log("Dữ liệu ghế sau khi cập nhật loại ghế:", seatsWithTypes);
           setSeats(seatsWithTypes || []);
         } else {
           console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
@@ -50,22 +50,44 @@ function ViewRoom() {
     getRoomInfor();
   }, [id, theaterid, navigate]);
 
-  const formattedSeats = (listseat) => {
+  const formattedSeats = (listseat, numRows, numSeats) => {
     if (!Array.isArray(listseat)) {
       console.warn("Dữ liệu ghế không phải là mảng.");
       console.log(listseat);
       return {};
     }
-
-    return listseat.reduce((newlistseat, seat) => {
+    const listseat_reduce = listseat.reduce((newlistseat, seat) => {
       const rowIndex = seat.rowNum;
+
       if (!newlistseat[rowIndex]) {
         newlistseat[rowIndex] = [];
       }
+
       newlistseat[rowIndex].push(seat);
       return newlistseat;
     }, []);
+
+    for (let row = 0; row < numRows; row++) {
+      if (!listseat_reduce[row]) listseat_reduce[row] = []; 
+
+      for (let column = 0; column < numSeats; column++) {
+        const seat = listseat_reduce[row].find((s) => s.seatNum === column);
+        if (!seat) {
+          listseat_reduce[row].push({
+            rowNum: row,
+            seatNum: column,
+            status: false,
+          });
+        }
+      }
+
+      // Sắp xếp các ghế trong mỗi hàng theo thứ tự seatNum để giữ đúng thứ tự
+      listseat_reduce[row].sort((a, b) => a.seatNum - b.seatNum);
+    }
+
+    return listseat_reduce;
   };
+
 
   const changeTypeSeat = (listseat) => {
     if (!Array.isArray(listseat)) {
@@ -152,7 +174,7 @@ function ViewRoom() {
           <h4>Ghế Thường</h4>
         </div>
         <div className="input-group">
-        <div className='seat vip'>
+          <div className='seat vip'>
             <input
               type='text'
               disabled
@@ -161,7 +183,7 @@ function ViewRoom() {
           <h4>Ghế Vip</h4>
         </div>
         <div className="input-group">
-        <div className='seat double-seat'>
+          <div className='seat double-seat'>
             <input
               type='text'
               disabled

@@ -39,7 +39,7 @@ function RoomManagement() {
             getTheaterInfor(id);
         }
         fetchTheater();
-    }, [id]);
+    }, [id], navigate);
 
 
 
