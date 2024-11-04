@@ -1,0 +1,61 @@
+package com.springboot.cinemasystem.model.ticket;
+
+import java.util.*;
+
+public class DayOfWeek {
+
+	List<PriceTicket> priceticket;
+	private int dayOfWeekID;
+	private String name;
+	private Date dayStart;
+	private Date dayEnd;
+
+	public int getDayOfWeekID() {
+		return this.dayOfWeekID;
+	}
+
+	/**
+	 * 
+	 * @param dayOfWeekID
+	 */
+	public void setDayOfWeekID(int dayOfWeekID) {
+		this.dayOfWeekID = dayOfWeekID;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getDayStart() {
+		return this.dayStart;
+	}
+
+	/**
+	 * 
+	 * @param dayStart
+	 */
+	public void setDayStart(Date dayStart) {
+		this.dayStart = dayStart;
+	}
+
+	public Date getDayEnd() {
+		return this.dayEnd;
+	}
+
+	/**
+	 * 
+	 * @param dayEnd
+	 */
+	public void setDayEnd(Date dayEnd) {
+		this.dayEnd = dayEnd;
+	}
+
+}
