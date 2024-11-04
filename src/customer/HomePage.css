@@ -1,68 +1,115 @@
 /* Styles for Homepage Component */
-.homepage .slideshow {
-  background-color: #000;
-  color: #fff;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-}
 
 .homepage .movie-section {
-  margin-bottom: 40px;
+  margin-bottom: 15px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .homepage .section-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  border: 1.5px solid #7add58;
+  display: inline-block;
+  border-radius: 10px;
 }
 
-.homepage .section-title a {
+.homepage .section-title h2 {
   text-decoration: none;
-  color: #00C853;
-  margin-right: 10px;
+  color: #7add58;
+  align-items: center;
+  padding: 0px 25px;
+  margin: 5px 0px;
 }
 
 .homepage .movie-list {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 26px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+  justify-content: center;
 }
 
 .homepage .movie-item {
+  position: relative;
   background-color: #fff;
-  padding: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 215px;
+  height: 318px;
+  margin-bottom: 50px;
 }
-
-.homepage .movie-thumbnail {
-  width: 100%;
-  height: auto;
+.image-container {
+  position: relative;
+  display: block; /* Để định vị nút bên trên ảnh */
+  transition: border-color 0.3s ease;
+  border: 2px solid transparent;
+  overflow: hidden;
+  width: 215px;
+  height: 318px;
+}
+.movie-item:hover .image-container {
+  border-color: #b3e3a3;
   border-radius: 10px;
+  box-shadow: 0 4px 20px #85d16c;
+}
+.movie-item .movie-thumbnail {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 .homepage .movie-details {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .homepage .buy-ticket-button {
-  background-color: #00C853;
+  background-color: #7add58;
   color: #fff;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
-  margin-top: 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  width: 140px;
+  height: 40px;
+  font-size: 14px;
+  font-family: sans-serif;
+  position: absolute; /* Định vị nút ở vị trí tuyệt đối */
+  bottom: 18px; /* Cách từ đáy ảnh */
+  left: 50%; /* Căn giữa theo chiều ngang */
+  transform: translateX(-50%); /* Căn giữa chính xác */
+  padding: 12px 20px; /* Thêm padding cho nút */
+  color: white; /* Màu chữ nút */
+  border: none; /* Bỏ viền */
+  border-radius: 5px; /* Bo tròn góc */
+  cursor: pointer; /* Hiển thị con trỏ khi hover vào nút */
+  transition: background-color 0.5s;
+  font-weight: bold;
+  display: none;
 }
-
+.image-container:hover .buy-ticket-button {
+  display: flex;
+}
+.image-container .iconPause {
+  position: absolute;
+  background-color: transparent;
+  color: #7add58;
+  display: none;
+  cursor: pointer;
+  bottom: 50%;
+  border: none;
+  font-size: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.image-container:hover .iconPause {
+  display: flex;
+}
 .homepage .buy-ticket-button:hover {
-  background-color: #004d40;
+  background-color: #04c14d;
 }
 
 .homepage .movie-item-placeholder {
@@ -72,28 +119,67 @@
 }
 
 .homepage .promotions-section {
-  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  background-color: #efe7e7;
+  padding-top: 25px;
+  justify-content: center;
+  align-items: center;
 }
-
+.homepage .category {
+  border: 1.5px solid #7add58;
+  background-color: #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
 .homepage .promotions-section h2 {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: #00C853;
+  padding: 0px 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #7add58;
 }
 
 .homepage .promotion-carousel {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  justify-content: left;
+  gap: 40px;
+  margin-left: 80px;
 }
 
-.homepage .promotion-item {
-  background-color: #e0e0e0;
-  width: 200px;
-  height: 100px;
+.discount-item {
+  box-sizing: border-box;
+  text-align: center;
+  width: 330px;
+  height: 190px;
+  margin-bottom: 70px;
+}
+.promotion-carousel .discount-image {
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
+  object-fit: cover;
+  position: relative;
 }
-
+.discount-item .dis-title h3 {
+  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
+  width: 100%;
+  color: #7add58;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 0px !important;
+}
+.discount-item .dis-title p {
+  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
+  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+  text-align: left;
+  margin-top: 10px !important;
+}
 .homepage .showtime-overlay {
   position: fixed;
   top: 0;
@@ -133,7 +219,33 @@
 }
 
 .homepage .movie-title {
-  color: #66bb6a;
+  color: #7add58;
+}
+.movie-item .movietitle {
+  color: #7add58;
+  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
+  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+  white-space: nowrap; /* Ngăn dòng xuống */
+  overflow: hidden; /* Ẩn phần văn bản vượt quá */
+  text-overflow: ellipsis; /* Hiện dấu ba chấm */
+  max-height: 1.2em;
+  text-align: left;
+}
+.hover-text {
+  display: none; /* Ẩn văn bản mặc định */
+  position: absolute; /* Định vị tuyệt đối */
+  left: 50%; /* Căn giữa theo chiều ngang */
+  top: 100%;
+  transform: translateX(-50%); /* Căn giữa chính xác */
+  background-color: #7add58;
+  color: #f6f8f5; /* Màu chữ */
+  padding: 5px; /* Thêm khoảng cách cho chữ */
+  border-radius: 5px; /* Bo tròn góc */
+  white-space: nowrap; /* Ngăn dòng xuống */
+  z-index: 10; /* Đảm bảo văn bản nằm trên các phần tử khác */
+}
+.movietitle:hover + .hover-text {
+  display: block;
 }
 
 .homepage h3 {
@@ -158,7 +270,7 @@
 }
 
 .homepage .date-tab.active {
-  border-bottom: 3px solid #66bb6a;
+  border-bottom: 3px solid #7add58;
 }
 
 .homepage .showtime-list {
@@ -194,4 +306,38 @@
 .homepage .seats-info {
   font-size: 14px;
   color: #888;
+}
+.slideshow {
+  position: relative;
+  width: 100%;
+  max-width: 100%; /* Điều chỉnh kích thước theo yêu cầu của bạn */
+  margin: auto;
+  overflow: hidden;
+}
+
+.slideshow img {
+  width: 1280px;
+  max-width: 100%; /* Đảm bảo ảnh tràn toàn bộ chiều rộng */
+  height: 687px; /* Đảm bảo ảnh chiếm toàn bộ chiều cao */
+  object-fit: cover; /* Giữ tỷ lệ ảnh và cắt phần thừa để ảnh phù hợp với khung */
+  display: block;
+}
+
+.slideshow-controls {
+  display: none;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: #c1b9b9;
+  cursor: pointer;
+}
+.slideshow:hover .slideshow-controls {
+  display: flex; /* Hiện các icon khi hover */
+}
+
+.slideshow-controls .control-icon:hover {
+  color: #7add58;
 }

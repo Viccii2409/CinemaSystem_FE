@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
@@ -19,15 +20,15 @@ import AddRoom from './admin/AddRoom';
 import ViewRoom from './admin/ViewRoom';
 import EditRoom from './admin/EditRoom';
 
-import HeaderCustomer from './customer/HeaderCustomer';
-import HomePage from './customer/HomePage';
-import LoginPage from './customer/LoginPage';
-import RegisterPage from './customer/RegisterPage';
-import Footer from './customer/Footer';
-import CinemaSystem from './customer/CinemaSystem';
-import SeatSelection from './customer/SeatSelection';
-import PaymentInfo from './customer/PaymentInfo';
-import MovieDetail from './customer/MovieDetail';
+import HeaderCustomer from "./customer/HeaderCustomer";
+import HomePage from "./customer/HomePage";
+import LoginPage from "./customer/LoginPage";
+import RegisterPage from "./customer/RegisterPage";
+import Footer from "./customer/Footer";
+import CinemaSystem from "./customer/CinemaSystem";
+import SeatSelection from "./customer/SeatSelection";
+import PaymentInfo from "./customer/PaymentInfo";
+import MovieDetail from "./customer/MovieDetail";
 
 function App() {
   return (
@@ -46,17 +47,20 @@ function CustomerLayout() {
       <HeaderCustomer />
       <div className="content">
         <Routes>
-        <Route path="" element={<HomePage />} />
-        <Route path="home" element={<HomePage />} />
-        <Route path="login-page" element={<LoginPage />} />
-        <Route path="register-page" element={<RegisterPage />} />
-        <Route path="seat-selection" element={<SeatSelection />} />
-        <Route path="payment-info" element={<PaymentInfo />} />
-        <Route path="home/movie-detail" element={<MovieDetail />} />
-        <Route path="movie-detail" element={<MovieDetail />} />
-        <Route path="cinema-system" element={<CinemaSystem />} />
-        <Route path="cinema-system/cinema-detail" element={<CinemaDetails />} />
-
+          <Route path="" element={<HomePage />} />
+          <Route path="home" element={<HomePage />} />
+          <Route path="login-page" element={<LoginPage />} />
+          <Route path="register-page" element={<RegisterPage />} />
+          <Route path="seat-selection" element={<SeatSelection />} />
+          <Route path="payment-info" element={<PaymentInfo />} />
+          <Route path="home/movie-detail" element={<MovieDetail />} />
+          <Route path="movie-detail" element={<MovieDetail />} />
+          <Route path="cinema-system" element={<CinemaSystem />} />
+          <Route path="movie/:id" element={<MovieDetail />} />
+          <Route
+            path="cinema-system/theater-detail"
+            element={<TheaterDetails />}
+          />
         </Routes>
       </div>
       <Footer />
@@ -85,9 +89,15 @@ function AdminLayout() {
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<div>Bán vé Content</div>} />
             <Route path="staff" element={<EmployeeManagement />} />
-            <Route path="staff/access-permission" element={<AccessPermission />} />
+            <Route
+              path="staff/access-permission"
+              element={<AccessPermission />}
+            />
             <Route path="customers" element={<CustomerManagement />} />
-            <Route path="customers/customer-detail" element={<CustomerDetail />} />
+            <Route
+              path="customers/customer-detail"
+              element={<CustomerDetail />}
+            />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
             <Route path="account" element={<AddRoom />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
@@ -98,5 +108,4 @@ function AdminLayout() {
   );
 }
 
-
-export default App; 
+export default App;

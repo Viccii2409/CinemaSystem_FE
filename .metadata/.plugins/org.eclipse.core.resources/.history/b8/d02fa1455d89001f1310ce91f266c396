@@ -1,0 +1,69 @@
+package com.springboot.cinemasystem.dao.userDAO;
+
+
+public interface UserDAO {
+
+	/**
+	 * 
+	 * @param user
+	 */
+	boolean signup(User user);
+
+	/**
+	 * 
+	 * @param account
+	 */
+	User login(Account account);
+
+	/**
+	 * 
+	 * @param user
+	 */
+	boolean editUser(User user);
+
+	/**
+	 * 
+	 * @param userID
+	 */
+	boolean updateStatusUser(int userID);
+
+	/**
+	 * 
+	 * @param role
+	 */
+	boolean addRole(Role role);
+
+	/**
+	 * 
+	 * @param roleID
+	 */
+	boolean updateStatusRole(int roleID);
+
+	/**
+	 * 
+	 * @param userID
+	 */
+	User getUser(int userID);
+
+	/**
+	 * 
+	 * @param role
+	 */
+	boolean editRole(role role);
+
+	/**
+	 * 
+	 * @param userID
+	 * @param password
+	 */
+	boolean changePassword(int userID, string password);
+
+	List<User> getAllUser();
+
+	/**
+	 * 
+	 * @param roleID
+	 */
+	List<User> getRole(int roleID);
+
+}
