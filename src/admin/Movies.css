@@ -8,6 +8,7 @@
   min-height: 47em;
 }
 
+
 .movies-management .search-bar input {
   width: 20%;
   padding: 10px;
@@ -15,6 +16,7 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
 
 .movies-management .add-button {
   background-color: rgba(47, 216, 4, 1);
@@ -30,15 +32,18 @@
   font-weight: bold;
 }
 
+
 .movies-management .add-button:hover {
   background-color: rgba(57, 193, 23, 1);
 }
+
 
 .movies-management .cinema-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
+
 
 .movies-management .cinema-table th,
 .movies-management .cinema-table td {
@@ -47,11 +52,13 @@
   text-align: left;
 }
 
+
 .movies-management .cinema-table th {
   background-color: rgba(57, 193, 23, 1);
   color: white;
   text-transform: uppercase;
 }
+
 
 .movies-management .switch {
   position: relative;
@@ -60,11 +67,13 @@
   height: 26px;
 }
 
+
 .movies-management .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 
 .movies-management .slider {
   position: absolute;
@@ -79,6 +88,7 @@
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+
 .movies-management .slider:before {
   position: absolute;
   content: "";
@@ -92,22 +102,27 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+
 .movies-management input:checked + .slider {
   background-color: #4caf50;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+
 .movies-management input:checked + .slider:before {
   transform: translateX(24px);
 }
+
 
 .movies-management .slider.round {
   border-radius: 34px;
 }
 
+
 .movies-management .slider.round:before {
   border-radius: 50%;
 }
+
 
 .movies-management .view-button,
 .movies-management .edit-button,
@@ -120,29 +135,36 @@
   transition: color 0.3s;
 }
 
+
 .movies-management .view-button i {
   color: #17a2b8; /* Màu xanh cho nút xem */
 }
+
 
 .movies-management .edit-button {
   color: #007bff;
 }
 
+
 .movies-management .delete-button {
   color: #dc3545;
 }
+
 
 .movies-management .view-button:hover i {
   color: #138496; /* Thay đổi màu khi hover */
 }
 
+
 .movies-management .edit-button:hover {
   color: #0056b3;
 }
 
+
 .movies-management .delete-button:hover {
   color: #c82333;
 }
+
 
 .movies-management .modal {
   position: fixed;
@@ -157,6 +179,7 @@
   z-index: 1000;
 }
 
+
 .movies-management .modal-overlay {
   position: fixed;
   top: 0;
@@ -167,11 +190,13 @@
   z-index: 1000;
 }
 
+
 .movies-management .modal-header {
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 15px;
 }
+
 
 .movies-management .modal-input {
   width: 95%;
@@ -181,10 +206,12 @@
   border-radius: 5px;
 }
 
+
 .movies-management .modal-buttons {
   display: flex;
   justify-content: flex-end;
 }
+
 
 .movies-management .close-button {
   background-color: #6c757d;
@@ -196,9 +223,11 @@
   transition: background-color 0.3s;
 }
 
+
 .movies-management .close-button:hover {
   background-color: #5a6268;
 }
+
 
 .movies-management .submit-button {
   background-color: #28a745;
@@ -208,6 +237,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 
 .movies-management .submit-button:hover {
   background-color: #218838;
