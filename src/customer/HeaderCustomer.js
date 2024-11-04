@@ -1,13 +1,28 @@
-import React from "react";
-import './HeaderCustomer.css';
-import { Link } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import "./HeaderCustomer.css";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { getTheater, getTheaterById, getMovie, getMovieById } from "../Api.js";
 const HeaderCustomer = () => {
+  const [theaters, setTheaters] = useState([]);
+  useEffect(() => {
+    const fetchTheater = async () => {
+      try {
+        const response = await getTheater();
+        setTheaters(response.data); // Lưu dữ liệu vào state cinemas
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách rạp:", error);
+      }
+    };
+
+    fetchTheater(); // Gọi hàm fetchTheater khi component được render lần đầu
+  }, []); // Đóng ngoặc vuông để hoàn tất dependency array và gọi chỉ khi component render lần đầu
+
   return (
     <header className="homepage-header">
       <div className="header-title">
-      <Link to="/home">LAL CINEMA</Link>
-        
+        <Link to="/home">LAL CINEMA</Link>
       </div>
       <nav className="navbar">
         <Link to="/">Lịch chiếu</Link>
@@ -16,11 +31,14 @@ const HeaderCustomer = () => {
         <Link to="/">Thể loại</Link>
       </nav>
       <select className="location-selector">
-        <option value="hanoi">LAL Hà Nội</option>
-        <option value="hcmc">LAL Hồ Chí Minh</option>
+        {theaters.map((theater) => (
+          <option value="theatername">{theater.name}</option>
+        ))}
       </select>
       <div>
-        <Link to="/login-page" className="login-button">Đăng nhập / Đăng ký</Link>
+        <Link to="/login-page" className="login-button">
+          Đăng nhập / Đăng ký
+        </Link>
       </div>
     </header>
   );

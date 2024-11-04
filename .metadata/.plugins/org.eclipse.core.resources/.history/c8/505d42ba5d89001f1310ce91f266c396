@@ -1,0 +1,73 @@
+package analysis.ticketDAO;
+
+import analysis.ticket.*;
+
+public interface TicketDAO {
+
+	/**
+	 * 
+	 * @param ticketID
+	 */
+	Ticket getTicket(int ticketID);
+
+	/**
+	 * 
+	 * @param ticket
+	 */
+	boolean addTicket(Ticket ticket);
+
+	/**
+	 * 
+	 * @param userID
+	 */
+	List<Ticket> getUser(int userID);
+
+	/**
+	 * 
+	 * @param paymentID
+	 */
+	Payment getPayment(int paymentID);
+
+	/**
+	 * 
+	 * @param payCash
+	 */
+	boolean addPayCash(PayCash payCash);
+
+	/**
+	 * 
+	 * @param payCash
+	 */
+	boolean updatePayCash(PayCash payCash);
+
+	/**
+	 * 
+	 * @param payCard
+	 */
+	boolean addPayCard(PayCard payCard);
+
+	/**
+	 * 
+	 * @param payCard
+	 */
+	boolean updatePayCard(PayCard payCard);
+
+	/**
+	 * 
+	 * @param barcode
+	 */
+	Ticket getTicket(String barcode);
+
+	/**
+	 * 
+	 * @param userID
+	 */
+	int getPriceTicket(int userID);
+
+	/**
+	 * 
+	 * @param typeUserID
+	 */
+	int getPriceTicker(int typeUserID);
+
+}

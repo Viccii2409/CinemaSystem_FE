@@ -1,0 +1,161 @@
+package analysis.movieDAO;
+
+import analysis.movie.*;
+
+public class MovieDaoImpl implements MovieDAO {
+
+	/**
+	 * 
+	 * @param movie
+	 */
+	public boolean addMovie(Movie movie) {
+		// TODO - implement MovieDaoImpl.addMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movie
+	 */
+	public boolean editMovie(Movie movie) {
+		// TODO - implement MovieDaoImpl.editMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public Movie getMovie(int movieID) {
+		// TODO - implement MovieDaoImpl.getMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param genreID
+	 */
+	public List<Movie> getGenre(int genreID) {
+		// TODO - implement MovieDaoImpl.getGenre
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Movie> getListCommingSoonMovie() {
+		// TODO - implement MovieDaoImpl.getListCommingSoonMovie
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Movie> getListShowNowMovie() {
+		// TODO - implement MovieDaoImpl.getListShowNowMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public boolean updateStatusMovie(int movieID) {
+		// TODO - implement MovieDaoImpl.updateStatusMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public Cast getCast(int movieID) {
+		// TODO - implement MovieDaoImpl.getCast
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public Director getDirector(int movieID) {
+		// TODO - implement MovieDaoImpl.getDirector
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param cast
+	 */
+	public boolean addCast(Cast cast) {
+		// TODO - implement MovieDaoImpl.addCast
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param cast
+	 */
+	public boolean updateCast(Cast cast) {
+		// TODO - implement MovieDaoImpl.updateCast
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param director
+	 */
+	public boolean addDirector(Director director) {
+		// TODO - implement MovieDaoImpl.addDirector
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param director
+	 */
+	public boolean updateDirector(Director director) {
+		// TODO - implement MovieDaoImpl.updateDirector
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param schedule
+	 */
+	public boolean addSchedule(Schedule schedule) {
+		// TODO - implement MovieDaoImpl.addSchedule
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param scheduleID
+	 */
+	public boolean updateStatusSchedule(int scheduleID) {
+		// TODO - implement MovieDaoImpl.updateStatusSchedule
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public List<Schedule> getScheduleMovie(int movieID) {
+		// TODO - implement MovieDaoImpl.getScheduleMovie
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param movieID
+	 */
+	public List<Feedback> getFeedback(int movieID) {
+		// TODO - implement MovieDaoImpl.getFeedback
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param feedback
+	 */
+	public boolean addFeedback(Feedback feedback) {
+		// TODO - implement MovieDaoImpl.addFeedback
+		throw new UnsupportedOperationException();
+	}
+
+}

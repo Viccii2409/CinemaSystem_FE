@@ -1,0 +1,35 @@
+package analysis.movie;
+
+import java.util.*;
+
+public class Cast {
+
+	List<Movie> movie;
+	private int castID;
+	private String name;
+
+	public int getCastID() {
+		return this.castID;
+	}
+
+	/**
+	 * 
+	 * @param castID
+	 */
+	public void setCastID(int castID) {
+		this.castID = castID;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+}

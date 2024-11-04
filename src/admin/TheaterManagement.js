@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from 'react'; // Thêm useEffect
-import './TheaterManagement.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater } from '../Api.js';
+import React, { useState, useEffect } from "react"; // Thêm useEffect
+import "./TheaterManagement.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  getTheater,
+  updateStatusTheater,
+  addTheater,
+  getTheaterById,
+  editTheater,
+} from "../Api.js";
 
 const CinemaManagement = () => {
   const [theaters, setTheaters] = useState([]); // Khởi tạo state cinemas để lưu dữ liệu từ API
@@ -21,35 +27,34 @@ const CinemaManagement = () => {
     fetchTheater(); // Gọi hàm fetchTheater khi component được render lần đầu
   }, []); // Đóng ngoặc vuông để hoàn tất dependency array và gọi chỉ khi component render lần đầu
 
-
   const handleStatusChange = async (id, currentStatus) => {
     try {
       const updatedStatus = !currentStatus; // Đảo ngược trạng thái hiện tại
       await updateStatusTheater(id); // Gọi API PUT để cập nhật trạng thái
       // Cập nhật lại danh sách theaters sau khi trạng thái đã thay đổi thành công
-      setTheaters(theaters.map(theater =>
-        theater.id === id ? { ...theater, status: updatedStatus } : theater
-      ));
+      setTheaters(
+        theaters.map((theater) =>
+          theater.id === id ? { ...theater, status: updatedStatus } : theater
+        )
+      );
     } catch (error) {
       console.error("Lỗi khi cập nhật trạng thái:", error);
     }
   };
 
-
-
   const [formDataState, setFormDataState] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    address: '',
-    ward: '',
-    district: '',
-    city: '',
-    description: '',
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    ward: "",
+    district: "",
+    city: "",
+    description: "",
     image: null,
-    quantityRoom: '',
-    status: '',
-    id: ''
+    quantityRoom: "",
+    status: "",
+    id: "",
   });
 
   const [showAddModal, setShowAddModal] = useState(false);
@@ -72,31 +77,35 @@ const CinemaManagement = () => {
 
       if (theaterData) {
         // Kiểm tra và trích xuất các giá trị, đảm bảo các giá trị lồng không bị null hoặc undefined
-        console.log(theaterData)
+        console.log(theaterData);
         setFormDataState({
-          name: theaterData.name || '',
-          phone: theaterData.phone || '',
-          email: theaterData.email || '',
-          address: theaterData.address?.addressDetail || '',
-          ward: theaterData.address?.ward?.name || '', // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
-          district: theaterData.address?.district?.name || '',
-          city: theaterData.address?.city?.name || '',
-          description: theaterData.description || '',
-          image: theaterData.image || '',
-          quantityRoom: theaterData.quantityRoom || '',
-          status: theaterData.status || '',
-          id: theaterData.id || ''
+          name: theaterData.name || "",
+          phone: theaterData.phone || "",
+          email: theaterData.email || "",
+          address: theaterData.address?.addressDetail || "",
+          ward: theaterData.address?.ward?.name || "", // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
+          district: theaterData.address?.district?.name || "",
+          city: theaterData.address?.city?.name || "",
+          description: theaterData.description || "",
+          image: theaterData.image || "",
+          quantityRoom: theaterData.quantityRoom || "",
+          status: theaterData.status || "",
+          id: theaterData.id || "",
         });
 
         setShowViewModal(true);
       }
     } catch (error) {
       if (error.response) {
-        console.error('Lỗi từ server:', error.response.status, error.response.data);
+        console.error(
+          "Lỗi từ server:",
+          error.response.status,
+          error.response.data
+        );
       } else if (error.request) {
-        console.error('Không nhận được phản hồi từ server:', error.request);
+        console.error("Không nhận được phản hồi từ server:", error.request);
       } else {
-        console.error('Lỗi khi thiết lập yêu cầu:', error.message);
+        console.error("Lỗi khi thiết lập yêu cầu:", error.message);
       }
     }
   };
@@ -113,51 +122,54 @@ const CinemaManagement = () => {
 
       if (theaterData) {
         // Kiểm tra và trích xuất các giá trị, đảm bảo các giá trị lồng không bị null hoặc undefined
-        console.log(theaterData)
-        console.log(theaterData.addressDetail)
+        console.log(theaterData);
+        console.log(theaterData.addressDetail);
         setFormDataState({
-          name: theaterData.name || '',
-          phone: theaterData.phone || '',
-          email: theaterData.email || '',
-          address: theaterData.address?.addressDetail || '',
-          ward: theaterData.address?.ward?.name || '', // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
-          district: theaterData.address?.district?.name || '',
-          city: theaterData.address?.city?.name || '',
-          description: theaterData.description || '',
-          image: theaterData.image || '',
-          quantityRoom: theaterData.quantityRoom || '',
-          status: theaterData.status || '',
-          id: theaterData.id || ''
+          name: theaterData.name || "",
+          phone: theaterData.phone || "",
+          email: theaterData.email || "",
+          address: theaterData.address?.addressDetail || "",
+          ward: theaterData.address?.ward?.name || "", // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
+          district: theaterData.address?.district?.name || "",
+          city: theaterData.address?.city?.name || "",
+          description: theaterData.description || "",
+          image: theaterData.image || "",
+          quantityRoom: theaterData.quantityRoom || "",
+          status: theaterData.status || "",
+          id: theaterData.id || "",
         });
 
         setShowEditModal(true);
       }
     } catch (error) {
       if (error.response) {
-        console.error('Lỗi từ server:', error.response.status, error.response.data);
+        console.error(
+          "Lỗi từ server:",
+          error.response.status,
+          error.response.data
+        );
       } else if (error.request) {
-        console.error('Không nhận được phản hồi từ server:', error.request);
+        console.error("Không nhận được phản hồi từ server:", error.request);
       } else {
-        console.error('Lỗi khi thiết lập yêu cầu:', error.message);
+        console.error("Lỗi khi thiết lập yêu cầu:", error.message);
       }
     }
-
   };
 
   const handleCloseModal = () => {
     setFormDataState({
-      name: '',
-      phone: '',
-      email: '',
-      address: '',
-      commune: '',
-      district: '',
-      city: '',
-      description: '',
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      commune: "",
+      district: "",
+      city: "",
+      description: "",
       image: null,
-      quantityRoom: '',
-      status: '',
-      id: ''
+      quantityRoom: "",
+      status: "",
+      id: "",
     });
     setShowAddModal(false);
     setShowViewModal(false);
@@ -189,48 +201,47 @@ const CinemaManagement = () => {
   //   return true;
   // };
 
-
   const validateFormData = (data) => {
     let check = true;
 
     // Kiểm tra tên rạp (name)
-    if (!data.name || data.name.trim() === '') {
+    if (!data.name || data.name.trim() === "") {
       check = false;
     }
 
     // Kiểm tra số điện thoại (phone)
-    if (!data.phone || data.phone.trim() === '') {
+    if (!data.phone || data.phone.trim() === "") {
       check = false;
     } else if (!validatePhoneNumber(data.phone)) {
-      alert('Số điện thoại không hợp lệ. Vui lòng nhập từ 9 đến 11 chữ số.');
+      alert("Số điện thoại không hợp lệ. Vui lòng nhập từ 9 đến 11 chữ số.");
       return false;
     }
 
     // Kiểm tra email (email)
-    if (!data.email || data.email.trim() === '') {
+    if (!data.email || data.email.trim() === "") {
       check = false;
     } else if (!validateEmail(data.email)) {
-      alert('Email không hợp lệ. Vui lòng nhập đúng định dạng email.');
+      alert("Email không hợp lệ. Vui lòng nhập đúng định dạng email.");
       return false;
     }
 
     // Kiểm tra địa chỉ chi tiết (address)
-    if (!data.address || data.address.trim() === '') {
+    if (!data.address || data.address.trim() === "") {
       check = false;
     }
 
     // Kiểm tra xã (ward)
-    if (!data.ward || data.ward.trim() === '') {
+    if (!data.ward || data.ward.trim() === "") {
       check = false;
     }
 
     // Kiểm tra huyện (district)
-    if (!data.district || data.district.trim() === '') {
+    if (!data.district || data.district.trim() === "") {
       check = false;
     }
 
     // Kiểm tra thành phố (city)
-    if (!data.city || data.city.trim() === '') {
+    if (!data.city || data.city.trim() === "") {
       check = false;
     }
 
@@ -239,7 +250,7 @@ const CinemaManagement = () => {
     }
 
     if (!check) {
-      alert('Vui lòng điền đầy đủ thông tin.');
+      alert("Vui lòng điền đầy đủ thông tin.");
       return false;
     }
     return true;
@@ -257,7 +268,6 @@ const CinemaManagement = () => {
     return phoneRegex.test(phone);
   };
 
-
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -269,27 +279,26 @@ const CinemaManagement = () => {
       // Sau khi thêm thành công có thể thêm hành động khác (đóng modal, thông báo)
       setTheaters((prevList) => [...prevList, newTheater]);
 
-
       // Xóa form sau khi thành công (reset lại state của form)
       setFormDataState({
-        name: '',
-        phone: '',
-        email: '',
-        address: '',
-        commune: '',
-        district: '',
-        city: '',
-        description: '',
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        commune: "",
+        district: "",
+        city: "",
+        description: "",
         image: null,
-        quantityRoom: '',
-        status: '',
-        id: ''
+        quantityRoom: "",
+        status: "",
+        id: "",
       });
 
       handleCloseModal();
-      alert('Thêm rạp thành công!');
+      alert("Thêm rạp thành công!");
     } catch (error) {
-      console.error('Lỗi khi thêm rạp:', error);
+      console.error("Lỗi khi thêm rạp:", error);
       // Xử lý lỗi tại đây (hiển thị thông báo lỗi cho người dùng)
     }
   };
@@ -302,7 +311,6 @@ const CinemaManagement = () => {
       }
       const updatedTheater = await editTheater(formDataState);
 
-
       setTheaters((prevList) =>
         prevList.map((theater) =>
           theater.id === updatedTheater.id ? updatedTheater : theater
@@ -311,37 +319,34 @@ const CinemaManagement = () => {
 
       // Xóa form sau khi thành công (reset lại state của form)
       setFormDataState({
-        name: '',
-        phone: '',
-        email: '',
-        address: '',
-        commune: '',
-        district: '',
-        city: '',
-        description: '',
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        commune: "",
+        district: "",
+        city: "",
+        description: "",
         image: null,
-        quantityRoom: '',
-        status: '',
-        id: ''
+        quantityRoom: "",
+        status: "",
+        id: "",
       });
 
       handleCloseModal();
-      alert('Sửa rạp thành công!');
+      alert("Sửa rạp thành công!");
     } catch (error) {
-      console.error('Lỗi khi sửa rạp:', error);
+      console.error("Lỗi khi sửa rạp:", error);
       // Xử lý lỗi tại đây (hiển thị thông báo lỗi cho người dùng)
     }
   };
 
-
-
-
-
-
   return (
     <div className="cinema-management-system">
       <h2>Quản lý rạp</h2>
-      <button className="add-button" onClick={handleAddCinema}>Thêm</button>
+      <button className="add-button" onClick={handleAddCinema}>
+        Thêm
+      </button>
       <table className="cinema-table">
         <thead>
           <tr>
@@ -361,20 +366,31 @@ const CinemaManagement = () => {
               <td>{theater.address}</td>
               <td>{theater.quantityRoom}</td>
               <td>
-                <label className="switch"> {/* Thay class thành className */}
+                <label className="switch">
+                  {" "}
+                  {/* Thay class thành className */}
                   <input
                     type="checkbox"
                     checked={theater.status}
-                    onChange={() => handleStatusChange(theater.id, theater.status)}
+                    onChange={() =>
+                      handleStatusChange(theater.id, theater.status)
+                    }
                   />
-                  <span className="slider round"></span> {/* Thay class thành className */}
+                  <span className="slider round"></span>{" "}
+                  {/* Thay class thành className */}
                 </label>
               </td>
               <td>
-                <button className="view-button" onClick={() => handleViewCinema(theater.id)}>
+                <button
+                  className="view-button"
+                  onClick={() => handleViewCinema(theater.id)}
+                >
                   <FontAwesomeIcon icon={faEye} />
                 </button>
-                <button className="edit-button" onClick={() => handleEditCinema(theater.id)}>
+                <button
+                  className="edit-button"
+                  onClick={() => handleEditCinema(theater.id)}
+                >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
                 {/* <button className="delete-button">
@@ -391,21 +407,37 @@ const CinemaManagement = () => {
           <div className="modal-overlay" onClick={handleCloseModal}></div>
           <div className="modal">
             <div className="modal-header">Thêm rạp mới</div>
-            <form className="modal-info" onSubmit={handleAddSubmit} encType="multipart/form-data">
+            <form
+              className="modal-info"
+              onSubmit={handleAddSubmit}
+              encType="multipart/form-data"
+            >
               <div className="form-group">
-
-
                 <div className="form-group form-row">
                   <div className="form-column">
                     <label>
                       <strong>Tên:</strong>
-                      <input type="text" name="name" className="modal-input" value={formDataState.name} onChange={handleChange} /><br />
+                      <input
+                        type="text"
+                        name="name"
+                        className="modal-input"
+                        value={formDataState.name}
+                        onChange={handleChange}
+                      />
+                      <br />
                     </label>
                   </div>
                   <div className="form-column">
                     <label>
                       <strong>Số điện thoại:</strong>
-                      <input type="text" name="phone" className="modal-input" value={formDataState.phone} onChange={handleChange} /><br />
+                      <input
+                        type="text"
+                        name="phone"
+                        className="modal-input"
+                        value={formDataState.phone}
+                        onChange={handleChange}
+                      />
+                      <br />
                     </label>
                   </div>
                 </div>
@@ -415,67 +447,114 @@ const CinemaManagement = () => {
                 <div className="form-column">
                   <label>
                     <strong>Email:</strong>
-                    <input type="text" name="email" className="modal-input" value={formDataState.email} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="email"
+                      className="modal-input"
+                      value={formDataState.email}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Hình ảnh:</strong>
-                    <input type="file" name="image" className="modal-input" onChange={handleFileChange} /><br />
+                    <input
+                      type="file"
+                      name="image"
+                      className="modal-input"
+                      onChange={handleFileChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
-
 
               <div className="form-group form-row">
                 <div className="form-column">
                   <label>
                     <strong>Địa chỉ chi tiết:</strong>
-                    <input type="text" name="address" className="modal-input" value={formDataState.address} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="address"
+                      className="modal-input"
+                      value={formDataState.address}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Xã:</strong>
-                    <input type="text" name="ward" className="modal-input" value={formDataState.ward} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="ward"
+                      className="modal-input"
+                      value={formDataState.ward}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
-
 
               <div className="form-group form-row">
                 <div className="form-column">
                   <label>
                     <strong>Huyện:</strong>
-                    <input type="text" name="district" className="modal-input" value={formDataState.district} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="district"
+                      className="modal-input"
+                      value={formDataState.district}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Thành phố:</strong>
-                    <input type="text" name="city" className="modal-input" value={formDataState.city} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="city"
+                      className="modal-input"
+                      value={formDataState.city}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
 
-
               <div className="form-group">
                 <label>
                   <strong>Mô tả:</strong>
-                  <textarea name="description" className='modal-input' rows="10" value={formDataState.description} onChange={handleChange}></textarea><br />
+                  <textarea
+                    name="description"
+                    className="modal-input"
+                    rows="10"
+                    value={formDataState.description}
+                    onChange={handleChange}
+                  ></textarea>
+                  <br />
                 </label>
               </div>
 
-
               <div className="modal-buttons">
-                <button className="close-button" onClick={handleCloseModal}>Hủy</button>
-                <button className="save-button" type="submit">Lưu</button>
+                <button className="close-button" onClick={handleCloseModal}>
+                  Hủy
+                </button>
+                <button className="save-button" type="submit">
+                  Lưu
+                </button>
               </div>
             </form>
           </div>
         </>
       )}
-
 
       {showViewModal && (
         <>
@@ -488,7 +567,11 @@ const CinemaManagement = () => {
                   <div className="form-column">
                     <label>
                       <strong>Hình ảnh:</strong>
-                      <img src={formDataState.image} alt="Theater" className="modal-image" />
+                      <img
+                        src={formDataState.image}
+                        alt="Theater"
+                        className="modal-image"
+                      />
                     </label>
                   </div>
                   <div className="form-column">
@@ -500,7 +583,8 @@ const CinemaManagement = () => {
                         className="modal-input"
                         value={formDataState.name}
                         readOnly
-                      /><br />
+                      />
+                      <br />
                     </label>
                     <label>
                       <strong>Số phòng:</strong>
@@ -508,9 +592,14 @@ const CinemaManagement = () => {
                         type="text"
                         name="quantityRoom"
                         className="modal-input"
-                        value={formDataState.quantityRoom > 0 ? formDataState.quantityRoom : "0"}
+                        value={
+                          formDataState.quantityRoom > 0
+                            ? formDataState.quantityRoom
+                            : "0"
+                        }
                         readOnly
-                      /><br />
+                      />
+                      <br />
                     </label>
                     <label>
                       <strong>Tình trạng:</strong>
@@ -518,16 +607,19 @@ const CinemaManagement = () => {
                         type="text"
                         name="status"
                         className="modal-input"
-                        value={formDataState.status === true ? "Đang hoạt động" : "Không hoạt động"}
+                        value={
+                          formDataState.status === true
+                            ? "Đang hoạt động"
+                            : "Không hoạt động"
+                        }
                         readOnly
-                      /><br />
+                      />
+                      <br />
                     </label>
                   </div>
-
                 </div>
                 <div className="form-group form-row">
                   <div className="form-column">
-
                     <label>
                       <strong>Email:</strong>
                       <input
@@ -536,7 +628,8 @@ const CinemaManagement = () => {
                         className="modal-input"
                         value={formDataState.email}
                         readOnly
-                      /><br />
+                      />
+                      <br />
                     </label>
                   </div>
                   <div className="form-column">
@@ -548,7 +641,8 @@ const CinemaManagement = () => {
                         className="modal-input"
                         value={formDataState.phone}
                         readOnly
-                      /><br />
+                      />
+                      <br />
                     </label>
                   </div>
                 </div>
@@ -564,7 +658,8 @@ const CinemaManagement = () => {
                       className="modal-input"
                       value={formDataState.address}
                       readOnly
-                    /><br />
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
@@ -576,7 +671,8 @@ const CinemaManagement = () => {
                       className="modal-input"
                       value={formDataState.ward}
                       readOnly
-                    /><br />
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
@@ -591,7 +687,8 @@ const CinemaManagement = () => {
                       className="modal-input"
                       value={formDataState.district}
                       readOnly
-                    /><br />
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
@@ -603,7 +700,8 @@ const CinemaManagement = () => {
                       className="modal-input"
                       value={formDataState.city}
                       readOnly
-                    /><br />
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
@@ -613,43 +711,61 @@ const CinemaManagement = () => {
                   <strong>Mô tả:</strong>
                   <textarea
                     name="description"
-                    className='modal-input'
+                    className="modal-input"
                     rows="10"
                     value={formDataState.description}
                     readOnly
-                  ></textarea><br />
+                  ></textarea>
+                  <br />
                 </label>
               </div>
 
               <div className="modal-buttons">
-                <button className="close-button" onClick={handleCloseModal}>Thoát</button>
+                <button className="close-button" onClick={handleCloseModal}>
+                  Thoát
+                </button>
               </div>
             </form>
           </div>
         </>
       )}
 
-
       {showEditModal && (
         <>
           <div className="modal-overlay" onClick={handleCloseModal}></div>
           <div className="modal">
             <div className="modal-header">Sửa rạp</div>
-            <form className="modal-info" onSubmit={handleEditSubmit} encType="multipart/form-data">
+            <form
+              className="modal-info"
+              onSubmit={handleEditSubmit}
+              encType="multipart/form-data"
+            >
               <div className="form-group">
-
-
                 <div className="form-group form-row">
                   <div className="form-column">
                     <label>
                       <strong>Tên:</strong>
-                      <input type="text" name="name" className="modal-input" value={formDataState.name} onChange={handleChange} /><br />
+                      <input
+                        type="text"
+                        name="name"
+                        className="modal-input"
+                        value={formDataState.name}
+                        onChange={handleChange}
+                      />
+                      <br />
                     </label>
                   </div>
                   <div className="form-column">
                     <label>
                       <strong>Số điện thoại:</strong>
-                      <input type="text" name="phone" className="modal-input" value={formDataState.phone} onChange={handleChange} /><br />
+                      <input
+                        type="text"
+                        name="phone"
+                        className="modal-input"
+                        value={formDataState.phone}
+                        onChange={handleChange}
+                      />
+                      <br />
                     </label>
                   </div>
                 </div>
@@ -659,68 +775,115 @@ const CinemaManagement = () => {
                 <div className="form-column">
                   <label>
                     <strong>Email:</strong>
-                    <input type="text" name="email" className="modal-input" value={formDataState.email} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="email"
+                      className="modal-input"
+                      value={formDataState.email}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Hình ảnh:</strong>
-                    <input type="file" name="image" className="modal-input" onChange={handleFileChange} /><br />
+                    <input
+                      type="file"
+                      name="image"
+                      className="modal-input"
+                      onChange={handleFileChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
-
 
               <div className="form-group form-row">
                 <div className="form-column">
                   <label>
                     <strong>Địa chỉ chi tiết:</strong>
-                    <input type="text" name="address" className="modal-input" value={formDataState.address} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="address"
+                      className="modal-input"
+                      value={formDataState.address}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Xã:</strong>
-                    <input type="text" name="ward" className="modal-input" value={formDataState.ward} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="ward"
+                      className="modal-input"
+                      value={formDataState.ward}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
-
 
               <div className="form-group form-row">
                 <div className="form-column">
                   <label>
                     <strong>Huyện:</strong>
-                    <input type="text" name="district" className="modal-input" value={formDataState.district} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="district"
+                      className="modal-input"
+                      value={formDataState.district}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
                 <div className="form-column">
                   <label>
                     <strong>Thành phố:</strong>
-                    <input type="text" name="city" className="modal-input" value={formDataState.city} onChange={handleChange} /><br />
+                    <input
+                      type="text"
+                      name="city"
+                      className="modal-input"
+                      value={formDataState.city}
+                      onChange={handleChange}
+                    />
+                    <br />
                   </label>
                 </div>
               </div>
 
-
               <div className="form-group">
                 <label>
                   <strong>Mô tả:</strong>
-                  <textarea name="description" className='modal-input' rows="10" value={formDataState.description} onChange={handleChange}></textarea><br />
+                  <textarea
+                    name="description"
+                    className="modal-input"
+                    rows="10"
+                    value={formDataState.description}
+                    onChange={handleChange}
+                  ></textarea>
+                  <br />
                 </label>
               </div>
 
-
               <div className="modal-buttons">
-                <button className="close-button" onClick={handleCloseModal}>Hủy</button>
-                <button className="save-button" type="submit">Lưu</button>
+                <button className="close-button" onClick={handleCloseModal}>
+                  Hủy
+                </button>
+                <button className="save-button" type="submit">
+                  Lưu
+                </button>
               </div>
             </form>
           </div>
         </>
       )}
-
-    </div >
+    </div>
   );
 };
 

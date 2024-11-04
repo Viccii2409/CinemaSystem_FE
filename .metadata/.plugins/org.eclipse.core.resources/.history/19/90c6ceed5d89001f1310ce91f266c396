@@ -1,0 +1,38 @@
+package com.springboot.cinemasystem.dao.ticketDAO;
+
+
+public interface DiscountDAO {
+
+	/**
+	 * 
+	 * @param discount
+	 */
+	boolean addDiscount(Discount discount);
+
+	/**
+	 * 
+	 * @param discount
+	 */
+	boolean editDiscount(Discount discount);
+
+	/**
+	 * 
+	 * @param discountID
+	 */
+	boolean updateStatusDiscount(int discountID);
+
+	/**
+	 * 
+	 * @param discountCode
+	 */
+	Discount getDiscount(String discountCode);
+
+	List<Discount> getAllDiscount();
+
+	/**
+	 * 
+	 * @param typeDiscountID
+	 */
+	List<Discount> getTypeDiscount(int typeDiscountID);
+
+}
