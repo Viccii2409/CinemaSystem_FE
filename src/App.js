@@ -7,7 +7,6 @@ import Sidebar from './admin/Sidebar';
 import CinemaManagement from './admin/TheaterManagement';
 import MovieCategories from './admin/MovieCategories';
 import Movies from './admin/Movies';
-import CinemaDetails from './admin/TheaterDetails';
 import RoomManagement from './admin/RoomManagement';
 import TicketPriceManagement from './admin/TicketPriceManagement';
 import ScheduleManagement from './admin/ScheduleManagement';
@@ -21,6 +20,7 @@ import ViewRoom from './admin/ViewRoom';
 import EditRoom from './admin/EditRoom';
 
 import HeaderCustomer from "./customer/HeaderCustomer";
+import TheaterDetails from './customer/TheaterDetails';
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
@@ -56,7 +56,7 @@ function CustomerLayout() {
           <Route path="home/movie-detail" element={<MovieDetail />} />
           <Route path="movie-detail" element={<MovieDetail />} />
           <Route path="cinema-system" element={<CinemaSystem />} />
-          <Route path="movie/:id" element={<MovieDetail />} />
+          <Route path="movie-detail" element={<MovieDetail />} />
           <Route
             path="cinema-system/theater-detail"
             element={<TheaterDetails />}

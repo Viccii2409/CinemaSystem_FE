@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./TheaterDetails.css";
 import { Link } from "react-router-dom";
-import { getTheaterById } from "../Api";
+import { getTheaterById } from "../config/TheaterConfig";
 import { useParams } from "react-router-dom";
 
 const CinemaDetails = () => {

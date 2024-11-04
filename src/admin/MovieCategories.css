@@ -277,7 +277,7 @@
 }
 
 
-.modal {
+.movie-categories-management .modal {
   position: fixed; /* Đặt vị trí modal cố định */
   top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
   left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
@@ -291,14 +291,14 @@
 }
 
 
-.modal h2 {
+.movie-categories-management .modal h2 {
   margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
   font-size: 24px; /* Kích thước chữ cho tiêu đề */
   color: #333; /* Màu chữ cho tiêu đề */
 }
 
 
-.modal input {
+.movie-categories-management .modal input {
   width: 100%; /* Chiều rộng của ô input */
   padding: 10px; /* Khoảng cách bên trong ô input */
   margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
@@ -307,7 +307,7 @@
   font-size: 16px; /* Kích thước chữ cho ô input */
 }
 /* thêm thể loại*/
-.modal {
+.movie-categories-management .modal {
   position: fixed; /* Đặt vị trí modal cố định */
   top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
   left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
@@ -322,14 +322,14 @@
 }
 
 
-.modal h2 {
+.movie-categories-management .modal h2 {
   margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
   font-size: 24px; /* Kích thước chữ cho tiêu đề */
   color: #333; /* Màu chữ cho tiêu đề */
 }
 
 
-.modal input[type="text"] {
+.movie-categories-management .modal input[type="text"] {
   width: 100%; /* Chiều rộng của ô input */
   padding: 10px; /* Khoảng cách bên trong ô input */
   margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
@@ -340,13 +340,13 @@
 }
 
 
-.modal input[type="text"]:focus {
+.movie-categories-management .modal input[type="text"]:focus {
   outline: none; /* Bỏ viền khi ô input được chọn */
   border-color: #4caf50; /* Đổi màu viền khi chọn */
 }
 
 
-.modal textarea {
+.movie-categories-management .modal textarea {
   width: 100%; /* Chiều rộng của ô textarea */
   padding: 10px; /* Khoảng cách bên trong ô textarea */
   margin-bottom: 15px; /* Khoảng cách dưới mỗi ô textarea */
@@ -358,7 +358,7 @@
 }
 
 
-.modal button {
+.movie-categories-management .modal button {
   padding: 10px 15px; /* Khoảng cách bên trong nút */
   border: none; /* Không có đường viền */
   border-radius: 5px; /* Bo góc cho nút */
@@ -367,25 +367,25 @@
 }
 
 
-.modal button:hover {
+.movie-categories-management .modal button:hover {
   background-color: #4caf50; /* Màu nền khi hover */
   color: white; /* Màu chữ khi hover */
 }
 
 
-.modal button:last-child {
+.movie-categories-management .modal button:last-child {
   background-color: #f44336; /* Màu nền cho nút "Đóng" */
   margin-left: 10px; /* Khoảng cách giữa hai nút */
 }
 
 
-.modal button:last-child:hover {
+.movie-categories-management .modal button:last-child:hover {
   background-color: #d32f2f; /* Màu nền khi hover cho nút "Đóng" */
 }
 
 
 /* XEM CHI TIẾT THỂ LOẠI*/
-.popup {
+.movie-categories-management .popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -399,18 +399,18 @@
 }
 
 
-.popup h2 {
+.movie-categories-management .popup h2 {
   margin-top: 0;
 }
 
 
-.popup button {
+.movie-categories-management .popup button {
   margin-top: 10px;
 }
 
 
 /*PHÂN TRANG*/
-.pagination {
+.movie-categories-management .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -418,7 +418,7 @@
 }
 
 
-.pagination button {
+.movie-categories-management .pagination button {
   margin: 0 5px;
   padding: 5px 10px;
   border: none;
@@ -430,18 +430,18 @@
 }
 
 
-.pagination button:hover {
+.movie-categories-management .pagination button:hover {
   background-color: #4caf50; /* Màu nền khi hover */
 }
 
 
-.pagination button:disabled {
+.movie-categories-management .pagination button:disabled {
   background-color: #cccccc; /* Màu nền khi vô hiệu hóa */
   cursor: not-allowed;
 }
 
 
-.pagination .active {
+.movie-categories-management .pagination .active {
   background-color: #4caf50; /* Màu nền cho trang hiện tại */
   font-weight: bold;
 }

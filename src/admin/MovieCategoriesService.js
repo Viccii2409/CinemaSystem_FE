@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_URL = 'http://localhost:8080/api/genres';
+const API_URL = 'http://localhost:8080/api/movie/genre';
 
 
 class GenreService {
@@ -16,7 +16,7 @@ class GenreService {
 
 
     addGenre(genre) {
-        return axios.post(API_URL, genre);
+        return axios.post(`${API_URL}/add`, genre);
     }
 
 
@@ -29,6 +29,5 @@ class GenreService {
         return axios.put(`${API_URL}/${id}/hide`);
     }
 }
-
 
 export default new GenreService();

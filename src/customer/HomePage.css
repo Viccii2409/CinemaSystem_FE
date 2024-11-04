@@ -1,4 +1,50 @@
 /* Styles for Homepage Component */
+.homepage {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding-bottom: 30px;
+}
+
+/* Slideshow */
+.homepage .slideshow {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: auto;
+  overflow: hidden;
+  /* border-radius: 15px; */
+}
+
+.homepage .slideshow img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.homepage .slideshow-controls {
+  display: none;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.homepage .slideshow:hover .slideshow-controls {
+  display: flex;
+}
+
+.homepage .slideshow-controls .control-icon {
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+.homepage .slideshow-controls .control-icon:hover {
+  color: #7add58;
+}
 
 .homepage .movie-section {
   margin-bottom: 15px;
@@ -45,21 +91,24 @@
   height: 318px;
   margin-bottom: 50px;
 }
-.image-container {
+
+.homepage .image-container {
   position: relative;
-  display: block; /* Để định vị nút bên trên ảnh */
+  display: block;
   transition: border-color 0.3s ease;
   border: 2px solid transparent;
   overflow: hidden;
   width: 215px;
   height: 318px;
 }
-.movie-item:hover .image-container {
+
+.homepage .movie-item:hover .image-container {
   border-color: #b3e3a3;
   border-radius: 10px;
   box-shadow: 0 4px 20px #85d16c;
 }
-.movie-item .movie-thumbnail {
+
+.homepage .movie-item .movie-thumbnail {
   width: 100%;
   height: 100%;
   border-radius: 10px;
@@ -77,23 +126,25 @@
   height: 40px;
   font-size: 14px;
   font-family: sans-serif;
-  position: absolute; /* Định vị nút ở vị trí tuyệt đối */
-  bottom: 18px; /* Cách từ đáy ảnh */
-  left: 50%; /* Căn giữa theo chiều ngang */
-  transform: translateX(-50%); /* Căn giữa chính xác */
-  padding: 12px 20px; /* Thêm padding cho nút */
-  color: white; /* Màu chữ nút */
-  border: none; /* Bỏ viền */
-  border-radius: 5px; /* Bo tròn góc */
-  cursor: pointer; /* Hiển thị con trỏ khi hover vào nút */
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
   transition: background-color 0.5s;
   font-weight: bold;
   display: none;
 }
-.image-container:hover .buy-ticket-button {
+
+.homepage .image-container:hover .buy-ticket-button {
   display: flex;
 }
-.image-container .iconPause {
+
+.homepage .image-container .iconPause {
   position: absolute;
   background-color: transparent;
   color: #7add58;
@@ -105,9 +156,11 @@
   left: 50%;
   transform: translateX(-50%);
 }
-.image-container:hover .iconPause {
+
+.homepage .image-container:hover .iconPause {
   display: flex;
 }
+
 .homepage .buy-ticket-button:hover {
   background-color: #04c14d;
 }
@@ -126,6 +179,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .homepage .category {
   border: 1.5px solid #7add58;
   background-color: #fff;
@@ -133,6 +187,7 @@
   margin-bottom: 20px;
   border-radius: 10px;
 }
+
 .homepage .promotions-section h2 {
   font-size: 24px;
   font-weight: bold;
@@ -144,200 +199,187 @@
 
 .homepage .promotion-carousel {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
-  justify-content: left;
-  gap: 40px;
-  margin-left: 80px;
+  gap: 30px;
 }
 
-.discount-item {
-  box-sizing: border-box;
-  text-align: center;
-  width: 330px;
-  height: 190px;
-  margin-bottom: 70px;
+.homepage .discount-item {
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
-.promotion-carousel .discount-image {
+
+.homepage .discount-item:hover {
+  transform: scale(1.03);
+}
+
+.homepage .discount-image {
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.homepage .dis-title {
+  padding: 15px;
+}
+
+.homepage .dis-title h3 {
+  color: #7add58;
+  text-align: left;
+}
+
+.homepage .dis-title p {
+  text-align: left;
+  color: #666;
+}
+/* Showtime Modal Overlay */
+.showtime-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-  position: relative;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
-.discount-item .dis-title h3 {
-  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
-  width: 100%;
-  color: #7add58;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: left;
-  margin-bottom: 0px !important;
-}
-.discount-item .dis-title p {
-  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
-  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
-  text-align: left;
-  margin-top: 10px !important;
-}
+/* Showtime Modal Overlay */
 .homepage .showtime-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for background */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
+/* Showtime Modal Box */
 .homepage .showtime-modal {
   background-color: #ffffff;
-  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   position: relative;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Close Button */
 .homepage .close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background: none;
   border: none;
   font-size: 24px;
+  color: #888;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.homepage h2 {
-  text-align: center;
-  font-size: 20px;
+.homepage .close-button:hover {
+  color: #333;
+}
+
+/* Showtime Title and Subheading */
+.homepage .showtime-modal h2 {
+  font-size: 1.5em;
+  color: #333;
   margin-bottom: 10px;
 }
 
-.homepage .movie-title {
+.homepage .showtime-modal h3 {
+  font-size: 1.2em;
   color: #7add58;
-}
-.movie-item .movietitle {
-  color: #7add58;
-  display: block; /* Đảm bảo thẻ h3 có thể có chiều rộng */
-  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
-  white-space: nowrap; /* Ngăn dòng xuống */
-  overflow: hidden; /* Ẩn phần văn bản vượt quá */
-  text-overflow: ellipsis; /* Hiện dấu ba chấm */
-  max-height: 1.2em;
-  text-align: left;
-}
-.hover-text {
-  display: none; /* Ẩn văn bản mặc định */
-  position: absolute; /* Định vị tuyệt đối */
-  left: 50%; /* Căn giữa theo chiều ngang */
-  top: 100%;
-  transform: translateX(-50%); /* Căn giữa chính xác */
-  background-color: #7add58;
-  color: #f6f8f5; /* Màu chữ */
-  padding: 5px; /* Thêm khoảng cách cho chữ */
-  border-radius: 5px; /* Bo tròn góc */
-  white-space: nowrap; /* Ngăn dòng xuống */
-  z-index: 10; /* Đảm bảo văn bản nằm trên các phần tử khác */
-}
-.movietitle:hover + .hover-text {
-  display: block;
-}
-
-.homepage h3 {
-  text-align: center;
-  font-weight: bold;
   margin-bottom: 20px;
 }
 
+/* Date Tabs */
 .homepage .date-tabs {
   display: flex;
   justify-content: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .homepage .date-tab {
-  background: none;
+  background-color: #f0f5f1;
+  color: #333;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 1em;
   cursor: pointer;
-  transition: border-bottom 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .homepage .date-tab.active {
-  border-bottom: 3px solid #7add58;
+  background-color: #7add58;
+  color: white;
 }
 
+.homepage .date-tab:hover {
+  background-color: #b3e3a3;
+}
+
+/* Showtime List */
 .homepage .showtime-list {
   text-align: center;
 }
 
 .homepage .showtime-item h4 {
-  margin-bottom: 10px;
-  font-size: 18px;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #333;
 }
 
 .homepage .time-slot {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .homepage .time-button {
   padding: 10px 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background: none;
+  background-color: #f9f9f9;
+  color: #333;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 1em;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .homepage .time-button:hover {
-  background-color: #f0f0f0;
+  background-color: #7add58;
+  color: white;
 }
 
 .homepage .seats-info {
-  font-size: 14px;
-  color: #888;
-}
-.slideshow {
-  position: relative;
-  width: 100%;
-  max-width: 100%; /* Điều chỉnh kích thước theo yêu cầu của bạn */
-  margin: auto;
-  overflow: hidden;
-}
-
-.slideshow img {
-  width: 1280px;
-  max-width: 100%; /* Đảm bảo ảnh tràn toàn bộ chiều rộng */
-  height: 687px; /* Đảm bảo ảnh chiếm toàn bộ chiều cao */
-  object-fit: cover; /* Giữ tỷ lệ ảnh và cắt phần thừa để ảnh phù hợp với khung */
-  display: block;
-}
-
-.slideshow-controls {
-  display: none;
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  font-size: 60px;
-  color: #c1b9b9;
-  cursor: pointer;
-}
-.slideshow:hover .slideshow-controls {
-  display: flex; /* Hiện các icon khi hover */
-}
-
-.slideshow-controls .control-icon:hover {
-  color: #7add58;
+  font-size: 0.9em;
+  color: #777;
 }

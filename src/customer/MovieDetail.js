@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "./MovieDetail.css";
-import { useParams } from "react-router-dom";
-import { getMovieById } from "../Api.js";
+import { useLocation } from "react-router-dom";
+import { getMovieById } from "../config/MovieConfig.js";
 
 const MovieDetail = () => {
-  const { id } = useParams(); // lấy id từ URL
+  const location = useLocation();
+  const { id } = location.state || {};
   const [movie, setMovie] = useState(null);
+  const [image, setImage] = useState('');
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await getMovieById(id); // Gọi API lấy phim theo id
+        console.log(response.data);
         setMovie(response.data); // Lưu dữ liệu phim vào state
+        const image_true = response.data.image?.find((img) => img.type === true);
+        // setImage(image_true);
+        console.log(image_true);
+        setImage(image_true.link);
       } catch (error) {
-        console.error("response.data");
+        console.error(error);
       }
     };
     fetchMovie();
@@ -24,37 +31,51 @@ const MovieDetail = () => {
       <main className="movie-detail-main">
         <section className="movie-info" key={movie.id}>
           <div className="movie-poster">
-            <img src={movie.link} alt="Wukong" />
+            <img src={image} alt="" />
           </div>
           <div className="movie-description">
             <h1>{movie.title}</h1>
-            <p>Mô tả</p>
-            <p>Phân loại:</p>
+            <p>Mô tả: {movie.description}</p>
             <p>
               Định dạng: <span className="highlight">2D</span>
             </p>
-            <p>Diễn viên: {movie.cast?.name}</p>
+            <p>Diễn viên: {movie.cast?.map((actor) => actor.name).join(", ")}</p>
             <p>
-              Thể loại: <span className="highlight">{movie.genre?.name}</span>
+              Thể loại: <span className="highlight">{movie.genre?.map((actor) => actor.name).join(", ")}</span>
             </p>
             <p>Thời lượng: {movie.duration} phút</p>
-            <p>Ngôn ngữ: {movie.language.name}</p>
-            <p>Ngày khởi chiếu: {movie.release_date}</p>
+            <p>Ngôn ngữ: {movie.language?.name}</p>
+            <p>Ngày khởi chiếu: {movie.releaseDate}</p>
           </div>
         </section>
         <section className="trailer-section">
           <h2>TRAILER</h2>
-          <div className="trailer-placeholder"></div>
-        </section>
-        <section className="comments-section">
-          <h3>1 comments</h3>
-          <div className="comment">
-            <p>
-              <strong>Ng Anh</strong>: Hay cực!!
-            </p>
+          <div className="trailer-placeholder">
+          <iframe
+              width="100%"
+              height="315"
+              src={movie.trailer?.link}
+              title="Trailer Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </section>
-        <section className="showtime-section">
+        {/* <section className="comments-section">
+
+          <h3>{movie.feedback?.length || 0} comments</h3>
+
+          {movie.feedback.length > 0 ? (
+            <div className="comment">
+              <p>
+                <strong>Ng Anh</strong>: Hay cực!!
+              </p>
+            </div>
+          ) : ('')};
+
+        </section> */}
+        {/* <section className="showtime-section">
           <h2>LịCH CHIẾU</h2>
           <div className="showtime-info">
             <div className="showtime-list">
@@ -73,7 +94,7 @@ const MovieDetail = () => {
               <p>Lịch chiếu theo ngày</p>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );
