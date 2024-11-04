@@ -1,66 +1,143 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './MovieCategoriesService'; // Đảm bảo đường dẫn chính xác, có thể bỏ nếu không cần
 import './MovieCategories.css';
+import MovieCategoriesService from './MovieCategoriesService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEdit, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const MovieCategories = () => {
+    const [genres, setGenres] = useState([]);
+    const [filteredGenres, setFilteredGenres] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
-    const [showViewModal, setShowViewModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showViewPopup, setShowViewPopup] = useState(false);
+    const [newGenre, setNewGenre] = useState({ name: '', description: '' });
+    const [selectedGenre, setSelectedGenre] = useState(null);
+   
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
 
-    const handleAddCinema = () => {
-        setShowAddModal(true);
+    useEffect(() => {
+        loadGenres();
+    }, []);
+
+    useEffect(() => {
+        // Cập nhật danh sách thể loại đã lọc khi có thay đổi trong searchTerm hoặc genres
+        const filtered = genres.filter(genre =>
+            genre.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredGenres(filtered);
+        setCurrentPage(1); // Reset về trang đầu khi có thay đổi
+    }, [searchTerm, genres]);
+
+    const loadGenres = () => {
+        MovieCategoriesService.getAllGenres()
+            .then(response => {
+                setGenres(response.data);
+                setFilteredGenres(response.data); // Thiết lập danh sách ban đầu
+            })
+            .catch(error => console.error('Error fetching genres:', error));
     };
 
-    const handleViewCinema = () => {
-        setShowViewModal(true);
+    const handleAddGenre = () => {
+        MovieCategoriesService.addGenre(newGenre)
+            .then(() => {
+                loadGenres();
+                setShowAddModal(false);
+                setNewGenre({ name: '', description: '' });
+            })
+            .catch(error => console.error('Error adding genre:', error));
     };
 
-    const handleEditCinema = () => {
-        setShowEditModal(true);
+    const handleUpdateGenre = () => {
+        if (selectedGenre) {
+            MovieCategoriesService.updateGenre(selectedGenre.id, selectedGenre)
+                .then(() => {
+                    loadGenres();
+                    setShowEditModal(false);
+                })
+                .catch(error => console.error('Error updating genre:', error));
+        }
     };
 
-    const handleCloseModal = () => {
-        setShowAddModal(false);
-        setShowViewModal(false);
-        setShowEditModal(false);
+    const handleHideGenre = (id) => {
+        MovieCategoriesService.hideGenre(id)
+            .then(() => loadGenres())
+            .catch(error => console.error('Error hiding genre:', error));
     };
+
+    const handleViewGenre = (genre) => {
+        setSelectedGenre(genre);
+        setShowViewPopup(true);
+    };
+
+    const handleEditGenre = (genre) => {
+        setSelectedGenre(genre);
+        setShowEditModal(true); // Mở modal sửa
+    };
+
+    // Phân trang
+    const totalPages = Math.ceil(filteredGenres.length / recordsPerPage);
+    const currentRecords = filteredGenres.slice((currentPage - 1) * recordsPerPage, currentPage * recordsPerPage);
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
     return (
         <div className="movie-categories-management">
             <h2>Quản lý thể loại</h2>
             <div className="search-bar">
-                <input type="text" placeholder="Tên/ Mã" />
+                <input
+                    type="text"
+                    placeholder="Tên thể loại"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <button className="search-button">Tìm kiếm</button>
             </div>
-            
-            <button className="add-button" onClick={handleAddCinema}>Thêm</button>
+           
+            <button className="add-button" onClick={() => setShowAddModal(true)}>Thêm</button>
             <table className="cinema-table">
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã thể loại</th>
                         <th>Tên thể loại</th>
+                        <th>Mô tả</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {[...Array(10)].map((_, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>T00{index + 1}</td>
-                            <td>Thể loại {index + 1}</td>
+                    {currentRecords.map((genre, index) => (
+                        <tr key={genre.id}>
+                            <td>{(currentPage - 1) * recordsPerPage + index + 1}</td>
+                            <td>{genre.name}</td>
+                            <td>{genre.description}</td>
                             <td>
                                 <label className="switch">
-                                    <input type="checkbox" defaultChecked={index % 2 === 0} />
+                                    <input
+                                        type="checkbox"
+                                        checked={genre.status}
+                                        onChange={() => handleHideGenre(genre.id)}
+                                    />
                                     <span className="slider round"></span>
                                 </label>
                             </td>
                             <td>
-                                <button className="view-button" onClick={handleViewCinema}>
+                                <button className="view-button" onClick={() => handleViewGenre(genre)}>
                                     <FontAwesomeIcon icon={faEye} />
                                 </button>
-                                <button className="edit-button" onClick={handleEditCinema}>
+                                <button className="edit-button" onClick={() => handleEditGenre(genre)}>
                                     <FontAwesomeIcon icon={faEdit} />
                                 </button>
                             </td>
@@ -68,54 +145,69 @@ const MovieCategories = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="pagination">
-                <button className="previous-button">Previous</button>
-                <span>1 2 3 ... 67 68</span>
-                <button className="next-button">Next</button>
-            </div>
 
+            {/* Popup hiển thị thông tin thể loại */}
+            {showViewPopup && selectedGenre && (
+                <div className="popup">
+                    <h2>Thông tin thể loại</h2>
+                    <p><strong>Tên thể loại:</strong> {selectedGenre.name}</p>
+                    <p><strong>Mô tả:</strong> {selectedGenre.description}</p>
+                    <button onClick={() => setShowViewPopup(false)}>Đóng</button>
+                </div>
+            )}
+
+            {/* Modal Thêm thể loại */}
             {showAddModal && (
-                <>
-                    <div className="modal-overlay" onClick={handleCloseModal}></div>
-                    <div className="modal">
-                        <div className="modal-header">Thêm thể loại</div>
-                        <input type="text" className="modal-input" placeholder="Tên thể loại" />
-                        <input type="text" className="modal-input" placeholder="Mô tả" />
-                        <div className="modal-buttons">
-                            <button className="close-button" onClick={handleCloseModal}>Thoát</button>
-                            <button className="submit-button">Thêm</button>
-                        </div>
-                    </div>
-                </>
+                <div className="modal">
+                    <h2>Thêm thể loại</h2>
+                    <input
+                        type="text"
+                        placeholder="Tên thể loại"
+                        value={newGenre.name}
+                        onChange={(e) => setNewGenre({ ...newGenre, name: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Mô tả"
+                        value={newGenre.description}
+                        onChange={(e) => setNewGenre({ ...newGenre, description: e.target.value })}
+                    />
+                    <button onClick={handleAddGenre}>Thêm</button>
+                    <button onClick={() => setShowAddModal(false)}>Đóng</button>
+                </div>
             )}
 
-            {showViewModal && (
-                <>
-                    <div className="modal-overlay" onClick={handleCloseModal}></div>
-                    <div className="modal">
-                        <div className="modal-header">Xem thể loại</div>
-                        <p className="modal-info">Thông tin chi tiết về thể loại...</p>
-                        <div className="modal-buttons">
-                            <button className="close-button" onClick={handleCloseModal}>Đóng</button>
-                        </div>
-                    </div>
-                </>
+            {/* Modal Sửa thể loại */}
+            {showEditModal && selectedGenre && (
+                <div className="modal">
+                    <h2>Sửa thể loại</h2>
+                    <input
+                        type="text"
+                        placeholder="Tên thể loại"
+                        value={selectedGenre.name}
+                        onChange={(e) => setSelectedGenre({ ...selectedGenre, name: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Mô tả"
+                        value={selectedGenre.description}
+                        onChange={(e) => setSelectedGenre({ ...selectedGenre, description: e.target.value })}
+                    />
+                    <button onClick={handleUpdateGenre}>Lưu</button>
+                    <button onClick={() => setShowEditModal(false)}>Đóng</button>
+                </div>
             )}
 
-            {showEditModal && (
-                <>
-                    <div className="modal-overlay" onClick={handleCloseModal}></div>
-                    <div className="modal">
-                        <div className="modal-header">Sửa thể loại</div>
-                        <input type="text" className="modal-input" placeholder="Tên thể loại" />
-                        <input type="text" className="modal-input" placeholder="Mô tả" />
-                        <div className="modal-buttons">
-                            <button className="close-button" onClick={handleCloseModal}>Thoát</button>
-                            <button className="submit-button">Lưu</button>
-                        </div>
-                    </div>
-                </>
-            )}
+            {/* Phân trang */}
+            <div className="pagination">
+                <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+                <span>Trang {currentPage} / {totalPages}</span>
+                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                </button>
+            </div>
         </div>
     );
 };
