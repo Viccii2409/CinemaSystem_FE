@@ -33,7 +33,7 @@ function EditRoom() {
       const roomInfor = await getRoomById(id);
       setRoom(roomInfor);
       setRoomName(roomInfor.name);
-      setTypeRoomID(roomInfor.typeRoom.name);
+      setTypeRoomID(roomInfor.typeRoom.id);
       setNumRows(roomInfor.numRows);
       setNumSeats(roomInfor.numColumn);
       if (roomInfor && Array.isArray(roomInfor.seat)) {
