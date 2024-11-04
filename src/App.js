@@ -1,20 +1,24 @@
-import React from "react";
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HeaderAdmin from "./admin/HeaderAdmin";
-import Sidebar from "./admin/Sidebar";
-import CinemaManagement from "./admin/TheaterManagement";
-import MovieCategories from "./admin/MovieCategories";
-import Movies from "./admin/Movies";
-import TheaterDetails from "./customer/TheaterDetails";
-import RoomManagement from "./admin/RoomManagement";
-import TicketPriceManagement from "./admin/TicketPriceManagement";
-import ScheduleManagement from "./admin/ScheduleManagement";
-import EmployeeManagement from "./admin/EmployeeManagement";
-import AccessPermission from "./admin/AccessPermission";
-import CustomerManagement from "./admin/CustomerManagement";
-import CustomerDetail from "./admin/CustomerDetail";
-import DiscountManagement from "./admin/DiscountManagement";
+
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import HeaderAdmin from './admin/HeaderAdmin';
+import Sidebar from './admin/Sidebar';
+import CinemaManagement from './admin/TheaterManagement';
+import MovieCategories from './admin/MovieCategories';
+import Movies from './admin/Movies';
+import CinemaDetails from './admin/TheaterDetails';
+import RoomManagement from './admin/RoomManagement';
+import TicketPriceManagement from './admin/TicketPriceManagement';
+import ScheduleManagement from './admin/ScheduleManagement';
+import EmployeeManagement from './admin/EmployeeManagement';
+import AccessPermission from './admin/AccessPermission';
+import CustomerManagement from './admin/CustomerManagement';
+import CustomerDetail from './admin/CustomerDetail';
+import DiscountManagement from './admin/DiscountManagement';
+import AddRoom from './admin/AddRoom';
+import ViewRoom from './admin/ViewRoom';
+import EditRoom from './admin/EditRoom';
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import HomePage from "./customer/HomePage";
@@ -75,6 +79,9 @@ function AdminLayout() {
             <Route path="" element={<CinemaManagement />} />
             <Route path="cinema-management" element={<CinemaManagement />} />
             <Route path="rooms-and-seats" element={<RoomManagement />} />
+            <Route path="rooms-and-seats/add-room" element={<AddRoom />} />
+            <Route path="rooms-and-seats/view-room" element={<ViewRoom />} />
+            <Route path="rooms-and-seats/edit-room" element={<EditRoom />} />
             <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
@@ -92,7 +99,7 @@ function AdminLayout() {
               element={<CustomerDetail />}
             />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
-            <Route path="account" element={<div>Tài khoản Content</div>} />
+            <Route path="account" element={<AddRoom />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>
         </div>

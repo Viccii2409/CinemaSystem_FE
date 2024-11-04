@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react"; // Thêm useEffect
-import "./TheaterManagement.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons";
-import {
-  getTheater,
-  updateStatusTheater,
-  addTheater,
-  getTheaterById,
-  editTheater,
-} from "../Api.js";
+
+import React, { useState, useEffect } from 'react'; // Thêm useEffect
+import './TheaterManagement.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater } from '../config/TheaterConfig.js';
+
 
 const CinemaManagement = () => {
   const [theaters, setTheaters] = useState([]); // Khởi tạo state cinemas để lưu dữ liệu từ API
@@ -155,6 +151,19 @@ const CinemaManagement = () => {
       }
     }
   };
+
+  const handleDeleteCinema = async (id) => {
+    const confirmed = window.confirm("Bạn có chắc muốn xóa phòng không?");
+    if (confirmed) {
+      await deleteTheater(id);
+      setTheaters(prevTheaters => prevTheaters.filter(theater => theater.id !== parseInt(id)));
+      alert("Phòng đã được xóa thành công.");
+    } else {
+      alert("Hủy xóa phòng.");
+    }
+  }
+
+
 
   const handleCloseModal = () => {
     setFormDataState({
@@ -344,63 +353,53 @@ const CinemaManagement = () => {
   return (
     <div className="cinema-management-system">
       <h2>Quản lý rạp</h2>
-      <button className="add-button" onClick={handleAddCinema}>
-        Thêm
-      </button>
-      <table className="cinema-table">
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên rạp</th>
-            <th>Địa chỉ</th>
-            <th>Số phòng</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          {theaters.map((theater, index) => (
-            <tr key={theater.id}>
-              <td>{index + 1}</td>
-              <td>{theater.name}</td>
-              <td>{theater.address}</td>
-              <td>{theater.quantityRoom}</td>
-              <td>
-                <label className="switch">
-                  {" "}
-                  {/* Thay class thành className */}
-                  <input
-                    type="checkbox"
-                    checked={theater.status}
-                    onChange={() =>
-                      handleStatusChange(theater.id, theater.status)
-                    }
-                  />
-                  <span className="slider round"></span>{" "}
-                  {/* Thay class thành className */}
-                </label>
-              </td>
-              <td>
-                <button
-                  className="view-button"
-                  onClick={() => handleViewCinema(theater.id)}
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                </button>
-                <button
-                  className="edit-button"
-                  onClick={() => handleEditCinema(theater.id)}
-                >
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                {/* <button className="delete-button">
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                </button> */}
-              </td>
+      <button className="add-button button" onClick={handleAddCinema}>Thêm</button>
+      {theaters.length > 0 ? (
+        <table className="cinema-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên rạp</th>
+              <th>Địa chỉ</th>
+              <th>Số phòng</th>
+              <th>Trạng thái</th>
+              <th>Thao tác</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {theaters.map((theater, index) => (
+              <tr key={theater.id}>
+                <td>{index + 1}</td>
+                <td>{theater.name}</td>
+                <td>{theater.address}</td>
+                <td>{theater.quantityRoom}</td>
+                <td>
+                  <label className="switch"> {/* Thay class thành className */}
+                    <input
+                      type="checkbox"
+                      checked={theater.status}
+                      onChange={() => handleStatusChange(theater.id, theater.status)}
+                    />
+                    <span className="slider round"></span> {/* Thay class thành className */}
+                  </label>
+                </td>
+                <td>
+                  <button className="view-button" onClick={() => handleViewCinema(theater.id)}>
+                    <FontAwesomeIcon icon={faEye} />
+                  </button>
+                  <button className="edit-button" onClick={() => handleEditCinema(theater.id)}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <button className="delete-button" onClick={() => handleDeleteCinema(theater.id)}>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>) : (
+        <p>Không có rạp</p>
+      )}
 
       {showAddModal && (
         <>
@@ -785,16 +784,12 @@ const CinemaManagement = () => {
                     <br />
                   </label>
                 </div>
-                <div className="form-column">
+                <div className="form-column image_old">
                   <label>
-                    <strong>Hình ảnh:</strong>
-                    <input
-                      type="file"
-                      name="image"
-                      className="modal-input"
-                      onChange={handleFileChange}
-                    />
-                    <br />
+                    <strong>Hình ảnh:</strong><br />
+
+                    <img src={formDataState.image} alt="Theater" className="modal-image_2" />
+                    <input type="file" name="image" className='fileImage' onChange={handleFileChange} /><br />
                   </label>
                 </div>
               </div>
