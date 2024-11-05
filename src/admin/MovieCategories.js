@@ -4,16 +4,10 @@ import './MovieCategories.css';
 import MovieCategoriesService from './MovieCategoriesService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { getAllGenres } from '../config/MovieConfig.js';
 
 const MovieCategories = () => {
-    
-    const recordsPerPage  = 5;
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
-    const [currentRecords, setCurrentRecords] = useState([]);
-    const [statusUpdate, setStatusUpdate] = useState(false);
-
+    const [genres, setGenres] = useState([]);
+    const [filteredGenres, setFilteredGenres] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -21,93 +15,62 @@ const MovieCategories = () => {
     const [newGenre, setNewGenre] = useState({ name: '', description: '' });
     const [selectedGenre, setSelectedGenre] = useState(null);
    
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
 
     useEffect(() => {
-        const fetchTheater = async () => {
-            const response = await getAllGenres();
-            // console.log(response.data);
-    
-            // Sử dụng response.data trực tiếp để lọc và phân trang
-            const filtered = response.data.filter(genre =>
-                genre.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            // console.log(filtered);
-            const totalPages = Math.ceil(filtered.length / recordsPerPage);
-            setTotalPages(totalPages);
-    
-            
-            // console.log(recordsPerPage);
-            const currentRecords = filtered.slice(
-                (currentPage - 1) * recordsPerPage,
-                currentPage * recordsPerPage
-            );
-            // console.log(currentRecords);
-            setCurrentRecords(currentRecords);
-        };
-        fetchTheater();
-        setStatusUpdate(false);
-    }, [currentPage, searchTerm, recordsPerPage, statusUpdate]);
-    
-    
+        loadGenres();
+    }, []);
 
+    useEffect(() => {
+        // Cập nhật danh sách thể loại đã lọc khi có thay đổi trong searchTerm hoặc genres
+        const filtered = genres.filter(genre =>
+            genre.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredGenres(filtered);
+        setCurrentPage(1); // Reset về trang đầu khi có thay đổi
+    }, [searchTerm, genres]);
 
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+    const loadGenres = async () => {
+        try {
+            const response = await MovieCategoriesService.getAllGenres();
+            setGenres(response.data);
+            setFilteredGenres(response.data); // Thiết lập danh sách ban đầu
+        } catch (error) {
+            console.error('Error fetching genres:', error);
         }
     };
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+    const handleAddGenre = async () => {
+        try {
+            await MovieCategoriesService.addGenre(newGenre);
+            await loadGenres();
+            setShowAddModal(false);
+            setNewGenre({ name: '', description: '' });
+        } catch (error) {
+            console.error('Error adding genre:', error);
         }
     };
 
-    // useEffect(() => {
-    //     // Cập nhật danh sách thể loại đã lọc khi có thay đổi trong searchTerm hoặc genres
-    //     const filtered = genres.filter(genre =>
-    //         genre.name.toLowerCase().includes(searchTerm.toLowerCase())
-    //     );
-    //     setFilteredGenres(filtered);
-    //     setCurrentPage(1); // Reset về trang đầu khi có thay đổi
-    // }, [searchTerm, genres]);
-
-    // const loadGenres = () => {
-    //     MovieCategoriesService.getAllGenres()
-    //         .then(response => {
-    //             setGenres(response.data);
-    //             setFilteredGenres(response.data); // Thiết lập danh sách ban đầu
-    //         })
-    //         .catch(error => console.error('Error fetching genres:', error));
-    // };
-
-    const handleAddGenre = () => {
-        MovieCategoriesService.addGenre(newGenre)
-            .then(() => {
-                setStatusUpdate(true);
-                setShowAddModal(false);
-                setNewGenre({ name: '', description: '' });
-            })
-            .catch(error => console.error('Error adding genre:', error));
-    };
-
-    const handleUpdateGenre = () => {
+    const handleUpdateGenre = async () => {
         if (selectedGenre) {
-            MovieCategoriesService.updateGenre(selectedGenre.id, selectedGenre)
-                .then(() => {
-                    // loadGenres();
-                    setStatusUpdate(true);
-                    setShowEditModal(false);
-                })
-                .catch(error => console.error('Error updating genre:', error));
+            try {
+                await MovieCategoriesService.updateGenre(selectedGenre.id, selectedGenre);
+                await loadGenres();
+                setShowEditModal(false);
+            } catch (error) {
+                console.error('Error updating genre:', error);
+            }
         }
     };
 
-    const handleHideGenre = (id) => {
-        MovieCategoriesService.hideGenre(id)
-            .then(() => {
-                setStatusUpdate(true);})
-            .catch(error => console.error('Error hiding genre:', error));
+    const handleHideGenre = async (id) => {
+        try {
+            await MovieCategoriesService.hideGenre(id);
+            await loadGenres();
+        } catch (error) {
+            console.error('Error hiding genre:', error);
+        }
     };
 
     const handleViewGenre = (genre) => {
@@ -121,7 +84,20 @@ const MovieCategories = () => {
     };
 
     // Phân trang
-    
+    const totalPages = Math.ceil(filteredGenres.length / recordsPerPage);
+    const currentRecords = filteredGenres.slice((currentPage - 1) * recordsPerPage, currentPage * recordsPerPage);
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
     return (
         <div className="movie-categories-management">
