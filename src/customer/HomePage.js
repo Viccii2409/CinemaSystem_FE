@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEye,
-  faEdit,
   faAngleLeft,
   faAngleRight,
-  faPlayCircle,
   faCirclePlay,
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  getTheater,
-  getTheaterById,
   getMovieNow,
   getMovieSoon,
-  getMovieById,
   getDiscount,
   getSlideshow,
-} from "../Api.js";
+} from "../config/MovieConfig.js";
+
+
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const HomePage = () => {
@@ -124,7 +121,7 @@ const HomePage = () => {
           <h2>PHIM ĐANG CHIẾU</h2>
         </div>
         <div className="movie-list">
-          {movienows.map((movienow, index) => (
+          {movienows.map((movienow) => (
             <div className="movie-item" key={movienow.id}>
               <div className="image-container">
                 <Link to={`movie-detail/${movienow.id}`}>
@@ -148,11 +145,11 @@ const HomePage = () => {
                 </button>
               </div>
               <h3 className="movietitle">
-                <Link to={`movie-detail/${movienow.id}`}>{movienow.title}</Link>
+                <Link to="/movie-detail" state={{ id: movienow.id }}>{movienow.title}</Link>
               </h3>
-              {movienow.title.length > 18 && (
+              {/* {movienow.title.length > 18 && (
                 <span className="hover-text">{movienow.title}</span>
-              )}
+              )} */}
             </div>
           ))}
         </div>
@@ -184,9 +181,9 @@ const HomePage = () => {
                   {moviesoon.title}
                 </Link>
               </h3>
-              {moviesoon.title.length > 18 && (
+              {/* {moviesoon.title.length > 18 && (
                 <span className="hover-text">{moviesoon.title}</span>
-              )}
+              )} */}
             </div>
           ))}
         </div>

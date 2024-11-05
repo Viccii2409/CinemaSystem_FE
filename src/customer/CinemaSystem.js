@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./CinemaSystem.css";
 import { Link } from "react-router-dom";
-import { getTheater, getTheaterById } from "../Api";
+import { getTheater } from "../config/TheaterConfig.js";
 const CinemaSystem = () => {
   const [theaters, setTheaters] = useState([]);
 
@@ -20,7 +20,7 @@ const CinemaSystem = () => {
     <div className="cinema-system">
       <h1 className="cinema-title">Hệ thống rạp</h1>
       <div className="cinema-list">
-        {theaters.map((theater, index) => (
+        {theaters.map((theater) => (
           <div key={theater.id} className="cinema-item">
             <div className="cinema-poster-placeholder" />
             <h2 className="cinema-name">{theater.name}</h2>

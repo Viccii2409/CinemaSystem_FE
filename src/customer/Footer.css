@@ -1,26 +1,71 @@
-/* Styles for Footer Component */
-.footer {
+/* General Footer Styles */
+.homepage-footer {
   background-color: #333;
   color: #fff;
-  padding: 20px;
-  text-align: center;
-  margin-top: 40px;
+  font-family: Arial, sans-serif;
+  padding: 40px 0 20px;
 }
 
-.footer .footer-links {
-  margin-top: 10px;
+.homepage-footer .footer-container {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.footer .footer-links a {
-  color: #66bb6a;
+.homepage-footer .footer-section {
+  flex: 1 1 200px;
+  padding: 15px;
+  margin: 10px;
+}
+
+.homepage-footer .footer-section h2 {
+  font-size: 1.5em;
+  color: #7add58;
+  margin-bottom: 15px;
+}
+
+.homepage-footer .footer-section p,
+.homepage-footer .footer-section li {
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.homepage-footer .footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.homepage-footer .footer-section ul li a {
   text-decoration: none;
+  color: #bbb;
   transition: color 0.3s;
 }
 
-.footer .footer-links a:hover {
-  color: #fff;
-  text-decoration: underline;
+.homepage-footer .footer-section ul li a:hover {
+  color: #7add58;
+}
+
+/* Social Media Icons */
+.homepage-footer .social-icons a {
+  font-size: 1.3em;
+  color: #bbb;
+  margin-right: 15px;
+  transition: color 0.3s;
+}
+
+.homepage-footer .social-icons a:hover {
+  color: #7add58;
+}
+
+/* Footer Bottom */
+.homepage-footer .footer-bottom {
+  background-color: #222;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 0.9em;
+  color: #bbb;
+  margin-top: 20px;
 }

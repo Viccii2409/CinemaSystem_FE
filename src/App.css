@@ -8,13 +8,16 @@ a {
   text-decoration: none;
 }
 
-.admin-layout {
-  display: flex;
-  height: 100vh;
-  background-color: rgba(237, 249, 231, 1);
+.customer-layout .content {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding-bottom: 30px;
 }
 
-.header {
+.admin-layout{
+  display: flex;
+  height: 100vh;
 }
 
 /* Sidebar */
@@ -36,9 +39,16 @@ a {
   margin-left: 14%; /* Đảm bảo không bị che khuất bởi sidebar (thêm một chút để tạo khoảng cách) */
   flex: 1;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: rgba(237, 249, 231, 1);
 }
 
 .admin-content {
   margin-top: 20px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  padding-bottom: 100px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-height: 42em;
 }

@@ -8,6 +8,7 @@
   min-height: 47em;
 }
 
+
 .movie-categories-management .search-bar input {
   width: 20%;
   padding: 10px;
@@ -15,6 +16,7 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
 
 .movie-categories-management .add-button {
   background-color: rgba(47, 216, 4, 1);
@@ -30,15 +32,18 @@
   font-weight: bold;
 }
 
+
 .movie-categories-management .add-button:hover {
   background-color: rgba(57, 193, 23, 1);
 }
+
 
 .movie-categories-management .cinema-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
+
 
 .movie-categories-management .cinema-table th,
 .movie-categories-management .cinema-table td {
@@ -47,11 +52,13 @@
   text-align: left;
 }
 
+
 .movie-categories-management .cinema-table th {
   background-color: rgba(57, 193, 23, 1);
   color: white;
   text-transform: uppercase;
 }
+
 
 .movie-categories-management .switch {
   position: relative;
@@ -60,11 +67,13 @@
   height: 26px;
 }
 
+
 .movie-categories-management .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 
 .movie-categories-management .slider {
   position: absolute;
@@ -79,6 +88,7 @@
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+
 .movie-categories-management .slider:before {
   position: absolute;
   content: "";
@@ -92,22 +102,27 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+
 .movie-categories-management input:checked + .slider {
   background-color: #4caf50;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+
 .movie-categories-management input:checked + .slider:before {
   transform: translateX(24px);
 }
+
 
 .movie-categories-management .slider.round {
   border-radius: 34px;
 }
 
+
 .movie-categories-management .slider.round:before {
   border-radius: 50%;
 }
+
 
 .movie-categories-management .view-button,
 .movie-categories-management .edit-button,
@@ -120,29 +135,36 @@
   transition: color 0.3s;
 }
 
+
 .movie-categories-management .view-button i {
   color: #17a2b8; /* Màu xanh cho nút xem */
 }
+
 
 .movie-categories-management .edit-button {
   color: #007bff;
 }
 
+
 .movie-categories-management .delete-button {
   color: #dc3545;
 }
+
 
 .movie-categories-management .view-button:hover i {
   color: #138496; /* Thay đổi màu khi hover */
 }
 
+
 .movie-categories-management .edit-button:hover {
   color: #0056b3;
 }
 
+
 .movie-categories-management .delete-button:hover {
   color: #c82333;
 }
+
 
 .movie-categories-management .modal {
   position: fixed;
@@ -157,6 +179,7 @@
   z-index: 1000;
 }
 
+
 .movie-categories-management .modal-overlay {
   position: fixed;
   top: 0;
@@ -167,11 +190,13 @@
   z-index: 1000;
 }
 
+
 .movie-categories-management .modal-header {
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 15px;
 }
+
 
 .movie-categories-management .modal-input {
   width: 95%;
@@ -181,10 +206,12 @@
   border-radius: 5px;
 }
 
+
 .movie-categories-management .modal-buttons {
   display: flex;
   justify-content: flex-end;
 }
+
 
 .movie-categories-management .close-button {
   background-color: #6c757d;
@@ -196,9 +223,11 @@
   transition: background-color 0.3s;
 }
 
+
 .movie-categories-management .close-button:hover {
   background-color: #5a6268;
 }
+
 
 .movie-categories-management .submit-button {
   background-color: #28a745;
@@ -209,6 +238,210 @@
   transition: background-color 0.3s;
 }
 
+
 .movie-categories-management .submit-button:hover {
   background-color: #218838;
+}
+
+
+.movie-categories-management .search-bar {
+  display: flex; /* Sử dụng flexbox để căn chỉnh */
+  gap: 10px; /* Khoảng cách giữa các phần tử bên trong .search-bar */
+}
+
+
+.movie-categories-management .search-bar input {
+  width: 20%; /* Chiều rộng của ô tìm kiếm */
+  padding: 10px; /* Padding cho ô tìm kiếm */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+
+
+}
+
+
+.movie-categories-management .search-button {
+  padding: 0 20px; /* Padding bên trái và bên phải cho nút tìm kiếm */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 40px; /* Đặt chiều cao cho nút tìm kiếm bằng với chiều cao ô tìm kiếm */
+}
+
+
+.movie-categories-management .search-button:hover {
+  background-color: #0056b3;
+}
+
+
+.movie-categories-management .modal {
+  position: fixed; /* Đặt vị trí modal cố định */
+  top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
+  left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
+  transform: translate(-50%, -50%); /* Căn giữa modal */
+  width: 400px; /* Chiều rộng của modal */
+  padding: 20px; /* Khoảng cách bên trong modal */
+  background-color: white; /* Màu nền của modal */
+  border-radius: 8px; /* Bo góc cho modal */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+  z-index: 1000; /* Đảm bảo modal hiển thị trên các phần tử khác */
+}
+
+
+.movie-categories-management .modal h2 {
+  margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
+  font-size: 24px; /* Kích thước chữ cho tiêu đề */
+  color: #333; /* Màu chữ cho tiêu đề */
+}
+
+
+.movie-categories-management .modal input {
+  width: 100%; /* Chiều rộng của ô input */
+  padding: 10px; /* Khoảng cách bên trong ô input */
+  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
+  border: 1px solid #ddd; /* Đường viền cho ô input */
+  border-radius: 5px; /* Bo góc cho ô input */
+  font-size: 16px; /* Kích thước chữ cho ô input */
+}
+/* thêm thể loại*/
+.movie-categories-management .modal {
+  position: fixed; /* Đặt vị trí modal cố định */
+  top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
+  left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
+  transform: translate(-50%, -50%); /* Căn giữa modal */
+  width: 400px; /* Chiều rộng của modal */
+  padding: 20px; /* Khoảng cách bên trong modal */
+  background-color: white; /* Màu nền của modal */
+  border-radius: 8px; /* Bo góc cho modal */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+  z-index: 1000; /* Đảm bảo modal hiển thị trên các phần tử khác */
+  overflow: hidden; /* Ẩn nội dung tràn */
+}
+
+
+.movie-categories-management .modal h2 {
+  margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
+  font-size: 24px; /* Kích thước chữ cho tiêu đề */
+  color: #333; /* Màu chữ cho tiêu đề */
+}
+
+
+.movie-categories-management .modal input[type="text"] {
+  width: 100%; /* Chiều rộng của ô input */
+  padding: 10px; /* Khoảng cách bên trong ô input */
+  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
+  border: 1px solid #ddd; /* Đường viền cho ô input */
+  border-radius: 5px; /* Bo góc cho ô input */
+  font-size: 16px; /* Kích thước chữ cho ô input */
+  box-sizing: border-box; /* Bao gồm padding và border trong tính toán chiều rộng */
+}
+
+
+.movie-categories-management .modal input[type="text"]:focus {
+  outline: none; /* Bỏ viền khi ô input được chọn */
+  border-color: #4caf50; /* Đổi màu viền khi chọn */
+}
+
+
+.movie-categories-management .modal textarea {
+  width: 100%; /* Chiều rộng của ô textarea */
+  padding: 10px; /* Khoảng cách bên trong ô textarea */
+  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô textarea */
+  border: 1px solid #ddd; /* Đường viền cho ô textarea */
+  border-radius: 5px; /* Bo góc cho ô textarea */
+  font-size: 16px; /* Kích thước chữ cho ô textarea */
+  box-sizing: border-box; /* Bao gồm padding và border trong tính toán chiều rộng */
+  resize: vertical; /* Cho phép người dùng thay đổi kích thước chiều dọc */
+}
+
+
+.movie-categories-management .modal button {
+  padding: 10px 15px; /* Khoảng cách bên trong nút */
+  border: none; /* Không có đường viền */
+  border-radius: 5px; /* Bo góc cho nút */
+  cursor: pointer; /* Hiển thị con trỏ tay khi di chuột qua nút */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+}
+
+
+.movie-categories-management .modal button:hover {
+  background-color: #4caf50; /* Màu nền khi hover */
+  color: white; /* Màu chữ khi hover */
+}
+
+
+.movie-categories-management .modal button:last-child {
+  background-color: #f44336; /* Màu nền cho nút "Đóng" */
+  margin-left: 10px; /* Khoảng cách giữa hai nút */
+}
+
+
+.movie-categories-management .modal button:last-child:hover {
+  background-color: #d32f2f; /* Màu nền khi hover cho nút "Đóng" */
+}
+
+
+/* XEM CHI TIẾT THỂ LOẠI*/
+.movie-categories-management .popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Đảm bảo popup nằm trên các thành phần khác */
+}
+
+
+.movie-categories-management .popup h2 {
+  margin-top: 0;
+}
+
+
+.movie-categories-management .popup button {
+  margin-top: 10px;
+}
+
+
+/*PHÂN TRANG*/
+.movie-categories-management .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+
+.movie-categories-management .pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50; /* Màu nền */
+  color: white; /* Màu chữ */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.movie-categories-management .pagination button:hover {
+  background-color: #4caf50; /* Màu nền khi hover */
+}
+
+
+.movie-categories-management .pagination button:disabled {
+  background-color: #cccccc; /* Màu nền khi vô hiệu hóa */
+  cursor: not-allowed;
+}
+
+
+.movie-categories-management .pagination .active {
+  background-color: #4caf50; /* Màu nền cho trang hiện tại */
+  font-weight: bold;
 }

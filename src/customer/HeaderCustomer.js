@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./HeaderCustomer.css";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { getTheater, getTheaterById, getMovie, getMovieById } from "../Api.js";
+import { getTheater } from "../config/TheaterConfig.js";
 const HeaderCustomer = () => {
   const [theaters, setTheaters] = useState([]);
   useEffect(() => {
