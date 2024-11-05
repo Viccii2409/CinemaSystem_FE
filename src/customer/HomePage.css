@@ -316,7 +316,7 @@
 }
 
 .slideshow img {
-  width: 1280px;
+  width: 100%;
   max-width: 100%; /* Đảm bảo ảnh tràn toàn bộ chiều rộng */
   height: 687px; /* Đảm bảo ảnh chiếm toàn bộ chiều cao */
   object-fit: cover; /* Giữ tỷ lệ ảnh và cắt phần thừa để ảnh phù hợp với khung */
