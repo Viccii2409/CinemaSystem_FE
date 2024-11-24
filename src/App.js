@@ -1,26 +1,25 @@
-
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import HeaderAdmin from './admin/HeaderAdmin';
-import Sidebar from './admin/Sidebar';
-import CinemaManagement from './admin/TheaterManagement';
-import MovieCategories from './admin/MovieCategories';
-import Movies from './admin/Movies';
-import RoomManagement from './admin/RoomManagement';
-import TicketPriceManagement from './admin/TicketPriceManagement';
-import ScheduleManagement from './admin/ScheduleManagement';
-import EmployeeManagement from './admin/EmployeeManagement';
-import AccessPermission from './admin/AccessPermission';
-import CustomerManagement from './admin/CustomerManagement';
-import CustomerDetail from './admin/CustomerDetail';
-import DiscountManagement from './admin/DiscountManagement';
-import AddRoom from './admin/AddRoom';
-import ViewRoom from './admin/ViewRoom';
-import EditRoom from './admin/EditRoom';
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HeaderAdmin from "./admin/HeaderAdmin";
+import Sidebar from "./admin/Sidebar";
+import CinemaManagement from "./admin/TheaterManagement";
+import MovieCategories from "./admin/MovieCategories";
+import Movies from "./admin/Movies";
+import RoomManagement from "./admin/RoomManagement";
+import TicketPriceManagement from "./admin/TicketPriceManagement";
+import ScheduleManagement from "./admin/ScheduleManagement";
+import EmployeeManagement from "./admin/EmployeeManagement";
+import AccessPermission from "./admin/AccessPermission";
+import CustomerManagement from "./admin/CustomerManagement";
+import CustomerDetail from "./admin/CustomerDetail";
+import DiscountManagement from "./admin/DiscountManagement";
+import AddRoom from "./admin/AddRoom";
+import ViewRoom from "./admin/ViewRoom";
+import EditRoom from "./admin/EditRoom";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
-import TheaterDetails from './customer/TheaterDetails';
+import TheaterDetails from "./customer/TheaterDetails";
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
@@ -56,11 +55,11 @@ function CustomerLayout() {
           <Route path="home/movie-detail" element={<MovieDetail />} />
           <Route path="movie-detail" element={<MovieDetail />} />
           <Route path="cinema-system" element={<CinemaSystem />} />
-          <Route path="movie-detail" element={<MovieDetail />} />
           <Route
             path="cinema-system/theater-detail"
             element={<TheaterDetails />}
           />
+          <Route path="theater-detail" element={<TheaterDetails />} />
         </Routes>
       </div>
       <Footer />

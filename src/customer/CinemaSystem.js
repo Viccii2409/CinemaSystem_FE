@@ -20,12 +20,13 @@ const CinemaSystem = () => {
     <div className="cinema-system">
       <h1 className="cinema-title">Hệ thống rạp</h1>
       <div className="cinema-list">
-        {theaters.map((theater) => (
+        {theaters.map((theater, index) => (
           <div key={theater.id} className="cinema-item">
             <div className="cinema-poster-placeholder" />
+            <img src={theater.image} />
             <h2 className="cinema-name">{theater.name}</h2>
             <button className="cinema-details-button">
-              <Link to={`theater-detail/${theater.id}`}>
+              <Link to="/theater-detail" state={{ id: theater.id }}>
                 THÔNG TIN CHI TIẾT
               </Link>
             </button>
