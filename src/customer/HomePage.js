@@ -16,8 +16,6 @@ import {
   getSlideshow,
 } from "../config/MovieConfig.js";
 
-
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const HomePage = () => {
@@ -153,6 +151,21 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [slides]);
 
+  const [showDiscountModal, setDiscountModal] = useState(false);
+  const [selectedDiscountId, setSelectedDiscountId] = useState(null);
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const handleDiscountModal = (id) => {
+    const selected = discounts.find((discount) => discount.id === id);
+    setSelectedDiscount(selected);
+    setSelectedDiscountId(id);
+    setDiscountModal(true);
+  };
+
+  const closeDiscountModal = () => {
+    setDiscountModal(false);
+    setSelectedDiscountId(null);
+    setSelectedDiscount(null);
+  };
   return (
     <div className="homepage">
       <div className="slideshow">
@@ -185,7 +198,7 @@ const HomePage = () => {
           {movienows.map((movienow) => (
             <div className="movie-item" key={movienow.id}>
               <div className="image-container">
-                <Link to='movie-detail' state={{ id: movienow.id }}>
+                <Link to="/movie-detail" state={{ id: movienow.id }}>
                   <img
                     src={movienow.link}
                     alt="movie"
@@ -207,7 +220,9 @@ const HomePage = () => {
 
               </div>
               <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: movienow.id }}>{movienow.title}</Link>
+                <Link to="/movie-detail" state={{ id: movienow.id }}>
+                  {movienow.title}
+                </Link>
               </h3>
               {/* {movienow.title.length > 18 && (
                 <span className="hover-text">{movienow.title}</span>
@@ -223,7 +238,7 @@ const HomePage = () => {
           {moviesoons.map((moviesoon, index) => (
             <div className="movie-item" key={moviesoon.id}>
               <div className="image-container">
-                <Link to={`movie-detail/${moviesoon.id}`}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
                   <img
                     src={moviesoon.link}
                     alt="movie"
@@ -239,7 +254,7 @@ const HomePage = () => {
               </div>
 
               <h3 className="movietitle">
-                <Link to={`movie-detail/${moviesoon.id}`}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
                   {moviesoon.title}
                 </Link>
               </h3>
@@ -251,7 +266,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="promotions-section">
+      <section id="discount-section" className="promotions-section">
         <div className="category">
           <h2>ƯU ĐÃI</h2>
         </div>
@@ -262,17 +277,38 @@ const HomePage = () => {
                 src={discount.image}
                 alt="discount"
                 className="discount-image"
+                onClick={() => handleDiscountModal(discount.id)}
               ></img>
 
               <div className="dis-title">
                 <h3>{discount.name}</h3>
                 {/* <p>{discount.description}</p> */}
+                <h3 onClick={() => handleDiscountModal(discount.id)}>
+                  {discount.name}
+                </h3>
+                <p>{discount.description}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
-
+      {showDiscountModal && selectedDiscount && (
+        <div className="showtime-overlay2">
+          <div className="showtime-modal2">
+            <button className="close-button" onClick={closeDiscountModal}>
+              &times;
+            </button>
+            <img
+              src={selectedDiscount.image}
+              style={{ width: "250px", height: "150px" }}
+            />
+            <div className="showtime-des">
+              <h2>{selectedDiscount.name}</h2>
+              <p>{selectedDiscount.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
       {showScheduleModal && (
         <div class="showtime-overlay">
           <div class="showtime-modal">

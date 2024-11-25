@@ -3,7 +3,7 @@ import './MovieCategoriesService'; // Đảm bảo đường dẫn chính xác, 
 import './MovieCategories.css';
 import MovieCategoriesService from './MovieCategoriesService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEdit, faChevronLeft, faChevronRight, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const MovieCategories = () => {
     const [genres, setGenres] = useState([]);
@@ -17,7 +17,7 @@ const MovieCategories = () => {
    
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 10;
-
+    
     useEffect(() => {
         loadGenres();
     }, []);
@@ -42,6 +42,11 @@ const MovieCategories = () => {
     };
 
     const handleAddGenre = async () => {
+        if (!newGenre.name.trim()) {
+            alert('Tên thể loại không được để trống!');
+            return; // Ngừng thêm thể loại nếu tên rỗng
+        }
+    
         try {
             await MovieCategoriesService.addGenre(newGenre);
             await loadGenres();
@@ -51,7 +56,7 @@ const MovieCategories = () => {
             console.error('Error adding genre:', error);
         }
     };
-
+    
     const handleUpdateGenre = async () => {
         if (selectedGenre) {
             try {
@@ -67,7 +72,8 @@ const MovieCategories = () => {
     const handleHideGenre = async (id) => {
         try {
             await MovieCategoriesService.hideGenre(id);
-            await loadGenres();
+            await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
+            alert("Chuyển trạng thái thành công!")
         } catch (error) {
             console.error('Error hiding genre:', error);
         }
@@ -81,6 +87,19 @@ const MovieCategories = () => {
     const handleEditGenre = (genre) => {
         setSelectedGenre(genre);
         setShowEditModal(true); // Mở modal sửa
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa thể loại này?')) {
+            try {
+                await MovieCategoriesService.deleteGenre(id);
+                setGenres(genres.filter(genre => genre.id !== id));
+                alert("Xóa thể loại thành công!");
+            } catch (error) {
+                console.error("Error deleting the genre:", error);
+                alert("Xóa thể loại thất bại!");
+            }
+        }
     };
 
     // Phân trang
@@ -146,6 +165,9 @@ const MovieCategories = () => {
                                 <button className="edit-button" onClick={() => handleEditGenre(genre)}>
                                     <FontAwesomeIcon icon={faEdit} />
                                 </button>
+                                <button className="delete-button" onClick={() => handleDelete(genre.id)}>
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                    </button>
                             </td>
                         </tr>
                     ))}

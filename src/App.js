@@ -22,7 +22,6 @@ import CinemaTicket from './admin/CinemaTicket';
 import CinemaTicket_2 from './admin/CinemaTicket_2';
 
 import HeaderCustomer from "./customer/HeaderCustomer";
-import { TheaterProvider } from "./TheaterContext";
 import TheaterDetails from './customer/TheaterDetails';
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";

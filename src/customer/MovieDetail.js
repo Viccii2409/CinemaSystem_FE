@@ -7,14 +7,16 @@ const MovieDetail = () => {
   const location = useLocation();
   const { id } = location.state || {};
   const [movie, setMovie] = useState(null);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState("");
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await getMovieById(id); // Gọi API lấy phim theo id
         console.log(response.data);
         setMovie(response.data); // Lưu dữ liệu phim vào state
-        const image_true = response.data.image?.find((img) => img.type === true);
+        const image_true = response.data.image?.find(
+          (img) => img.type === true
+        );
         // setImage(image_true);
         console.log(image_true);
         setImage(image_true.link);
@@ -39,9 +41,14 @@ const MovieDetail = () => {
             <p>
               Định dạng: <span className="highlight">2D</span>
             </p>
-            <p>Diễn viên: {movie.cast?.map((actor) => actor.name).join(", ")}</p>
             <p>
-              Thể loại: <span className="highlight">{movie.genre?.map((actor) => actor.name).join(", ")}</span>
+              Diễn viên: {movie.cast?.map((actor) => actor.name).join(", ")}
+            </p>
+            <p>
+              Thể loại:{" "}
+              <span className="highlight">
+                {movie.genre?.map((actor) => actor.name).join(", ")}
+              </span>
             </p>
             <p>Thời lượng: {movie.duration} phút</p>
             <p>Ngôn ngữ: {movie.language?.name}</p>
@@ -51,7 +58,7 @@ const MovieDetail = () => {
         <section className="trailer-section">
           <h2>TRAILER</h2>
           <div className="trailer-placeholder">
-          <iframe
+            <iframe
               width="100%"
               height="315"
               src={movie.trailer?.link}

@@ -408,6 +408,11 @@
   margin-top: 10px;
 }
 
+.movie-categories-management .cinema-table th,
+.movie-categories-managementt .cinema-table td {
+    text-align: center;
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+} 
 
 /*PHÂN TRANG*/
 .movie-categories-management .pagination {
@@ -444,4 +449,16 @@
 .movie-categories-management .pagination .active {
   background-color: #4caf50; /* Màu nền cho trang hiện tại */
   font-weight: bold;
+}
+
+/* Căn giữa tất cả các ô (th và td) trừ cột mô tả */
+.movie-categories-management .cinema-table th,
+.movie-categories-management .cinema-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Căn trái cột "Mô tả" */
+.movie-categories-management .cinema-table td:nth-child(3) {
+    text-align: left;
 }

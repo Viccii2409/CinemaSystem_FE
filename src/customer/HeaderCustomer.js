@@ -35,7 +35,7 @@ const HeaderCustomer = () => {
       <nav className="navbar">
         <Link to="/">Lịch chiếu</Link>
         <Link to="/cinema-system">Hệ thống rạp</Link>
-        <Link to="/">Ưu đãi</Link>
+        <a href="#discount-section">Ưu đãi</a>
         <Link to="/">Thể loại</Link>
       </nav>
       {/* <select className="location-selector">
