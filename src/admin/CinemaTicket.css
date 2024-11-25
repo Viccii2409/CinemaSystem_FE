@@ -1,0 +1,165 @@
+/* Container tổng */
+.cinema-ticket-container {
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.cinema-ticket-container .theater-selection {
+  margin-bottom: 20px;
+}
+
+.cinema-ticket-container .theater-selection select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.cinema-ticket-container .days-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.cinema-ticket-container .days-list-container button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cinema-ticket-container .days-list-container button:hover {
+  background-color: #e0e0e0;
+}
+
+.cinema-ticket-container .days-list-container button.selected {
+  background-color: #66bb6a;
+  color: white;
+  border-bottom: 3px solid #388e3c;
+}
+
+.cinema-ticket-container .days-list-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cinema-ticket-container .movies-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.cinema-ticket-container .movie-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  width: 80%;
+  display: flex;
+  gap: 20px;
+  transition: transform 0.3s;
+  text-align: left;
+}
+
+.cinema-ticket-container .movie-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-ticket-container .movie-item-img {
+  width: 150px;
+  height: 220px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cinema-ticket-container .movie-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cinema-ticket-container .movie-item-infor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cinema-ticket-container .movie-item-infor h3 {
+  margin-bottom: 10px;
+}
+
+.cinema-ticket-container .showtimes {
+  margin-top: 10px;
+}
+
+.cinema-ticket-container .showtimes button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #e3f2fd;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cinema-ticket-container .showtimes button:hover {
+  background-color: #64b5f6;
+  color: white;
+}
+
+.cinema-ticket-container .showtimes button.selected {
+  background-color: #2196f3;
+  color: white;
+}
+
+.cinema-ticket-container .booking-confirmation {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #e8f5e9;
+  border: 1px solid #c8e6c9;
+}
+
+.cinema-ticket-container .booking-confirmation button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cinema-ticket-container .booking-confirmation button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cinema-ticket-container .movies-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cinema-ticket-container .movie-item {
+    width: 100%;
+  }
+
+  .cinema-ticket-container .days-list-container {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+}
