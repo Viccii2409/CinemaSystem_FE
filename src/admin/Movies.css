@@ -123,6 +123,11 @@
   border-radius: 50%;
 }
 
+.movies-management .cinema-table th,
+.movies-management .cinema-table td {
+    text-align: center;
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+} 
 
 .movies-management .view-button,
 .movies-management .edit-button,
@@ -241,4 +246,149 @@
 
 .movies-management .submit-button:hover {
   background-color: #218838;
+}
+.movie-image {
+  width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng */
+  height: auto; /* Tự động điều chỉnh chiều cao để giữ tỉ lệ ảnh */
+  object-fit: cover; /* Đảm bảo ảnh phủ đầy không gian mà không bị méo, nhưng có thể bị cắt */
+}
+
+
+/*PHÂN TRANG*/
+.movies-management .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+
+.movies-management .pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50; /* Màu nền */
+  color: white; /* Màu chữ */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.movies-management .pagination button:hover {
+  background-color: #4caf50; /* Màu nền khi hover */
+}
+
+
+.movies-management .pagination button:disabled {
+  background-color: #cccccc; /* Màu nền khi vô hiệu hóa */
+  cursor: not-allowed;
+}
+
+
+.movies-management .pagination .active {
+  background-color: #4caf50; /* Màu nền cho trang hiện tại */
+  font-weight: bold;
+}
+
+.movies-management {
+  max-width: 100%;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.movies-management .search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Căn chỉnh chung cho các phần tử trong search-container */
+.movies-management .search-container input,
+.movies-management .search-container .genre-filter select,
+.movies-management .search-container .search-button {
+  height: 40px; /* Đồng bộ chiều cao */
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+
+
+
+.movies-management .search-container .search-button  {
+  padding: 0 16px; /* Khoảng cách padding ngang cho nút */
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+
+.movies-management .cinema-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+
+.movies-management .movie-image {
+
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Thêm thanh cuộn dọc cho combobox thể loại */
+.movies-management .genre-filter select {
+  height: 150px; 
+  overflow-y: auto; 
+  width: 200px; 
+  z-index:5
+}
+/* kích thước cho hình ảnh phim */
+.cinema-table td img {
+  width: 100px; 
+  height: auto; 
+  object-fit: cover; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+.cinema-table td img:hover {
+  transform: scale(1.1); /* Phóng to ảnh thêm khi hover */
+  transition: transform 0.3s ease; 
+}
+
+/* khoảng cách giữa ô tìm kiếm và combobox thể loại */
+
+.movies-management .controls {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+}
+
+.movies-management .controls input {
+  width: 200px; 
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.movies-management .controls select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.movies-management .controls button {
+  padding: 10px 20px;
+  background-color: rgba(47, 216, 4, 1);
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
 }
