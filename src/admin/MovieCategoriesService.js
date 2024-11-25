@@ -28,6 +28,10 @@ class GenreService {
     hideGenre(id) {
         return axios.put(`${API_URL}/${id}/hide`);
     }
+    deleteGenre(id) {
+        return axios.delete(`${API_URL}/${id}`);
+    }
 }
 
-export default new GenreService();
+const genreService = new GenreService();
+export default genreService;
