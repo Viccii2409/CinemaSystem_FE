@@ -393,6 +393,8 @@ function CinemaTicket_2() {
         const paymentCash = {
             showtimeid: showtime.id,
             agentid : userid,
+            totalPrice : totalPrice,
+            discountPrice : calculateTotalDiscount(seatCounts, priceSeat),
             amount : amountDue,
             received : customerPaid,
             moneyReturned : change,
@@ -404,7 +406,7 @@ function CinemaTicket_2() {
             const response = await addPayCash(paymentCash);
             if (response) {
                 alert("Bạn đã đặt ghế thành công!");
-                navigate('/admin/ticket-sales');
+                navigate('view-ticket-admin', { state: { id: response } });
                 return;
             } else {
                 alert("Lỗi khi đặt ghế!");

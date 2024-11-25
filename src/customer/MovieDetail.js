@@ -42,7 +42,10 @@ const MovieDetail = () => {
               Định dạng: <span className="highlight">2D</span>
             </p>
             <p>
-              Diễn viên: {movie.cast?.map((actor) => actor.name).join(", ")}
+              Diễn viên: {movie.cast}
+            </p>
+            <p>
+              Đạo diễn: {movie.director}
             </p>
             <p>
               Thể loại:{" "}

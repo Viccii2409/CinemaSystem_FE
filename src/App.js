@@ -20,8 +20,10 @@ import ViewRoom from './admin/ViewRoom';
 import EditRoom from './admin/EditRoom';
 import CinemaTicket from './admin/CinemaTicket';
 import CinemaTicket_2 from './admin/CinemaTicket_2';
+import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
+import { TheaterProvider } from "./TheaterContext";
 import TheaterDetails from './customer/TheaterDetails';
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
@@ -94,6 +96,7 @@ function AdminLayout() {
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<CinemaTicket />} />
             <Route path="ticket-sales/booking-seat" element={<CinemaTicket_2 />} />
+            <Route path="ticket-sales/booking-seat/view-ticket-admin" element={<ViewTicketAdmin />} />
             <Route path="staff" element={<EmployeeManagement />} />
             <Route
               path="staff/access-permission"

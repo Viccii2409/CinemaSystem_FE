@@ -281,12 +281,9 @@ const HomePage = () => {
               ></img>
 
               <div className="dis-title">
-                <h3>{discount.name}</h3>
-                {/* <p>{discount.description}</p> */}
                 <h3 onClick={() => handleDiscountModal(discount.id)}>
                   {discount.name}
                 </h3>
-                <p>{discount.description}</p>
               </div>
             </div>
           ))}
