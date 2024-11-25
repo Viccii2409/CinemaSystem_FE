@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './ViewBooking.css';
+import '../customer/ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getBookingById } from '../config/TicketConfig';
 import BarcodeGenerator from "../BarcodeGenerator";
 
-const ViewBooking = () => {
+const ViewTicketAdmin = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = location.state || '';
@@ -21,6 +21,7 @@ const ViewBooking = () => {
                 const response_ticket = await getBookingById(id);
                 setBookingDto(response_ticket);
                 console.log(response_ticket);
+                console.log(id);
             } catch (error) {
                 console.error("Error api", error);
                 setBookingDto({});
@@ -28,6 +29,11 @@ const ViewBooking = () => {
         }
         getBookingInfor();
     }, [id]);
+
+    const handleBackToHome = () => {
+        navigate('/admin/ticket-sales');
+        return;
+    }
 
     return (
         <div className="ticket-info-section">
@@ -70,20 +76,8 @@ const ViewBooking = () => {
                     <span className="ticket-value">{bookingDto.address || "N/A"}</span>
                 </div>
                 <div className="ticket-row">
-                    <span className="ticket-label">Tên khách hàng:</span>
-                    <span className="ticket-value">{bookingDto.nameCustomer || "N/A"}</span>
-                </div>
-                <div className="ticket-row">
-                    <span className="ticket-label">Số điện thoại:</span>
-                    <span className="ticket-value">{bookingDto.phone || "N/A"}</span>
-                </div>
-                <div className="ticket-row">
-                    <span className="ticket-label">Email:</span>
-                    <span className="ticket-value">{bookingDto.email || "N/A"}</span>
-                </div>
-                <div className="ticket-row">
                     <span className="ticket-label">Ngày Đặt Vé:</span>
-                    <span className="ticket-value">{bookingDto.dateBooking ? new Date(bookingDto.dateBooking).toLocaleString() : "N/A"}</span>
+                    <span className="ticket-value">{bookingDto.dateBooking}</span>
                 </div>
                 <div className="ticket-row">
                     <span className="ticket-label">Tổng tiền:</span>
@@ -103,14 +97,18 @@ const ViewBooking = () => {
                         {bookingDto.amount ? bookingDto.amount.toLocaleString('vi-VN') : "0"} VND
                     </span>
                 </div>
-
                 <div className="ticket-row barcode-row">
                     <span className="ticket-label">Mã Barcode:</span>
                     <BarcodeGenerator code={bookingDto.barcode || "N/A"} />
+                </div>
+                <div className="ticket-actions">
+                    <button className="btn-secondary" 
+                    onClick={handleBackToHome}
+                    >Quay Về Trang Bán vé</button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default ViewBooking;
+export default ViewTicketAdmin;

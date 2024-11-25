@@ -354,6 +354,8 @@ function SeatSelection() {
       showtimeid: showtime.id,
       customerid: userid,
       discountid: discount.id,
+      totalPrice : totalPrice,
+      discountPrice : discountPrice,
       amount: amountDue,
       received: customerPaid,
       moneyReturned: change,
