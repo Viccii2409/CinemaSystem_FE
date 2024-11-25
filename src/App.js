@@ -58,7 +58,6 @@ function CustomerLayout() {
             <Route path="seat-selection" element={<SeatSelection />} />
             <Route path="view-booking" element={<ViewBooking />} />
             <Route path="payment-info" element={<PaymentInfo />} />
-            <Route path="home/movie-detail" element={<MovieDetail />} />
             <Route path="movie-detail" element={<MovieDetail />} />
             <Route path="cinema-system" element={<CinemaSystem />} />
             <Route path="movie-detail" element={<MovieDetail />} />
