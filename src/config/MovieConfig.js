@@ -1,10 +1,10 @@
-import api from '../Api.js';
+import api from "../Api.js";
 
 export const getMovieNow = () => api.get("/movie/showingNow");
 export const getMovieSoon = () => api.get("/movie/comingSoon");
 export const getDiscount = () => api.get("/movie/discount");
 export const getSlideshow = () => api.get("/movie/slideshow");
-export const getMovieById =  (id) => {
+export const getMovieById = (id) => {
   try {
     return api.get(`/movie/${id}`);
   } catch (error) {
@@ -17,9 +17,8 @@ export const getAllGenres = () => {
     return api.get("/movie/genre");
   } catch (error) {
     console.error("Error get genre", error);
-    
   }
-}
+};
 
 // export const addGenre = async (genre) => {
 //   try {
@@ -30,5 +29,3 @@ export const getAllGenres = () => {
 //     throw error; // Ném lỗi ra ngoài để có thể xử lý thêm nếu cần
 //   }
 // };
-
-
