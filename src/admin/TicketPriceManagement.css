@@ -1,68 +1,218 @@
-/* Styles for Ticket Price Management Component */
-.ticket-price-management {
-  font-family: Arial, sans-serif;
-  color: #333;
-  text-align: left;
+
+
+.ticket-price-manager {
+  max-width: 1000px;
+  margin: 20px auto;
   padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.ticket-price-management h2 {
-  font-size: 1.8em;
+.button {
+  color: white;
+  border-radius: 10px;
+  width: 8em;
+  height: 3em;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 10px 20px 20px 0;
+  background-color: rgb(57, 175, 87);
+}
+
+.button:hover {
+  background-color: rgb(67, 131, 52);
+
+}
+
+.ticket-price-manager.compact {
+  max-width: 800px;
+  padding: 15px;
+}
+
+.ticket-price-manager h2 {
+  text-align: center;
   color: #28a745;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.ticket-price-management .ticket-price-table {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.price-table {
+  overflow-x: auto;
 }
 
-.ticket-price-management .price-table,
-.ticket-price-management .surcharge-table {
+.price-table table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.ticket-price-management .price-table th,
-.ticket-price-management .surcharge-table th {
+.price-table th, .price-table td {
+  border: 1px solid #e2e8f0;
+  font-weight: bold;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.95em;
+}
+
+.price-table th {
   background-color: #28a745;
   color: white;
-  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.price-table td {
+  background-color: #f8fafc;
+}
+
+.price-table tr:nth-child(even) td {
+  background-color: #eef2f7;
+}
+
+.price-table input[type="text"] {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+.additional-fees {
+  margin-top: 25px;
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+.additional-fees h3 {
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: 15px;
   text-align: center;
 }
 
-.ticket-price-management .price-table td,
-.ticket-price-management .surcharge-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+.surcharge-list {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  width: 50%;
+  gap: 10px;
 }
 
-.ticket-price-management .price-table input,
-.ticket-price-management .surcharge-table input {
+.surcharge-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.surcharge-item label {
+  font-weight: bold;
+  font-size: 0.95em;
+  width: 10em;
+}
+
+.surcharge-item input[type="text"] {
+  width: 20em;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60em;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+ .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
-.ticket-price-management .form-actions {
+
+ .modal-header {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+ .modal-input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #b4b4b4;
+  border-radius: 5px;
+}
+
+ .modal-buttons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
 }
 
-.ticket-price-management .save-button {
-  background-color: #28a745;
+ .close-button {
+  background-color: #6c757d;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 4px;
+  margin-right: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.ticket-price-management .save-button:hover {
+ .close-button:hover {
+  background-color: #5a6268;
+}
+
+ .submit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+ .submit-button:hover {
   background-color: #218838;
+}
+
+
+ .form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.form-column {
+  flex: 1;
 }

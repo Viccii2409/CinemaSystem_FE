@@ -1,45 +1,42 @@
-
-
-.title {
+.room-manager .title {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-.title a {
+.room-manager .title a {
   color: red;
 }
 
-.title a:hover {
+.room-manager .title a:hover {
   color: rgb(218, 0, 0);
 }
 
-.input-group {
+.room-manager .input-group {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.label {
+.room-manager .label {
   width: 100px;
   font-weight: bold;
 }
 
-.input-group-container {
+.room-manager .input-group-container {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   gap: 20px;
 }
 
-.note-seat {
+.room-manager .note-seat {
   display: flex;
   flex-direction: row;
   gap: 20px;
   justify-content: center;
 }
 
-
-.input {
+.room-manager .input {
   flex: 1;
   padding: 5px;
   height: 2em;
@@ -48,20 +45,18 @@
   border-radius: 4px;
 }
 
-.input-group-container select {
+.room-manager .input-group-container select {
   height: 3em;
 }
 
-
-.button-container {
-
+.room-manager .button-container {
   display: flex;
   justify-content: center;
   padding: 8px;
   border-radius: 4px;
 }
 
-.add-button {
+.room-manager .add-button {
   color: white;
   padding: 15px 30px;
   border: none;
@@ -72,24 +67,23 @@
   margin: 10px;
 }
 
-.create-seat {
+.room-manager .create-seat {
   background-color: rgb(63, 93, 190);
 }
 
-.create-room {
+.room-manager .create-room {
   background-color: #28a745;
 }
 
-.create-seat:hover {
+.room-manager .create-seat:hover {
   background-color: rgb(38, 54, 141);
 }
 
-.create-room:hover {
-  background-color: rgb(67, 131, 52); 
+.room-manager .create-room:hover {
+  background-color: rgb(67, 131, 52);
 }
 
-
-.seat-grid {
+.room-manager .seat-grid {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,23 +91,23 @@
   margin-top: 20px;
 }
 
-.seat-row {
+.room-manager .seat-row {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.row-control {
+.room-manager .row-control {
   margin-right: 20px;
 }
 
-.row-select {
+.room-manager .row-select {
   padding: 10px;
   width: 8em;
   border-radius: 4px;
 }
 
-.delete-row-button {
+.room-manager .delete-row-button {
   margin-left: 10px;
   background-color: red;
   color: white;
@@ -123,11 +117,11 @@
   cursor: pointer;
 }
 
-.delete-row-button:hover {
+.room-manager .delete-row-button:hover {
   background-color: darkred;
 }
 
-.seat {
+.room-manager .seat {
   margin-right: 10px;
   width: 50px;
   height: 50px;
@@ -137,31 +131,31 @@
   position: relative;
 }
 
-.seat.deleted {
+.room-manager .seat.deleted {
   background-color: #f4f4f4 !important;
   opacity: 0.6;
 }
 
-.seat.deleted select {
+.room-manager .seat.deleted select {
   background-color: #f4f4f4 !important;
   color: #f4f4f4;
   border: none;
 }
 
-.seat.deleted input {
+.room-manager .seat.deleted input {
   background-color: #f4f4f4 !important;
   color: #f4f4f4;
   border: none;
 }
 
-.seat select {
+.room-manager .seat select {
   width: 100%;
   height: 100%;
   padding: 5px;
   border-radius: 4px;
 }
 
-.seat input {
+.room-manager .seat input {
   width: 100%;
   height: 80%;
   padding: 5px;
@@ -170,7 +164,7 @@
   text-align: center;
 }
 
-.delete-seat-button {
+.room-manager .delete-seat-button {
   position: absolute;
   top: -10px;
   right: -10px;
@@ -183,38 +177,38 @@
   cursor: pointer;
 }
 
-.delete-seat-button:hover {
+.room-manager .delete-seat-button:hover {
   background-color: darkred;
 }
 
-.seat select:focus {
+.room-manager .seat select:focus {
   background-color: #d3d3d3;
 }
 
-.seat select {
+.room-manager .seat select {
   transition: background-color 0.3s;
 }
 
-.seat.regular select {
+.room-manager .seat.regular select {
   background-color: #e0e0e0;
 }
 
-.seat.vip select {
+.room-manager .seat.vip select {
   background-color: #ffd700;
 }
 
-.seat.double-seat select {
+.room-manager .seat.double-seat select {
   background-color: #eb6161;
 }
 
-.seat.regular input {
+.room-manager .seat.regular input {
   background-color: #e0e0e0;
 }
 
-.seat.vip input {
+.room-manager .seat.vip input {
   background-color: #ffd700;
 }
 
-.seat.double-seat input {
+.room-manager .seat.double-seat input {
   background-color: #eb6161;
 }

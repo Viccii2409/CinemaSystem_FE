@@ -1,0 +1,547 @@
+.cinema-ticket-2 {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.cinema-ticket-2 .left-panel {
+  flex: 3;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-ticket-2 .right-panel {
+  flex: 1;
+}
+
+.cinema-ticket-2 .note-seat {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cinema-ticket-2 .input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.cinema-ticket-2 .seat {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.cinema-ticket-2 .seat input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: center;
+  font-weight: bold;
+  color: gray;
+  cursor: not-allowed;
+}
+
+.cinema-ticket-2 .seat.regular {
+  background-color: #e0e0e0;
+}
+
+.cinema-ticket-2 .seat.vip {
+  background-color: #ffd700;
+}
+
+.cinema-ticket-2 .seat.double-seat {
+  background-color: #eb6161;
+}
+
+.cinema-ticket-2 .seat.booking-seat {
+  background-color: #6d6767;
+}
+
+.cinema-ticket-2 h4 {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  color: black;
+}
+
+.cinema-ticket-2 .seat:hover {
+  transform: translateY(-3px);
+}
+
+.cinema-ticket-2 .seat.deleted {
+  background-color: #f4f4f4;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.cinema-ticket-2 .seat-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+}
+
+.cinema-ticket-2 .seat-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cinema-ticket-2 .seat.regular button {
+  background-color: #e0e0e0;
+  border: 1px solid #d0d0d0;
+}
+
+.cinema-ticket-2 .seat.vip button {
+  background-color: #ffd700;
+  border: 1px solid #d4a017;
+}
+
+.cinema-ticket-2 .seat.double-seat button {
+  background-color: #eb6161;
+  border: 1px solid #c13c3c;
+}
+
+.cinema-ticket-2 .selected-seat {
+  background-color: #4caf50 !important;
+  color: white !important;
+  border: 1px solid #388e3c;
+}
+
+.cinema-ticket-2 .seat.deleted {
+  background-color: #fff !important;
+  opacity: 0.6;
+  border: none;
+}
+
+.cinema-ticket-2 .seat.deleted button {
+  background-color: #fff !important;
+  color: #f4f4f4;
+  border: none;
+}
+
+.cinema-ticket-2 .choose-seat button {
+  background-color: #6d6767 !important;
+  color: #f4f4f4;
+}
+
+.cinema-ticket-2 .seat button {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cinema-ticket-2 .booking-info {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cinema-ticket-2 .booking-info h4,
+.cinema-ticket-2 .booking-info h5,
+.cinema-ticket-2 .booking-info h2 {
+  text-align: center;
+}
+
+.cinema-ticket-2 .booking-info hr {
+  margin: 15px 0;
+}
+
+.cinema-ticket-2 .booking-info button {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cinema-ticket-2 .next-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cinema-ticket-2 .next-button:hover {
+  background-color: #388e3c;
+}
+
+.cinema-ticket-2 .back-button {
+  background-color: #ccc;
+  color: black;
+}
+
+.cinema-ticket-2 .back-button:hover {
+  background-color: #999;
+}
+
+.cinema-ticket-2 .seat-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cinema-ticket-2 .seat-type {
+  flex: 2;
+}
+
+.cinema-ticket-2 .seat-price {
+  flex: 1;
+  text-align: right;
+}
+
+.cinema-ticket-2 .discount-price {
+  font-size: 16px;
+  color: #d32f2f;
+  font-weight: bold;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.cinema-ticket-2 .total-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cinema-ticket-2 .total-price {
+  text-align: right;
+}
+
+.cinema-ticket-2 .seat-divider {
+  border: none;
+  border-top: 1px dotted #000;
+  margin: 10px 0;
+}
+
+.cinema-ticket-2 .countdown-timer {
+  font-size: 18px;
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.cinema-ticket-2 .booking-table-container {
+  margin: 20px;
+  text-align: center;
+}
+
+.cinema-ticket-2 .booking-table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.cinema-ticket-2 .booking-table th,
+.cinema-ticket-2 .booking-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.cinema-ticket-2 .booking-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.cinema-ticket-2 .booking-table input {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+}
+
+.cinema-ticket-2 .payment-methods {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cinema-ticket-2 .payment-methods label {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cinema-ticket-2 .confirm-payment-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cinema-ticket-2 .confirm-payment-button:hover {
+  background-color: #388e3c;
+}
+
+.cinema-ticket-2 .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+.cinema-ticket-2 .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.cinema-ticket-2 .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.cinema-ticket-2 .modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.cinema-ticket-2 .modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.cinema-ticket-2 .modal-close:hover {
+  color: #333;
+}
+
+.cinema-ticket-2 .modal-body {
+  margin-top: 20px;
+}
+
+.cinema-ticket-2 .form-group {
+  margin-bottom: 20px;
+}
+
+.cinema-ticket-2 .modal-input {
+  width: 95%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+  background-color: #f9f9f9;
+}
+
+.cinema-ticket-2 .modal-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.cinema-ticket-2 .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.cinema-ticket-2 .cancel-button,
+.cinema-ticket-2 .submit-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cinema-ticket-2 .cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.cinema-ticket-2 .cancel-button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+.cinema-ticket-2 .submit-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cinema-ticket-2 .submit-button:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+
+.payment-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.customer-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-column {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-column label {
+  font-size: 14px;
+  color: #555;
+}
+
+.input-field {
+  width: 98%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.discount-section {
+  margin-bottom: 20px;
+}
+
+.discount-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.discount-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.discount-option:hover {
+  background-color: #f1f1f1;
+}
+
+.discount-radio {
+  margin-right: 10px;
+  accent-color: #007bff;
+}
+
+.discount-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.discount-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.discount-code {
+  font-size: 14px;
+  color: #777;
+}
+
+.selected-discount {
+  margin-top: 15px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.payment-option:hover {
+  background-color: #f1f1f1;
+}
+
+.payment-radio {
+  margin-right: 10px;
+  accent-color: #007bff;
+}
