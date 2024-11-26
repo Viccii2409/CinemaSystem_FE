@@ -7,10 +7,10 @@ import moment from 'moment-timezone';
 import { getCustomerById } from '../config/UserConfig';
 
 function SeatSelection() {
-  const { selectedTheater } = useContext(TheaterContext);
+  const { setSelectedTheater } = useContext(TheaterContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = location.state || '';
+  const { id, theaterid } = location.state || '';
   const userid = 3;
   const [customer, setCustomer] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState('');
@@ -37,25 +37,6 @@ function SeatSelection() {
 
 
 
-  useEffect(() => {
-    // if(selectedTheater === null){
-    //   handleExit();
-    //   return;
-    // }
-    // Hàm đếm ngược thời gian
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(interval);
-          handleExit();
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
 
   useEffect(() => {
@@ -66,12 +47,13 @@ function SeatSelection() {
       setCurrentDateTime(hanoiTime);
       setCurrentDateTimeEnd(hanoiTimeEnd);
 
-      if (!id) {
-        console.warn("ID của phòng không tồn tại.");
-        navigate('/admin/ticket-sales');
+      if (!id || !theaterid) {
+        console.warn("ID của lich không tồn tại.");
+        navigate('/home');
         return;
       }
       try {
+        setSelectedTheater(theaterid);
         const response_customer = await getCustomerById(Number(userid));
         setCustomer(response_customer);
         console.log(response_customer);
@@ -83,13 +65,42 @@ function SeatSelection() {
           discount => !customerDiscountIds.includes(discount.id)
         );
         setDiscounts(discountNotInCustomer);
-        console.log(discountNotInCustomer);
 
         const response_showtime = await getShowtimeByID(id);
         setShowtime(response_showtime);
         setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
-        const roomInfor = response_showtime.room;
 
+
+        const bookingData = [];
+        let startTimeData = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
+        let endTimeData = null;
+        response_showtime.selectedSeats
+          .filter(seat => seat.userid === userid && seat.status === "pending")
+          .forEach(seat => {
+            bookingData.push({
+              id: seat.seatid,
+              selectedSeatID: seat.id
+            });
+            if (!endTimeData || new Date(seat.end) > new Date(endTimeData)) {
+              endTimeData = seat.end;
+            }
+          });
+
+        setBooking(bookingData);
+        console.log("Start Time:", startTimeData);
+        console.log("End Time:", endTimeData);
+        let timeLeftInSeconds = 0;
+        if (startTimeData && endTimeData) {
+          const timeLeftInMilliseconds = new Date(endTimeData) - new Date(startTimeData); // Chênh lệch thời gian tính bằng milliseconds
+          timeLeftInSeconds = timeLeftInMilliseconds / 1000; // Chuyển sang giây
+        }
+        console.log(timeLeftInSeconds);
+        if (timeLeftInSeconds !== 0) {
+          setTimeLeft(timeLeftInSeconds);
+        }
+
+
+        const roomInfor = response_showtime.room;
         const response_typecustomer = await getTypeCustomer();
         const typeCustomer = response_typecustomer.find(item => item.id === 5);
 
@@ -108,6 +119,26 @@ function SeatSelection() {
     };
     getRoomInfor();
     setViewSeat(true);
+  }, []);
+
+  useEffect(() => {
+    // if(selectedTheater === null){
+    //   handleExit();
+    //   return;
+    // }
+    // Hàm đếm ngược thời gian
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(interval);
+          handleExit();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -329,10 +360,10 @@ function SeatSelection() {
   const handleDiscountCode = (id) => {
     const discount = discounts.find(entry => entry.id === Number(id));
     setDiscount(discount);
-    if(discount.typeDiscount.id === 1){
+    if (discount.typeDiscount.id === 1) {
       setDiscountPrice(totalPrice * (discount.reducedValue) / 100);
     }
-    else if(discount.typeDiscount.id === 2) {
+    else if (discount.typeDiscount.id === 2) {
       setDiscountPrice(discount.reducedValue);
     }
     console.log(discount);
@@ -354,8 +385,8 @@ function SeatSelection() {
       showtimeid: showtime.id,
       customerid: userid,
       discountid: discount.id,
-      totalPrice : totalPrice,
-      discountPrice : discountPrice,
+      totalPrice: totalPrice,
+      discountPrice: discountPrice,
       amount: amountDue,
       received: customerPaid,
       moneyReturned: change,
@@ -367,7 +398,7 @@ function SeatSelection() {
       const response = await addPayCashCustomer(paymentCash);
       if (response) {
         alert("Bạn đã đặt ghế thành công!");
-        navigate('/view-booking', { state: { id: response } });
+        navigate('/view-booking', { state: { id: response, theaterid : theaterid } });
         return;
       } else {
         alert("Lỗi khi đặt ghế!");
@@ -382,7 +413,7 @@ function SeatSelection() {
 
   const handleExitType = () => {
     if (viewSeat === true && viewTypePay === false) {
-      navigate('/admin/ticket-sales');
+      navigate('/movie-detail', { state: { id: showtime.movie?.id, theaterid: theaterid } });
       return;
     }
     else if (viewSeat === false && viewTypePay === true) {

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getBookingById } from '../config/TicketConfig';
 import BarcodeGenerator from "../BarcodeGenerator";
+import { TheaterContext } from "../TheaterContext";
 
 const ViewBooking = () => {
+    const { setSelectedTheater } = useContext(TheaterContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const { id } = location.state || '';
+    const { id, theaterid } = location.state || '';
     const [bookingDto, setBookingDto] = useState({});
 
     useEffect(() => {
@@ -18,6 +20,7 @@ const ViewBooking = () => {
                 return;
             }
             try {
+                setSelectedTheater(theaterid);
                 const response_ticket = await getBookingById(id);
                 setBookingDto(response_ticket);
                 console.log(response_ticket);

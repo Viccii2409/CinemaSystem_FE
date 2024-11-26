@@ -68,7 +68,37 @@ function CinemaTicket_2() {
             try {
                 const response_showtime = await getShowtimeByID(id);
                 setShowtime(response_showtime);
-                setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid  || seat.status === "confirmed"));
+                setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
+
+                const bookingData = [];
+                let startTimeData = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
+                let endTimeData = null;
+                response_showtime.selectedSeats
+                    .filter(seat => seat.userid === userid && seat.status === "pending")
+                    .forEach(seat => {
+                        bookingData.push({
+                            id: seat.seatid,
+                            selectedSeatID: seat.id
+                        });
+                        if (!endTimeData || new Date(seat.end) > new Date(endTimeData)) {
+                            endTimeData = seat.end;
+                        }
+                    });
+
+                setBooking(bookingData);
+                console.log("Start Time:", startTimeData);
+                console.log("End Time:", endTimeData);
+                let timeLeftInSeconds = 0;
+                if (startTimeData && endTimeData) {
+                    const timeLeftInMilliseconds = new Date(endTimeData) - new Date(startTimeData); // Chênh lệch thời gian tính bằng milliseconds
+                    timeLeftInSeconds = timeLeftInMilliseconds / 1000; // Chuyển sang giây
+                }
+                console.log(timeLeftInSeconds);
+                if (timeLeftInSeconds !== 0) {
+                    setTimeLeft(timeLeftInSeconds);
+                }
+
+
                 const roomInfor = response_showtime.room;
                 if (roomInfor && Array.isArray(roomInfor.seat)) {
                     const response_price = response_showtime.priceTicket;
@@ -277,9 +307,9 @@ function CinemaTicket_2() {
 
     const handleChooseType = () => {
         if (viewSeat === true && viewTypeCustomer === false && viewTypePay === false) {
-            if(booking.length === 0) {
-              alert("Bạn chưa chọn ghế!");
-              return;
+            if (booking.length === 0) {
+                alert("Bạn chưa chọn ghế!");
+                return;
             }
             setViewSeat(false);
 
@@ -316,9 +346,9 @@ function CinemaTicket_2() {
                 alert('Vui lòng chọn hình thức thanh toán!');
                 return;
             }
-            
+
             setAmountDue(totalPrice - calculateTotalDiscount(seatCounts, priceSeat));
-            if(paymentMethod === "PAYCASH") {
+            if (paymentMethod === "PAYCASH") {
                 setShowPayCashModal(true);
             }
             console.log('Phương thức thanh toán:', paymentMethod);
@@ -375,12 +405,12 @@ function CinemaTicket_2() {
     const handleCustomerPaidChange = (value) => {
         const sanitizedValue = parseFloat(value.replace(/,/g, '')) || 0; // Loại bỏ dấu phẩy, chuyển sang số
         setCustomerPaid(sanitizedValue);
-      
+
         // Tính toán tiền trả lại
         const newChange = sanitizedValue - amountDue;
         setChange(newChange > 0 ? newChange : 0); // Đảm bảo tiền trả lại không âm
-      };
-      
+    };
+
 
     const handleCloseModal = () => {
         setShowPayCashModal(false);
@@ -392,12 +422,12 @@ function CinemaTicket_2() {
 
         const paymentCash = {
             showtimeid: showtime.id,
-            agentid : userid,
-            totalPrice : totalPrice,
-            discountPrice : calculateTotalDiscount(seatCounts, priceSeat),
-            amount : amountDue,
-            received : customerPaid,
-            moneyReturned : change,
+            agentid: userid,
+            totalPrice: totalPrice,
+            discountPrice: calculateTotalDiscount(seatCounts, priceSeat),
+            amount: amountDue,
+            received: customerPaid,
+            moneyReturned: change,
             paytypecustomer: filterGreaterThanZero(seatCounts),
             ticket: booking
         }
@@ -415,7 +445,7 @@ function CinemaTicket_2() {
         } catch (error) {
             console.error("Error addPayCash api", error);
         }
-         
+
     }
 
 
@@ -705,65 +735,65 @@ function CinemaTicket_2() {
 
 
             {showPayCashModal && (
-  <>
-    <div className="modal-overlay" onClick={handleCloseModal}></div>
-    <div className="modal">
-      <div className="modal-header">
-        <h2>Thanh toán bằng tiền mặt</h2>
-        <button className="modal-close" onClick={handleCloseModal}>
-          &times;
-        </button>
-      </div>
-      <div className="modal-body">
-        <div className="form-group">
-          <label>
-            <strong>Số tiền cần thanh toán:</strong>
-            <input
-              type="text"
-              name="amountDue"
-              className="modal-input"
-              value={amountDue.toLocaleString('vi-VN')} // Hiển thị giá trị từ state
-              readOnly
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            <strong>Tiền khách hàng trả:</strong>
-            <input
-              type="text"
-              name="customerPaid"
-              className="modal-input"
-              placeholder="Nhập số tiền khách hàng trả"
-              value={customerPaid}
-              onChange={(e) => handleCustomerPaidChange(e.target.value)} // Hàm xử lý khi nhập tiền
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            <strong>Tiền trả lại khách:</strong>
-            <input
-              type="text"
-              name="change"
-              className="modal-input"
-              value={change.toLocaleString('vi-VN')} // Hiển thị tiền trả lại từ state
-              readOnly
-            />
-          </label>
-        </div>
-        <div className="modal-buttons">
-          <button className="cancel-button" onClick={handleCloseModal}>
-            Hủy
-          </button>
-          <button className="submit-button" onClick={handleAddSubmit}>
-            Xác nhận
-          </button>
-        </div>
-      </div>
-    </div>
-  </>
-)}
+                <>
+                    <div className="modal-overlay" onClick={handleCloseModal}></div>
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h2>Thanh toán bằng tiền mặt</h2>
+                            <button className="modal-close" onClick={handleCloseModal}>
+                                &times;
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <label>
+                                    <strong>Số tiền cần thanh toán:</strong>
+                                    <input
+                                        type="text"
+                                        name="amountDue"
+                                        className="modal-input"
+                                        value={amountDue.toLocaleString('vi-VN')} // Hiển thị giá trị từ state
+                                        readOnly
+                                    />
+                                </label>
+                            </div>
+                            <div className="form-group">
+                                <label>
+                                    <strong>Tiền khách hàng trả:</strong>
+                                    <input
+                                        type="text"
+                                        name="customerPaid"
+                                        className="modal-input"
+                                        placeholder="Nhập số tiền khách hàng trả"
+                                        value={customerPaid}
+                                        onChange={(e) => handleCustomerPaidChange(e.target.value)} // Hàm xử lý khi nhập tiền
+                                    />
+                                </label>
+                            </div>
+                            <div className="form-group">
+                                <label>
+                                    <strong>Tiền trả lại khách:</strong>
+                                    <input
+                                        type="text"
+                                        name="change"
+                                        className="modal-input"
+                                        value={change.toLocaleString('vi-VN')} // Hiển thị tiền trả lại từ state
+                                        readOnly
+                                    />
+                                </label>
+                            </div>
+                            <div className="modal-buttons">
+                                <button className="cancel-button" onClick={handleCloseModal}>
+                                    Hủy
+                                </button>
+                                <button className="submit-button" onClick={handleAddSubmit}>
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
 
 
 
