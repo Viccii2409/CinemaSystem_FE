@@ -184,6 +184,25 @@ export const addPayOnline = async (payment) => {
         });
 };
 
+export const creatPayOnline = async (barcode) => {
+    return api.post(`ticket/booking/payonline/${barcode}`)
+        .then(response => {
+            if (response.data) {    
+                const paymentUrl = response.data;
+                window.open(paymentUrl, '_blank'); 
+            } else {
+                alert("Không nhận được URL thanh toán. Vui lòng thử lại.");
+                console.error("Error: Payment URL not found in response");
+            }
+            return response.data;
+        })
+        .catch(error => {
+            alert("Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.");
+            console.error("Error addPayOnlineCustomer", error);
+            return null;
+        });
+};
+
 
 
 

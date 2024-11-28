@@ -33,6 +33,7 @@ import CinemaSystem from "./customer/CinemaSystem";
 import SeatSelection from "./customer/SeatSelection";
 import MovieDetail from "./customer/MovieDetail";
 import ViewBooking from "./customer/ViewBooking";
+import AccountPage from "./customer/AccountPage";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function CustomerLayout() {
             <Route path="home" element={<HomePage />} />
             <Route path="login-page" element={<LoginPage />} />
             <Route path="register-page" element={<RegisterPage />} />
+            <Route path="account-page" element={<AccountPage />} />
             <Route path="seat-selection" element={<SeatSelection />} />
             <Route path="view-booking" element={<ViewBooking />} />
             <Route path="movie-detail" element={<MovieDetail />} />
