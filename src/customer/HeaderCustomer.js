@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./HeaderCustomer.css";
 import { Link } from "react-router-dom";
 import { getTheater } from "../config/TheaterConfig.js";
+
 const HeaderCustomer = () => {
   const [theaters, setTheaters] = useState([]);
+
   useEffect(() => {
     const fetchTheater = async () => {
       try {
@@ -30,7 +32,9 @@ const HeaderCustomer = () => {
       </nav>
       <select className="location-selector">
         {theaters.map((theater) => (
-          <option value="theatername">{theater.name}</option>
+          <option key={theater.id} value={theater.name}>
+            {theater.name}
+          </option>
         ))}
       </select>
       <div>
@@ -41,4 +45,5 @@ const HeaderCustomer = () => {
     </header>
   );
 };
+
 export default HeaderCustomer;

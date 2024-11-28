@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import './Movies.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -284,7 +285,6 @@ const Movies = () => {
                                         <img
                                             src={movie.link}
                                             alt={movie.title}
-                                    
                                         />
                                     </td>
                                     <td>{movie.title || 'Chưa cập nhật'}</td>
