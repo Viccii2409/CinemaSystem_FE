@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
+import { TheaterContext } from "../TheaterContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from 'react-router-dom';
 import {
   faAngleLeft,
   faAngleRight,
@@ -14,17 +16,25 @@ import {
   getSlideshow,
 } from "../config/MovieConfig.js";
 
-
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { selectedTheater } = useContext(TheaterContext);
   const [movienows, setMovieNow] = useState([]);
+  const [movie, setMovie] = useState([]);
+  const [listDay, setListDay] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [selectedDay, setSelectedDay] = useState('');
+  const maxDaysToShow = 5;
+  const [showtime, setShowtime] = useState([]);
+
+
   useEffect(() => {
     const fetchMovieNow = async () => {
       try {
         const response = await getMovieNow();
-        setMovieNow(response.data); // Lưu dữ liệu vào state cinemas
+        setMovieNow(response.data); 
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Phim:", error);
       }
@@ -61,13 +71,62 @@ const HomePage = () => {
   }, []); // Đóng ngoặc vuông để hoàn tất dependency array và gọi chỉ khi component render lần đầu
   const [showScheduleModal, setScheduleModal] = useState(false);
 
-  const handleScheduleModal = () => {
+  const handleScheduleModal = (id) => {
+    if (selectedTheater === null) {
+      alert("Bạn chưa chọn rạp!");
+      return;
+    }
+    const movie = movienows.find(movie => movie.id === id);
+    const listDay = [];
+    const showtime = movie.showtime.reduce((acc, show) => {
+      if (show.theaterID === selectedTheater.id) {
+        const timeObj = { startTime: show.startTime, endTime: show.endTime, id: show.id, emptySeat: show.emptySeat, typeRoomName: show.typeRoomName };
+
+        // Thêm ngày vào listDay nếu chưa có
+        if (!listDay.includes(show.date)) {
+          listDay.push(show.date);
+        }
+
+        const existingDay = acc.find((item) => item.day === show.date);
+        if (existingDay) {
+          existingDay.times.push(timeObj);
+        } else {
+          acc.push({ day: show.date, times: [timeObj] });
+        }
+
+      }
+      return acc;
+    }, []);
+    setMovie(movie);
+    setListDay(listDay)
+    setShowtime(showtime);
     setScheduleModal(true);
   };
 
   const handleCloseModal = () => {
     setScheduleModal(false);
   };
+
+
+  const handlePrevClick = () => {
+    if (startIndex > 0) setStartIndex(startIndex - 1);
+  };
+
+  const handleNextClick = () => {
+    if (startIndex + maxDaysToShow < listDay.length) setStartIndex(startIndex + 1);
+  };
+
+  const handleDaySelect = (day) => {
+    setSelectedDay(day);
+  };
+
+  const handleShowtimeSelect = (showtimeid) => {
+    console.log(showtimeid);
+    navigate('/seat-selection', { state: { id: showtimeid } });
+  }
+
+
+
   const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentSlide] = useState(0);
   useEffect(() => {
@@ -92,6 +151,21 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [slides]);
 
+  const [showDiscountModal, setDiscountModal] = useState(false);
+  const [selectedDiscountId, setSelectedDiscountId] = useState(null);
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const handleDiscountModal = (id) => {
+    const selected = discounts.find((discount) => discount.id === id);
+    setSelectedDiscount(selected);
+    setSelectedDiscountId(id);
+    setDiscountModal(true);
+  };
+
+  const closeDiscountModal = () => {
+    setDiscountModal(false);
+    setSelectedDiscountId(null);
+    setSelectedDiscount(null);
+  };
   return (
     <div className="homepage">
       <div className="slideshow">
@@ -124,7 +198,7 @@ const HomePage = () => {
           {movienows.map((movienow) => (
             <div className="movie-item" key={movienow.id}>
               <div className="image-container">
-                <Link to={`movie-detail/${movienow.id}`}>
+                <Link to="/movie-detail" state={{ id: movienow.id }}>
                   <img
                     src={movienow.link}
                     alt="movie"
@@ -139,13 +213,16 @@ const HomePage = () => {
                 </button>
                 <button
                   className="buy-ticket-button"
-                  onClick={handleScheduleModal}
+                  onClick={() => handleScheduleModal(movienow.id)}
                 >
                   MUA VÉ NGAY
                 </button>
+
               </div>
               <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: movienow.id }}>{movienow.title}</Link>
+                <Link to="/movie-detail" state={{ id: movienow.id }}>
+                  {movienow.title}
+                </Link>
               </h3>
               {/* {movienow.title.length > 18 && (
                 <span className="hover-text">{movienow.title}</span>
@@ -161,7 +238,7 @@ const HomePage = () => {
           {moviesoons.map((moviesoon, index) => (
             <div className="movie-item" key={moviesoon.id}>
               <div className="image-container">
-                <Link to={`movie-detail/${moviesoon.id}`}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
                   <img
                     src={moviesoon.link}
                     alt="movie"
@@ -177,7 +254,7 @@ const HomePage = () => {
               </div>
 
               <h3 className="movietitle">
-                <Link to={`movie-detail/${moviesoon.id}`}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
                   {moviesoon.title}
                 </Link>
               </h3>
@@ -189,7 +266,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="promotions-section">
+      <section id="discount-section" className="promotions-section">
         <div className="category">
           <h2>ƯU ĐÃI</h2>
         </div>
@@ -200,17 +277,35 @@ const HomePage = () => {
                 src={discount.image}
                 alt="discount"
                 className="discount-image"
+                onClick={() => handleDiscountModal(discount.id)}
               ></img>
 
               <div className="dis-title">
-                <h3>{discount.name}</h3>
-                <p>{discount.description}</p>
+                <h3 onClick={() => handleDiscountModal(discount.id)}>
+                  {discount.name}
+                </h3>
               </div>
             </div>
           ))}
         </div>
       </section>
-
+      {showDiscountModal && selectedDiscount && (
+        <div className="showtime-overlay2">
+          <div className="showtime-modal2">
+            <button className="close-button" onClick={closeDiscountModal}>
+              &times;
+            </button>
+            <img
+              src={selectedDiscount.image}
+              style={{ width: "250px", height: "150px" }}
+            />
+            <div className="showtime-des">
+              <h2>{selectedDiscount.name}</h2>
+              <p>{selectedDiscount.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
       {showScheduleModal && (
         <div class="showtime-overlay">
           <div class="showtime-modal">
@@ -219,30 +314,50 @@ const HomePage = () => {
             </button>
             <h2>
               LỊCH CHIẾU -{" "}
-              <span class="movie-title">Joker: Folie À Deux Điên Có Đôi</span>
+              <span class="movie-title">{movie.title}</span>
             </h2>
-            <h3>RẠP LAL MỸ ĐÌNH</h3>
+            <h3>{selectedTheater.name}</h3>
             <div class="date-tabs">
-              <button class="date-tab active">10/10</button>
-              <button class="date-tab">11/10</button>
+              {listDay.length > 0 ? (
+                <div className="days-list-container">
+                  <button onClick={handlePrevClick} disabled={startIndex === 0}>
+                    &lt;
+                  </button>
+                  {listDay.map((day) => (
+                    <button
+                      key={day}
+                      onClick={() => handleDaySelect(day)}
+                      className={`date-tab ${selectedDay === day ? 'active' : ''}`}
+                    >
+                      {day}
+                    </button>
+                  ))}
+                  <button onClick={handleNextClick} disabled={startIndex + maxDaysToShow >= listDay.length}>
+                    &gt;
+                  </button>
+                </div>
+              ) : (
+                <p>Không có ngày chiếu</p>
+              )}
             </div>
             <div class="showtime-list">
               <div class="showtime-item">
-                <h4>2D</h4>
-                <div class="time-slot">
-                  <button class="time-button">
-                    <Link to="/seat-selection">08:15</Link>
-                  </button>
-                  <span class="seats-info">23 ghế trống</span>
-                </div>
-                <div class="time-slot">
-                  <button class="time-button">09:30</button>
-                  <span class="seats-info">41 ghế trống</span>
-                </div>
-                <div class="time-slot">
-                  <button class="time-button">11:05</button>
-                  <span class="seats-info">56 ghế trống</span>
-                </div>
+                {showtime
+                  .filter((showtime) => showtime.day === selectedDay)
+                  .flatMap((showtime) => showtime.times)
+                  .sort((a, b) => a.startTime.localeCompare(b.startTime))
+                  .map((showtime, index) => (
+                    <div class="time-slot">
+                      <button
+                        key={index}
+                        className="time-button"
+                      onClick={() => handleShowtimeSelect(showtime.id)}
+                      >
+                        {showtime.startTime} - {showtime.typeRoomName}
+                      </button>
+                      <span class="seats-info">{showtime.emptySeat} ghế trống</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
