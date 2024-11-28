@@ -424,8 +424,7 @@
   transform: scale(1.05);
 }
 
-
-.payment-section {
+.cinema-ticket-2 .payment-section {
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -436,32 +435,32 @@
   font-family: Arial, sans-serif;
 }
 
-.section-title {
+.cinema-ticket-2 .section-title {
   font-size: 20px;
   color: #333;
   margin-bottom: 15px;
   text-align: center;
 }
 
-.customer-info {
+.cinema-ticket-2 .customer-info {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 20px;
 }
 
-.form-column {
+.cinema-ticket-2 .form-column {
   flex: 1 1 100%;
   display: flex;
   flex-direction: column;
 }
 
-.form-column label {
+.cinema-ticket-2 .form-column label {
   font-size: 14px;
   color: #555;
 }
 
-.input-field {
+.cinema-ticket-2 .input-field {
   width: 98%;
   padding: 10px;
   margin-top: 5px;
@@ -471,17 +470,17 @@
   background-color: #fff;
 }
 
-.discount-section {
+.cinema-ticket-2 .discount-section {
   margin-bottom: 20px;
 }
 
-.discount-options {
+.cinema-ticket-2 .discount-options {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.discount-option {
+.cinema-ticket-2 .discount-option {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -492,41 +491,41 @@
   cursor: pointer;
 }
 
-.discount-option:hover {
+.cinema-ticket-2 .discount-option:hover {
   background-color: #f1f1f1;
 }
 
-.discount-radio {
+.cinema-ticket-2 .discount-radio {
   margin-right: 10px;
   accent-color: #007bff;
 }
 
-.discount-details {
+.cinema-ticket-2 .discount-details {
   display: flex;
   flex-direction: column;
 }
 
-.discount-name {
+.cinema-ticket-2 .discount-name {
   font-weight: bold;
   color: #333;
 }
 
-.discount-code {
+.cinema-ticket-2 .discount-code {
   font-size: 14px;
   color: #777;
 }
 
-.selected-discount {
+.cinema-ticket-2 .selected-discount {
   margin-top: 15px;
 }
 
-.payment-methods {
+.cinema-ticket-2 .payment-methods {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.payment-option {
+.cinema-ticket-2 .payment-option {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -537,11 +536,11 @@
   cursor: pointer;
 }
 
-.payment-option:hover {
+.cinema-ticket-2 .payment-option:hover {
   background-color: #f1f1f1;
 }
 
-.payment-radio {
+.cinema-ticket-2 .payment-radio {
   margin-right: 10px;
   accent-color: #007bff;
 }

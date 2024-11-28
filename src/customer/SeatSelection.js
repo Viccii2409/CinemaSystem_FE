@@ -2,9 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import '../admin/CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TheaterContext } from "../TheaterContext";
-import { addPayCashCustomer, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { addPayOnlineCustomer, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
 import { getCustomerById } from '../config/UserConfig';
+import ConfirmModal from "../ConfirmModal";
 
 function SeatSelection() {
   const { setSelectedTheater } = useContext(TheaterContext);
@@ -27,12 +28,9 @@ function SeatSelection() {
   const [discounts, setDiscounts] = useState('');
   const [discount, setDiscount] = useState('');
   const [discountPrice, setDiscountPrice] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [showPayCashModal, setShowPayCashModal] = useState(false);
 
-  const [amountDue, setAmountDue] = useState(0);
-  const [customerPaid, setCustomerPaid] = useState('');
-  const [change, setChange] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [paymentOnlineData, setPaymentOnlineData] = useState(null);
 
 
 
@@ -318,43 +316,63 @@ function SeatSelection() {
     0
   );
 
-
-  const handleChooseType = () => {
+  const handleChooseType = async () => {
     if (viewSeat === true && viewTypePay === false) {
       if (booking.length === 0) {
-        alert("Bạn chưa chọn ghế!");
+        alert("Bạn chưa chọn ghế!"); // Vẫn có thể giữ lại hoặc thay bằng modal khác
         return;
       }
       setViewSeat(false);
       setViewTypePay(true);
+    } else if (viewSeat === false && viewTypePay === true) {
 
-    }
-    else if (viewSeat === false && viewTypePay === true) {
-      if (!paymentMethod) {
-        alert('Vui lòng chọn hình thức thanh toán!');
-        return;
+      // Chuẩn bị dữ liệu thanh toán
+      const initialData = {};
+      initialData[5] = {};
+      if (seatGroups['regular'].length > 0) {
+        initialData[5][1] = seatGroups['regular'].length;
+      }
+      if (seatGroups['vip'].length > 0) {
+        initialData[5][2] = seatGroups['vip'].length;
+      }
+      if (seatGroups['double-seat'].length > 0) {
+        initialData[5][3] = seatGroups['double-seat'].length;
       }
 
-      setAmountDue(totalPrice - discountPrice);
-      if (paymentMethod === "PAYCASH") {
-        setShowPayCashModal(true);
-      }
-      console.log('Phương thức thanh toán:', paymentMethod);
+      const paymentOnline = {
+        showtimeid: showtime.id,
+        customerid: userid,
+        discountid: discount.id,
+        totalPrice: totalPrice,
+        discountPrice: discountPrice,
+        amount: totalPrice - discountPrice,
+        paytypecustomer: initialData,
+        ticket: booking
+      };
+
+      // Lưu dữ liệu thanh toán và mở modal xác nhận
+      setPaymentOnlineData(paymentOnline);
+      setModalOpen(true);
     }
   };
 
-  const handleCustomerPaidChange = (value) => {
-    const sanitizedValue = parseFloat(value.replace(/,/g, '')) || 0; // Loại bỏ dấu phẩy, chuyển sang số
-    setCustomerPaid(sanitizedValue);
+  const handleConfirm = async () => {
+    setModalOpen(false);
+    console.log(JSON.stringify(paymentOnlineData, null, 2));
 
-    // Tính toán tiền trả lại
-    const newChange = sanitizedValue - amountDue;
-    setChange(newChange > 0 ? newChange : 0); // Đảm bảo tiền trả lại không âm
+    try {
+      const response = await addPayOnlineCustomer(paymentOnlineData);
+      navigate('/home');
+      return;
+      // alert("Thanh toán thành công!");
+    } catch (error) {
+      console.error("Error addPayOnlineCustomer API", error);
+      alert("Thanh toán thất bại!");
+    }
   };
 
-
-  const handleCloseModal = () => {
-    setShowPayCashModal(false);
+  const handleCancel = () => {
+    setModalOpen(false);
   };
 
   const handleDiscountCode = (id) => {
@@ -367,47 +385,6 @@ function SeatSelection() {
       setDiscountPrice(discount.reducedValue);
     }
     console.log(discount);
-  }
-
-  const handleAddSubmit = async () => {
-    const initialData = {};
-    initialData[5] = {};
-    if (seatGroups['regular'].length > 0) {
-      initialData[5][1] = seatGroups['regular'].length;
-    }
-    if (seatGroups['vip'].length > 0) {
-      initialData[5][2] = seatGroups['vip'].length;
-    }
-    if (seatGroups['double-seat'].length > 0) {
-      initialData[5][3] = seatGroups['double-seat'].length;
-    }
-    const paymentCash = {
-      showtimeid: showtime.id,
-      customerid: userid,
-      discountid: discount.id,
-      totalPrice: totalPrice,
-      discountPrice: discountPrice,
-      amount: amountDue,
-      received: customerPaid,
-      moneyReturned: change,
-      paytypecustomer: initialData,
-      ticket: booking
-    }
-    console.log(JSON.stringify(paymentCash, null, 2));
-    try {
-      const response = await addPayCashCustomer(paymentCash);
-      if (response) {
-        alert("Bạn đã đặt ghế thành công!");
-        navigate('/view-booking', { state: { id: response, theaterid : theaterid } });
-        return;
-      } else {
-        alert("Lỗi khi đặt ghế!");
-        return;
-      }
-    } catch (error) {
-      console.error("Error addPayCash api", error);
-    }
-
   }
 
 
@@ -576,40 +553,12 @@ function SeatSelection() {
               </div>
             </div>
 
-
-            <h3 className="section-title">Hình thức thanh toán</h3>
-            <div className="payment-methods">
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYCARD"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Thẻ tín dụng/Thẻ ghi nợ
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYQR"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Ví điện tử Momo
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYCASH"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Thanh toán tiền mặt
-              </label>
-            </div>
+            <ConfirmModal
+              isOpen={isModalOpen}
+              onClose={handleCancel}
+              onConfirm={handleConfirm}
+              message="Bạn xác nhận muốn thanh toán?"
+            />
           </>
         )}
 
@@ -669,69 +618,6 @@ function SeatSelection() {
         <button className="back-button" onClick={handleExitType}>Trở lại</button>
         <div className="countdown-timer">Thời gian còn lại: {formatTime(timeLeft)}</div>
       </div>
-
-
-
-      {showPayCashModal && (
-        <>
-          <div className="modal-overlay" onClick={handleCloseModal}></div>
-          <div className="modal">
-            <div className="modal-header">
-              <h2>Thanh toán bằng tiền mặt</h2>
-              <button className="modal-close" onClick={handleCloseModal}>
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="form-group">
-                <label>
-                  <strong>Số tiền cần thanh toán:</strong>
-                  <input
-                    type="text"
-                    name="amountDue"
-                    className="modal-input"
-                    value={amountDue.toLocaleString('vi-VN')} // Hiển thị giá trị từ state
-                    readOnly
-                  />
-                </label>
-              </div>
-              <div className="form-group">
-                <label>
-                  <strong>Tiền khách hàng trả:</strong>
-                  <input
-                    type="text"
-                    name="customerPaid"
-                    className="modal-input"
-                    placeholder="Nhập số tiền khách hàng trả"
-                    value={customerPaid}
-                    onChange={(e) => handleCustomerPaidChange(e.target.value)} // Hàm xử lý khi nhập tiền
-                  />
-                </label>
-              </div>
-              <div className="form-group">
-                <label>
-                  <strong>Tiền trả lại khách:</strong>
-                  <input
-                    type="text"
-                    name="change"
-                    className="modal-input"
-                    value={change.toLocaleString('vi-VN')} // Hiển thị tiền trả lại từ state
-                    readOnly
-                  />
-                </label>
-              </div>
-              <div className="modal-buttons">
-                <button className="cancel-button" onClick={handleCloseModal}>
-                  Hủy
-                </button>
-                <button className="submit-button" onClick={handleAddSubmit}>
-                  Xác nhận
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
 
 
 

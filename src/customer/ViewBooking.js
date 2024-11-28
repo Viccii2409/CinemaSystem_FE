@@ -1,27 +1,23 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getBookingById } from '../config/TicketConfig';
+import { getBookingByBarcode, updatePayOnline } from '../config/TicketConfig';
 import BarcodeGenerator from "../BarcodeGenerator";
-import { TheaterContext } from "../TheaterContext";
 
 const ViewBooking = () => {
-    const { setSelectedTheater } = useContext(TheaterContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const { id, theaterid } = location.state || '';
+    const queryParams = new URLSearchParams(location.search);
+    const orderId = queryParams.get("orderId");
+    const resultCode = queryParams.get("resultCode");
+    // const { id, theaterid } = location.state || '';
     const [bookingDto, setBookingDto] = useState({});
 
     useEffect(() => {
         const getBookingInfor = async () => {
-            if (!id) {
-                console.warn("ID của vé không tồn tại.");
-                navigate('/home');
-                return;
-            }
             try {
-                setSelectedTheater(theaterid);
-                const response_ticket = await getBookingById(id);
+                await updatePayOnline(orderId, resultCode);
+                const response_ticket = await getBookingByBarcode(orderId);
                 setBookingDto(response_ticket);
                 console.log(response_ticket);
             } catch (error) {
@@ -30,11 +26,11 @@ const ViewBooking = () => {
             }
         }
         getBookingInfor();
-    }, [id]);
+    }, [orderId, resultCode]);
 
     return (
         <div className="ticket-info-section">
-            <h2 className="ticket-info-title">Thông Tin Vé Của Bạn</h2>
+            <h2 className="ticket-info-title">{Number(resultCode) === 0 ? "Thanh toán thành công" : "Thanh toán thất bại"}</h2>
             <div className="ticket-main">
                 {/* Hình ảnh bên trái */}
                 <div className="ticket-image-container">

@@ -14,29 +14,29 @@
   z-index: 1000; /* Đặt header lên trên các phần tử khác */
 }
 
-.header-title {
+.homepage-header .header-title {
   font-size: 1.8em; /* Giữ kích thước phù hợp */
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
 
-.header-title a {
+.homepage-header .header-title a {
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.header-title a:hover {
+.homepage-header .header-title a:hover {
   color: #055d05;
 }
 
-.navbar {
+.homepage-header .navbar {
   display: flex;
   gap: 15px;
 }
 
-.navbar a {
+.homepage-header .navbar a {
   text-decoration: none;
   color: #ffffff;
   font-weight: bold;
@@ -45,11 +45,11 @@
   position: relative;
 }
 
-.navbar a:hover {
+.homepage-header .navbar a:hover {
   color: #055d05;
 }
 
-.navbar a::after {
+.homepage-header .navbar a::after {
   content: "";
   display: block;
   width: 0;
@@ -61,12 +61,12 @@
   left: 0;
 }
 
-.navbar a:hover::after {
+.homepage-header .navbar a:hover::after {
   width: 100%;
 }
 
 /* Dropdown Selector */
-.location-selector {
+.homepage-header .location-selector {
   padding: 10px 15px;
   font-size: 1em;
   font-weight: bold;
@@ -80,14 +80,14 @@
   min-width: 200px; /* Đảm bảo không quá nhỏ */
 }
 
-.location-selector:hover {
+.homepage-header .location-selector:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   color: #ffffff;
   background-color: #055d05;
 }
 
 /* Login Button */
-.login-button {
+.homepage-header .login-button {
   background-color: #0cad0c;
   color: white;
   border: none;
@@ -99,13 +99,8 @@
   transition: background-color 0.3s, transform 0.3s, color 0.3s;
 }
 
-.login-button:hover {
+.homepage-header .login-button:hover {
   background-color: #055d05;
   transform: scale(1.05);
   color: #ffffff;
-}
-
-/* Add padding to avoid content hidden behind header */
-body {
-  padding-top: 60px; /* Khoảng cách đủ để tránh nội dung bị header che */
 }

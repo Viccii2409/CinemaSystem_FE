@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { addPayCash, addSelectedSeat, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { addPayCash, addPayOnline, addSelectedSeat, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
 import { getTypeSeat } from '../config/TheaterConfig';
+import ConfirmModal from "../ConfirmModal";
 
 function CinemaTicket_2() {
     const navigate = useNavigate();
@@ -31,6 +32,9 @@ function CinemaTicket_2() {
     const [amountDue, setAmountDue] = useState(0);
     const [customerPaid, setCustomerPaid] = useState('');
     const [change, setChange] = useState(0);
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [paymentOnlineData, setPaymentOnlineData] = useState(null);
 
 
 
@@ -351,8 +355,42 @@ function CinemaTicket_2() {
             if (paymentMethod === "PAYCASH") {
                 setShowPayCashModal(true);
             }
-            console.log('Phương thức thanh toán:', paymentMethod);
+            if(paymentMethod === "PAYONLINE") {
+                const paymentOnline = {
+                    showtimeid: showtime.id,
+                    agentid: userid,
+                    totalPrice: totalPrice,
+                    discountPrice: calculateTotalDiscount(seatCounts, priceSeat),
+                    amount: totalPrice - calculateTotalDiscount(seatCounts, priceSeat),
+                    paytypecustomer: filterGreaterThanZero(seatCounts),
+                    ticket: booking
+                  };
+
+                //   console.log(JSON.stringify(paymentOnline, null, 2));
+                  // Lưu dữ liệu thanh toán và mở modal xác nhận
+                  setPaymentOnlineData(paymentOnline);
+                  setModalOpen(true);
+            }
         }
+    };
+
+    const handleConfirm = async () => {
+      setModalOpen(false);
+    //   console.log(JSON.stringify(paymentOnlineData, null, 2));
+  
+      try {
+        const response = await addPayOnline(paymentOnlineData);
+        navigate('/admin/ticket-sales');
+        return;
+        // alert("Thanh toán thành công!");
+      } catch (error) {
+        console.error("Error addPayOnlineCustomer API", error);
+        alert("Thanh toán thất bại!");
+      }
+    };
+  
+    const handleCancel = () => {
+      setModalOpen(false);
     };
 
 
@@ -433,10 +471,11 @@ function CinemaTicket_2() {
         }
         // console.log(JSON.stringify(paymentCash, null, 2));
         try {
-            const response = await addPayCash(paymentCash);
-            if (response) {
+            const response_id = await addPayCash(paymentCash);
+            // console.log(response_id);
+            if (response_id) {
                 alert("Bạn đã đặt ghế thành công!");
-                navigate('view-ticket-admin', { state: { id: response } });
+                navigate('/admin/view-ticket-admin', { state: { id: response_id } });
                 return;
             } else {
                 alert("Lỗi khi đặt ghế!");
@@ -621,19 +660,10 @@ function CinemaTicket_2() {
                                 <input
                                     type="radio"
                                     name="paymentMethod"
-                                    value="PAYCARD"
+                                    value="PAYONLINE"
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                 />
-                                Thẻ tín dụng/Thẻ ghi nợ
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="paymentMethod"
-                                    value="PAYQR"
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                />
-                                Ví điện tử Momo
+                                Thanh toán trực tuyến 
                             </label>
                             <label>
                                 <input
@@ -731,6 +761,15 @@ function CinemaTicket_2() {
                 <button className="back-button" onClick={handleExitType}>Trở lại</button>
                 <div className="countdown-timer">Thời gian còn lại: {formatTime(timeLeft)}</div>
             </div>
+
+            
+
+            <ConfirmModal
+              isOpen={isModalOpen}
+              onClose={handleCancel}
+              onConfirm={handleConfirm}
+              message="Bạn xác nhận muốn thanh toán?"
+            />
 
 
 

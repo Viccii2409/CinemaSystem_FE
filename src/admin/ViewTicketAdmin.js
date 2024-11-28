@@ -3,28 +3,42 @@ import '../customer/ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getBookingById } from '../config/TicketConfig';
 import BarcodeGenerator from "../BarcodeGenerator";
+import { getBookingByBarcode, updatePayOnline } from '../config/TicketConfig';
 
 const ViewTicketAdmin = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = location.state || '';
+    const queryParams = new URLSearchParams(location.search);
+    const orderId = queryParams.get("orderId");
+    const resultCode = queryParams.get("resultCode");
     const [bookingDto, setBookingDto] = useState({});
 
     useEffect(() => {
         const getBookingInfor = async () => {
-            if (!id) {
-                console.warn("ID của vé không tồn tại.");
-                navigate('/home');
-                return;
+            console.log(id);
+            if(id) {
+                try {
+                    const response_ticket = await getBookingById(id);
+                    setBookingDto(response_ticket);
+                    console.log(response_ticket);
+                    console.log(id);
+                } catch (error) {
+                    console.error("Error api", error);
+                    setBookingDto({});
+                }
+
             }
-            try {
-                const response_ticket = await getBookingById(id);
-                setBookingDto(response_ticket);
-                console.log(response_ticket);
-                console.log(id);
-            } catch (error) {
-                console.error("Error api", error);
-                setBookingDto({});
+            if(orderId && resultCode) {
+                try {
+                    await updatePayOnline(orderId, resultCode);
+                    const response_ticket = await getBookingByBarcode(orderId);
+                    setBookingDto(response_ticket);
+                    console.log(response_ticket);
+                } catch (error) {
+                    console.error("Error api", error);
+                    setBookingDto({});
+                }
             }
         }
         getBookingInfor();
@@ -37,7 +51,8 @@ const ViewTicketAdmin = () => {
 
     return (
         <div className="ticket-info-section">
-            <h2 className="ticket-info-title">Thông Tin Vé Của Bạn</h2>
+            {id && (<h2 className="ticket-info-title">Thông Tin Vé Của Bạn</h2>)}
+            {orderId && (<h2 className="ticket-info-title">{Number(resultCode) === 0 ? "Thanh toán thành công" : "Thanh toán thất bại"}</h2>)}
             <div className="ticket-main">
                 {/* Hình ảnh bên trái */}
                 <div className="ticket-image-container">
