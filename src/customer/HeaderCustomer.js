@@ -29,8 +29,7 @@ const HeaderCustomer = () => {
   }, []);
 
   const handleSelectTheater = (theaterid) => {
-    const theater = theaters.find((item) => item.id === Number(theaterid));
-    setSelectedTheater(theater);
+    setSelectedTheater(theaterid);
   };
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const HeaderCustomer = () => {
         <Link to="/">Thể loại</Link>
       </nav>
 
-      <select name="id" className="location-selector" value={selectedTheater?.id || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
+      <select name="id" className="location-selector" value={selectedTheater || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
           <option value="" disabled>---Chọn rạp---</option>
           {theaters.map((theater) => (
             <option key={theater.id} value={theater.id}>

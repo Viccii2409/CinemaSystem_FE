@@ -31,10 +31,10 @@ import RegisterPage from "./customer/RegisterPage";
 import Footer from "./customer/Footer";
 import CinemaSystem from "./customer/CinemaSystem";
 import SeatSelection from "./customer/SeatSelection";
-import PaymentInfo from "./customer/PaymentInfo";
 import MovieDetail from "./customer/MovieDetail";
 import UserInfor from "./customer/UserInfor";
 import ViewBooking from "./customer/ViewBooking";
+import AccountPage from "./customer/AccountPage";
 
 function App() {
   return (
@@ -58,9 +58,9 @@ function CustomerLayout() {
             <Route path="home" element={<HomePage />} />
             <Route path="login-page" element={<LoginPage />} />
             <Route path="register-page" element={<RegisterPage />} />
+            <Route path="account-page" element={<AccountPage />} />
             <Route path="seat-selection" element={<SeatSelection />} />
             <Route path="view-booking" element={<ViewBooking />} />
-            <Route path="payment-info" element={<PaymentInfo />} />
             <Route path="movie-detail" element={<MovieDetail />} />
             <Route path="cinema-system" element={<CinemaSystem />} />
             <Route path="movie-detail" element={<MovieDetail />} />
@@ -99,7 +99,7 @@ function AdminLayout() {
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<CinemaTicket />} />
             <Route path="ticket-sales/booking-seat" element={<CinemaTicket_2 />} />
-            <Route path="ticket-sales/booking-seat/view-ticket-admin" element={<ViewTicketAdmin />} />
+            <Route path="view-ticket-admin" element={<ViewTicketAdmin />} />
             <Route path="staff" element={<EmployeeManagement />} />
             <Route
               path="staff/access-permission"

@@ -108,6 +108,15 @@ export const getBookingById = async (id) => {
     })
 }
 
+export const getBookingByBarcode = async (barcode) => {
+    return api.get(`/ticket/booking/payonline/${barcode}`)
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error getBookingByBarcode", error);
+        return null;
+    })
+}
+
 
 
 export const addSelectedSeat = async (selectedSeat) => {
@@ -123,7 +132,7 @@ export const addPayCash = async (payment) => {
     return api.post('ticket/booking/paycash/add', payment)
         .then(response => response.data)
         .catch(error => {
-            console.error("Error addBooking", error)
+            console.error("Error addPayCash", error)
             return null;
         })
 }
@@ -132,10 +141,70 @@ export const addPayCashCustomer = async (payment) => {
     return api.post('ticket/customer/booking/paycash/add', payment)
         .then(response => response.data)
         .catch(error => {
-            console.error("Error addBooking", error)
+            console.error("Error addPayCashCustomer", error)
             return null;
         })
 }
+
+export const addPayOnlineCustomer = async (payment) => {
+    return api.post('ticket/customer/booking/payonline', payment)
+        .then(response => {
+            if (response.data) {
+                const paymentUrl = response.data;
+                window.open(paymentUrl, '_blank'); // Hoặc sử dụng window.location.href
+            } else {
+                alert("Không nhận được URL thanh toán. Vui lòng thử lại.");
+                console.error("Error: Payment URL not found in response");
+            }
+            return response.data;
+        })
+        .catch(error => {
+            alert("Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.");
+            console.error("Error addPayOnlineCustomer", error);
+            return null;
+        });
+};
+
+export const addPayOnline = async (payment) => {
+    return api.post('ticket/booking/payonline', payment)
+        .then(response => {
+            if (response.data) {
+                const paymentUrl = response.data;
+                window.open(paymentUrl, '_blank'); // Hoặc sử dụng window.location.href
+            } else {
+                alert("Không nhận được URL thanh toán. Vui lòng thử lại.");
+                console.error("Error: Payment URL not found in response");
+            }
+            return response.data;
+        })
+        .catch(error => {
+            alert("Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.");
+            console.error("Error addPayOnlineCustomer", error);
+            return null;
+        });
+};
+
+export const creatPayOnline = async (barcode) => {
+    return api.post(`ticket/booking/payonline/${barcode}`)
+        .then(response => {
+            if (response.data) {    
+                const paymentUrl = response.data;
+                window.open(paymentUrl, '_blank'); 
+            } else {
+                alert("Không nhận được URL thanh toán. Vui lòng thử lại.");
+                console.error("Error: Payment URL not found in response");
+            }
+            return response.data;
+        })
+        .catch(error => {
+            alert("Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.");
+            console.error("Error addPayOnlineCustomer", error);
+            return null;
+        });
+};
+
+
+
 
 export const addDiscount = async (discountData) => {
     try {
@@ -174,6 +243,16 @@ export const addDiscount = async (discountData) => {
 };
 
 
+export const updatePayOnline = async (orderId, resultCode) => {
+    console.log(orderId);
+    console.log(resultCode);
+    return api.put(`ticket/booking/payonline/update/${orderId}/${resultCode}`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error("Error updatePayOnline", error)
+            return null;
+        })
+}
 
 export const updateSelectedSeat = async (id) => {
     return api.put(`/ticket/showtime/selectedseat/${id}/expired`)

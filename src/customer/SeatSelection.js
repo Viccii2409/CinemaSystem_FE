@@ -2,15 +2,16 @@ import React, { useEffect, useState, useContext } from 'react';
 import '../admin/CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TheaterContext } from "../TheaterContext";
-import { addPayCashCustomer, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { addPayOnlineCustomer, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
 import { getCustomerById } from '../config/UserConfig';
+import ConfirmModal from "../ConfirmModal";
 
 function SeatSelection() {
-  const { selectedTheater } = useContext(TheaterContext);
+  const { setSelectedTheater } = useContext(TheaterContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = location.state || '';
+  const { id, theaterid } = location.state || '';
   const userid = 3;
   const [customer, setCustomer] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState('');
@@ -27,15 +28,96 @@ function SeatSelection() {
   const [discounts, setDiscounts] = useState('');
   const [discount, setDiscount] = useState('');
   const [discountPrice, setDiscountPrice] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [showPayCashModal, setShowPayCashModal] = useState(false);
 
-  const [amountDue, setAmountDue] = useState(0);
-  const [customerPaid, setCustomerPaid] = useState('');
-  const [change, setChange] = useState(0);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [paymentOnlineData, setPaymentOnlineData] = useState(null);
 
 
 
+
+
+
+  useEffect(() => {
+    const getRoomInfor = async () => {
+      const hanoiTime = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
+      const hanoiTimeEnd = moment().tz("Asia/Ho_Chi_Minh").add(10, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
+
+      setCurrentDateTime(hanoiTime);
+      setCurrentDateTimeEnd(hanoiTimeEnd);
+
+      if (!id || !theaterid) {
+        console.warn("ID của lich không tồn tại.");
+        navigate('/home');
+        return;
+      }
+      try {
+        setSelectedTheater(theaterid);
+        const response_customer = await getCustomerById(Number(userid));
+        setCustomer(response_customer);
+        console.log(response_customer);
+
+        const response_discount = await getAllDiscount();
+        const discountActive = response_discount.filter(entry => entry.status);
+        const customerDiscountIds = response_customer.discounts.map(discount => discount.id);
+        const discountNotInCustomer = discountActive.filter(
+          discount => !customerDiscountIds.includes(discount.id)
+        );
+        setDiscounts(discountNotInCustomer);
+
+        const response_showtime = await getShowtimeByID(id);
+        setShowtime(response_showtime);
+        setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
+
+
+        const bookingData = [];
+        let startTimeData = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
+        let endTimeData = null;
+        response_showtime.selectedSeats
+          .filter(seat => seat.userid === userid && seat.status === "pending")
+          .forEach(seat => {
+            bookingData.push({
+              id: seat.seatid,
+              selectedSeatID: seat.id
+            });
+            if (!endTimeData || new Date(seat.end) > new Date(endTimeData)) {
+              endTimeData = seat.end;
+            }
+          });
+
+        setBooking(bookingData);
+        console.log("Start Time:", startTimeData);
+        console.log("End Time:", endTimeData);
+        let timeLeftInSeconds = 0;
+        if (startTimeData && endTimeData) {
+          const timeLeftInMilliseconds = new Date(endTimeData) - new Date(startTimeData); // Chênh lệch thời gian tính bằng milliseconds
+          timeLeftInSeconds = timeLeftInMilliseconds / 1000; // Chuyển sang giây
+        }
+        console.log(timeLeftInSeconds);
+        if (timeLeftInSeconds !== 0) {
+          setTimeLeft(timeLeftInSeconds);
+        }
+
+
+        const roomInfor = response_showtime.room;
+        const response_typecustomer = await getTypeCustomer();
+        const typeCustomer = response_typecustomer.find(item => item.id === 5);
+
+        if (roomInfor && Array.isArray(roomInfor.seat)) {
+          const response_price = response_showtime.priceTicket * (100 - typeCustomer.discount) / 100;
+          const formattedSeatsData = formattedSeats(roomInfor.seat, roomInfor.numRows, roomInfor.numColumn);
+          const seatsWithTypes = changeTypeSeat(formattedSeatsData, response_price);
+          setSeats(seatsWithTypes || []);
+        } else {
+          console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
+          setSeats([]);
+        }
+      } catch (error) {
+        console.error("Error get showtime by id api", error);
+      }
+    };
+    getRoomInfor();
+    setViewSeat(true);
+  }, []);
 
   useEffect(() => {
     // if(selectedTheater === null){
@@ -55,59 +137,6 @@ function SeatSelection() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
-
-
-  useEffect(() => {
-    const getRoomInfor = async () => {
-      const hanoiTime = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
-      const hanoiTimeEnd = moment().tz("Asia/Ho_Chi_Minh").add(10, 'minutes').format("YYYY-MM-DDTHH:mm:ss");
-
-      setCurrentDateTime(hanoiTime);
-      setCurrentDateTimeEnd(hanoiTimeEnd);
-
-      if (!id) {
-        console.warn("ID của phòng không tồn tại.");
-        navigate('/admin/ticket-sales');
-        return;
-      }
-      try {
-        const response_customer = await getCustomerById(Number(userid));
-        setCustomer(response_customer);
-        console.log(response_customer);
-
-        const response_discount = await getAllDiscount();
-        const discountActive = response_discount.filter(entry => entry.status);
-        const customerDiscountIds = response_customer.discounts.map(discount => discount.id);
-        const discountNotInCustomer = discountActive.filter(
-          discount => !customerDiscountIds.includes(discount.id)
-        );
-        setDiscounts(discountNotInCustomer);
-        console.log(discountNotInCustomer);
-
-        const response_showtime = await getShowtimeByID(id);
-        setShowtime(response_showtime);
-        setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
-        const roomInfor = response_showtime.room;
-
-        const response_typecustomer = await getTypeCustomer();
-        const typeCustomer = response_typecustomer.find(item => item.id === 5);
-
-        if (roomInfor && Array.isArray(roomInfor.seat)) {
-          const response_price = response_showtime.priceTicket * (100 - typeCustomer.discount) / 100;
-          const formattedSeatsData = formattedSeats(roomInfor.seat, roomInfor.numRows, roomInfor.numColumn);
-          const seatsWithTypes = changeTypeSeat(formattedSeatsData, response_price);
-          setSeats(seatsWithTypes || []);
-        } else {
-          console.warn("Không có thông tin ghế hoặc dữ liệu ghế không phải là mảng.");
-          setSeats([]);
-        }
-      } catch (error) {
-        console.error("Error get showtime by id api", error);
-      }
-    };
-    getRoomInfor();
-    setViewSeat(true);
   }, []);
 
   useEffect(() => {
@@ -287,102 +316,81 @@ function SeatSelection() {
     0
   );
 
-
-  const handleChooseType = () => {
+  const handleChooseType = async () => {
     if (viewSeat === true && viewTypePay === false) {
       if (booking.length === 0) {
-        alert("Bạn chưa chọn ghế!");
+        alert("Bạn chưa chọn ghế!"); // Vẫn có thể giữ lại hoặc thay bằng modal khác
         return;
       }
       setViewSeat(false);
       setViewTypePay(true);
+    } else if (viewSeat === false && viewTypePay === true) {
 
-    }
-    else if (viewSeat === false && viewTypePay === true) {
-      if (!paymentMethod) {
-        alert('Vui lòng chọn hình thức thanh toán!');
-        return;
+      // Chuẩn bị dữ liệu thanh toán
+      const initialData = {};
+      initialData[5] = {};
+      if (seatGroups['regular'].length > 0) {
+        initialData[5][1] = seatGroups['regular'].length;
+      }
+      if (seatGroups['vip'].length > 0) {
+        initialData[5][2] = seatGroups['vip'].length;
+      }
+      if (seatGroups['double-seat'].length > 0) {
+        initialData[5][3] = seatGroups['double-seat'].length;
       }
 
-      setAmountDue(totalPrice - discountPrice);
-      if (paymentMethod === "PAYCASH") {
-        setShowPayCashModal(true);
-      }
-      console.log('Phương thức thanh toán:', paymentMethod);
+      const paymentOnline = {
+        showtimeid: showtime.id,
+        customerid: userid,
+        discountid: discount.id,
+        totalPrice: totalPrice,
+        discountPrice: discountPrice,
+        amount: totalPrice - discountPrice,
+        paytypecustomer: initialData,
+        ticket: booking
+      };
+
+      // Lưu dữ liệu thanh toán và mở modal xác nhận
+      setPaymentOnlineData(paymentOnline);
+      setModalOpen(true);
     }
   };
 
-  const handleCustomerPaidChange = (value) => {
-    const sanitizedValue = parseFloat(value.replace(/,/g, '')) || 0; // Loại bỏ dấu phẩy, chuyển sang số
-    setCustomerPaid(sanitizedValue);
+  const handleConfirm = async () => {
+    setModalOpen(false);
+    console.log(JSON.stringify(paymentOnlineData, null, 2));
 
-    // Tính toán tiền trả lại
-    const newChange = sanitizedValue - amountDue;
-    setChange(newChange > 0 ? newChange : 0); // Đảm bảo tiền trả lại không âm
+    try {
+      const response = await addPayOnlineCustomer(paymentOnlineData);
+      navigate('/home');
+      return;
+      // alert("Thanh toán thành công!");
+    } catch (error) {
+      console.error("Error addPayOnlineCustomer API", error);
+      alert("Thanh toán thất bại!");
+    }
   };
 
-
-  const handleCloseModal = () => {
-    setShowPayCashModal(false);
+  const handleCancel = () => {
+    setModalOpen(false);
   };
 
   const handleDiscountCode = (id) => {
     const discount = discounts.find(entry => entry.id === Number(id));
     setDiscount(discount);
-    if(discount.typeDiscount.id === 1){
+    if (discount.typeDiscount.id === 1) {
       setDiscountPrice(totalPrice * (discount.reducedValue) / 100);
     }
-    else if(discount.typeDiscount.id === 2) {
+    else if (discount.typeDiscount.id === 2) {
       setDiscountPrice(discount.reducedValue);
     }
     console.log(discount);
   }
 
-  const handleAddSubmit = async () => {
-    const initialData = {};
-    initialData[5] = {};
-    if (seatGroups['regular'].length > 0) {
-      initialData[5][1] = seatGroups['regular'].length;
-    }
-    if (seatGroups['vip'].length > 0) {
-      initialData[5][2] = seatGroups['vip'].length;
-    }
-    if (seatGroups['double-seat'].length > 0) {
-      initialData[5][3] = seatGroups['double-seat'].length;
-    }
-    const paymentCash = {
-      showtimeid: showtime.id,
-      customerid: userid,
-      discountid: discount.id,
-      totalPrice : totalPrice,
-      discountPrice : discountPrice,
-      amount: amountDue,
-      received: customerPaid,
-      moneyReturned: change,
-      paytypecustomer: initialData,
-      ticket: booking
-    }
-    console.log(JSON.stringify(paymentCash, null, 2));
-    try {
-      const response = await addPayCashCustomer(paymentCash);
-      if (response) {
-        alert("Bạn đã đặt ghế thành công!");
-        navigate('/view-booking', { state: { id: response } });
-        return;
-      } else {
-        alert("Lỗi khi đặt ghế!");
-        return;
-      }
-    } catch (error) {
-      console.error("Error addPayCash api", error);
-    }
-
-  }
-
 
   const handleExitType = () => {
     if (viewSeat === true && viewTypePay === false) {
-      navigate('/admin/ticket-sales');
+      navigate('/movie-detail', { state: { id: showtime.movie?.id, theaterid: theaterid } });
       return;
     }
     else if (viewSeat === false && viewTypePay === true) {
@@ -545,40 +553,12 @@ function SeatSelection() {
               </div>
             </div>
 
-
-            <h3 className="section-title">Hình thức thanh toán</h3>
-            <div className="payment-methods">
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYCARD"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Thẻ tín dụng/Thẻ ghi nợ
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYQR"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Ví điện tử Momo
-              </label>
-              <label className="payment-option">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="PAYCASH"
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="payment-radio"
-                />
-                Thanh toán tiền mặt
-              </label>
-            </div>
+            <ConfirmModal
+              isOpen={isModalOpen}
+              onClose={handleCancel}
+              onConfirm={handleConfirm}
+              message="Bạn xác nhận muốn thanh toán?"
+            />
           </>
         )}
 
@@ -638,69 +618,6 @@ function SeatSelection() {
         <button className="back-button" onClick={handleExitType}>Trở lại</button>
         <div className="countdown-timer">Thời gian còn lại: {formatTime(timeLeft)}</div>
       </div>
-
-
-
-      {showPayCashModal && (
-        <>
-          <div className="modal-overlay" onClick={handleCloseModal}></div>
-          <div className="modal">
-            <div className="modal-header">
-              <h2>Thanh toán bằng tiền mặt</h2>
-              <button className="modal-close" onClick={handleCloseModal}>
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="form-group">
-                <label>
-                  <strong>Số tiền cần thanh toán:</strong>
-                  <input
-                    type="text"
-                    name="amountDue"
-                    className="modal-input"
-                    value={amountDue.toLocaleString('vi-VN')} // Hiển thị giá trị từ state
-                    readOnly
-                  />
-                </label>
-              </div>
-              <div className="form-group">
-                <label>
-                  <strong>Tiền khách hàng trả:</strong>
-                  <input
-                    type="text"
-                    name="customerPaid"
-                    className="modal-input"
-                    placeholder="Nhập số tiền khách hàng trả"
-                    value={customerPaid}
-                    onChange={(e) => handleCustomerPaidChange(e.target.value)} // Hàm xử lý khi nhập tiền
-                  />
-                </label>
-              </div>
-              <div className="form-group">
-                <label>
-                  <strong>Tiền trả lại khách:</strong>
-                  <input
-                    type="text"
-                    name="change"
-                    className="modal-input"
-                    value={change.toLocaleString('vi-VN')} // Hiển thị tiền trả lại từ state
-                    readOnly
-                  />
-                </label>
-              </div>
-              <div className="modal-buttons">
-                <button className="cancel-button" onClick={handleCloseModal}>
-                  Hủy
-                </button>
-                <button className="submit-button" onClick={handleAddSubmit}>
-                  Xác nhận
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
 
 
 

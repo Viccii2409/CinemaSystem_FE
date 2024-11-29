@@ -1,68 +1,74 @@
-/* General Styles for the Homepage Header Component */
+/* Header Styles */
 .homepage-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #7add58;
-  padding: 15px 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
+  position: fixed; /* Cố định header */
+  top: 0;
+  left: 0;
+  width: 98%;
+  z-index: 1000; /* Đặt header lên trên các phần tử khác */
 }
 
-.header-title {
-  font-size: 2em; /* Increase font size */
+.homepage-header .header-title {
+  font-size: 1.8em; /* Giữ kích thước phù hợp */
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
-.header-title a {
+.homepage-header .header-title a {
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.header-title a:hover {
-  color: #055d05; /* Dark green on hover */
+.homepage-header .header-title a:hover {
+  color: #055d05;
 }
 
-.navbar {
+.homepage-header .navbar {
   display: flex;
-  gap: 25px; /* Increase gap for spacing */
+  gap: 15px;
 }
 
-.navbar a {
+.homepage-header .navbar a {
   text-decoration: none;
   color: #ffffff;
   font-weight: bold;
-  font-size: 1.1em; /* Increase font size */
+  font-size: 1em;
   transition: color 0.3s ease;
   position: relative;
 }
 
-.navbar a:hover {
-  color: #055d05; /* Dark green on hover */
+.homepage-header .navbar a:hover {
+  color: #055d05;
 }
 
-.navbar a::after {
+.homepage-header .navbar a::after {
   content: "";
   display: block;
   width: 0;
   height: 2px;
-  background: #055d05; /* Dark green underline */
+  background: #055d05;
   transition: width 0.3s;
   position: absolute;
-  bottom: -5px;
+  bottom: -4px;
   left: 0;
 }
 
-.navbar a:hover::after {
+.homepage-header .navbar a:hover::after {
   width: 100%;
 }
 
-.location-selector {
+/* Dropdown Selector */
+.homepage-header .location-selector {
   padding: 10px 15px;
-  font-size: 1em; /* Increase font size */
+  font-size: 1em;
   font-weight: bold;
   border-radius: 5px;
   border: 1px solid #cccccc;
@@ -70,28 +76,31 @@
   color: #333;
   cursor: pointer;
   transition: box-shadow 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  max-width: 250px; /* Tăng chiều rộng tối đa của dropdown */
+  min-width: 200px; /* Đảm bảo không quá nhỏ */
 }
 
-.location-selector:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.homepage-header .location-selector:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   color: #ffffff;
-  background-color: #055d05; /* Dark green on hover */
+  background-color: #055d05;
 }
 
-.login-button {
+/* Login Button */
+.homepage-header .login-button {
   background-color: #0cad0c;
   color: white;
   border: none;
-  padding: 12px 28px; /* Increase padding for a larger button */
-  font-size: 1em; /* Increase font size */
+  padding: 8px 20px;
+  font-size: 0.9em;
   font-weight: bold;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.3s, color 0.3s;
 }
 
-.login-button:hover {
-  background-color: #055d05; /* Dark green on hover */
+.homepage-header .login-button:hover {
+  background-color: #055d05;
   transform: scale(1.05);
   color: #ffffff;
 }

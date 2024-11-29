@@ -1,0 +1,72 @@
+/* Modal Overlay Confirm */
+.modal-overlay-confirm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Box */
+.modal-overlay-confirm .modal {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Modal Message */
+.modal-overlay-confirm .modal p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Modal Buttons Container */
+.modal-overlay-confirm .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Modal Button */
+.modal-overlay-confirm .modal-buttons button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Confirm Button */
+.modal-overlay-confirm .modal-buttons button:first-child {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-overlay-confirm .modal-buttons button:first-child:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Cancel Button */
+.modal-overlay-confirm .modal-buttons button:last-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-overlay-confirm .modal-buttons button:last-child:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
