@@ -1,40 +1,70 @@
-import React, { useState } from 'react';
-import './RegisterPage.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faUser, faPhone, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import "./RegisterPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faLock,
+  faUser,
+  faPhone,
+  faCalendarAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    dateOfBirth: '',
-    phone: '',
-    gender: '',
-    city: ''
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    dob: "",
+    phone: "",
+    gender: "",
+    address: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Form Data:', formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const response = await fetch("http://localhost:8080/api/user/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      alert("Đăng ký thành công!");
+      console.log("Response:", result);
+      // Chuyển hướng người dùng hoặc cập nhật trạng thái UI
+    } else {
+      const errorData = await response.json();
+      alert("Lỗi đăng ký: " + errorData.message || "Unknown error");
+      console.error("Error response:", errorData);
+    }
   };
 
   return (
     <div className="register-page">
       <div className="register-form-container">
         <div className="tabs">
-          <button><Link to="/login-page">ĐĂNG NHẬP</Link></button>
+          <button>
+            <Link to="/login-page">ĐĂNG NHẬP</Link>
+          </button>
           <button className="active-tab">ĐĂNG KÝ</button>
         </div>
         <form onSubmit={handleRegister}>
@@ -95,14 +125,14 @@ const RegisterPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="dateOfBirth">
+            <label htmlFor="dob">
               <FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh
             </label>
             <input
               type="date"
               id="dateOfBirth"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
+              name="dob"
+              value={formData.dob}
               onChange={handleInputChange}
               required
             />
@@ -115,27 +145,30 @@ const RegisterPage = () => {
                   type="radio"
                   name="gender"
                   value="Nam"
-                  checked={formData.gender === 'Nam'}
+                  checked={formData.gender === "Nam"}
                   onChange={handleInputChange}
-                /> Nam
+                />{" "}
+                Nam
               </label>
               <label>
                 <input
                   type="radio"
                   name="gender"
                   value="Nữ"
-                  checked={formData.gender === 'Nữ'}
+                  checked={formData.gender === "Nữ"}
                   onChange={handleInputChange}
-                /> Nữ
+                />{" "}
+                Nữ
               </label>
               <label>
                 <input
                   type="radio"
                   name="gender"
                   value="Khác"
-                  checked={formData.gender === 'Khác'}
+                  checked={formData.gender === "Khác"}
                   onChange={handleInputChange}
-                /> Khác
+                />{" "}
+                Khác
               </label>
             </div>
           </div>
@@ -154,12 +187,12 @@ const RegisterPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="city">Tỉnh/Thành phố</label>
+            <label htmlFor="address">Tỉnh/Thành phố</label>
             <input
               type="text"
               id="city"
-              name="city"
-              value={formData.city}
+              name="address"
+              value={formData.address}
               onChange={handleInputChange}
               placeholder="Tỉnh/Thành phố"
               required
@@ -167,10 +200,15 @@ const RegisterPage = () => {
           </div>
           <div className="form-group terms">
             <label>
-              <input type="checkbox" required /> Tôi cam kết tuân theo <Link to="/privacy-policy">chính sách bảo mật</Link> và <Link to="/terms-of-use">điều khoản sử dụng</Link> của LaLCinemas
+              <input type="checkbox" required />
+              Tôi cam kết tuân theo{" "}
+              <Link to="/privacy-policy">chính sách bảo mật</Link> và{" "}
+              <Link to="/terms-of-use">điều khoản sử dụng</Link> của LaLCinemas
             </label>
           </div>
-          <button type="submit" className="register-button">Đăng ký</button>
+          <button type="submit" className="register-button">
+            Đăng ký
+          </button>
         </form>
         <div className="social-login">
           <p>Đăng ký bằng</p>

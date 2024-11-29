@@ -28,7 +28,7 @@ import CinemaSystem from "./customer/CinemaSystem";
 import SeatSelection from "./customer/SeatSelection";
 import PaymentInfo from "./customer/PaymentInfo";
 import MovieDetail from "./customer/MovieDetail";
-
+import UserInfor from "./customer/UserInfor";
 function App() {
   return (
     <Router>
@@ -60,6 +60,7 @@ function CustomerLayout() {
             element={<TheaterDetails />}
           />
           <Route path="theater-detail" element={<TheaterDetails />} />
+          <Route path="user-infor" element={<UserInfor />} />
         </Routes>
       </div>
       <Footer />
