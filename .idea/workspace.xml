@@ -2,7 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/admin/CinemaManagement.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/CinemaManagement.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BarcodeGenerator.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TheaterContext.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/CinemaTicket.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/CinemaTicket.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/CinemaTicket_2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/CinemaTicket_2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/MovieService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/ViewTicketAdmin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/TicketConfig.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/customer/ViewBooking.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/customer/ViewBooking.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/392002936.index" beforeDir="false" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/392002936.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/AddRoom.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/AddRoom.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/DiscountManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/DiscountManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/MovieCategories.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/MovieCategories.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/MovieCategories.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/MovieCategories.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/MovieCategoriesService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/MovieCategoriesService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Movies.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Movies.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/RoomManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/RoomManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/TicketPriceManagement.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TicketPriceManagement.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/TicketPriceManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TicketPriceManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/TheaterConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/TheaterConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/UserConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/UserConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/Footer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/MovieDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/MovieDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/SeatSelection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/SeatSelection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,21 +43,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "loannt401"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;loannt401&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/Viccii2409/Phat_trien_he_thong_ban_ve_xem_phim_SpringBoot_ReactJS_CSS.git",
+    "url": "https://github.com/Viccii2409/CinemaSystem_FE.git",
     "accountId": "ebad391c-9aba-4792-b06d-e8c8a6e03561"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2o6RgUmLItyOF6n6UN5oojLuHJg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,9 +66,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "#9 on Merging Anh",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/Phat_trien_he_thong_ban_ve_xem_phim_SpringBoot_ReactJS_CSS"
+    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/movie_fe_edit/CinemaSystem_FE"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
