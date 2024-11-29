@@ -15,20 +15,25 @@ function RoomManagement() {
 
     useEffect(() => {
         const fetchTheater = async () => {
-            const response_theater = await getTheaterRoomDto();
-            const filteredTheaters = response_theater.filter(theater => theater.status === true);
-            setTheaters(filteredTheaters);
-
-            if (id) {
-                const theater = filteredTheaters.find(x => x.id === parseInt(id));
-                if (theater) {
-                    setTheaterID(theater.id);
-                    setRooms(theater.room);
-                } else {
-                    console.warn("No theater found with the given ID:", id);
-                    setTheaterID(null);
-                    setRooms([]);
+            try {
+                const response_theater = await getTheaterRoomDto();
+                const filteredTheaters = response_theater.filter(theater => theater.status === true);
+                setTheaters(filteredTheaters);
+    
+                if (id) {
+                    const theater = filteredTheaters.find(x => x.id === parseInt(id));
+                    if (theater) {
+                        setTheaterID(theater.id);
+                        setRooms(theater.room);
+                    } else {
+                        console.warn("No theater found with the given ID:", id);
+                        setTheaterID(null);
+                        setRooms([]);
+                    }
                 }
+                
+            } catch (error) {
+                console.error(error);
             }
         };
 

@@ -1,25 +1,30 @@
-import React from "react";
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HeaderAdmin from "./admin/HeaderAdmin";
-import Sidebar from "./admin/Sidebar";
-import CinemaManagement from "./admin/TheaterManagement";
-import MovieCategories from "./admin/MovieCategories";
-import Movies from "./admin/Movies";
-import RoomManagement from "./admin/RoomManagement";
-import TicketPriceManagement from "./admin/TicketPriceManagement";
-import ScheduleManagement from "./admin/ScheduleManagement";
-import EmployeeManagement from "./admin/EmployeeManagement";
-import AccessPermission from "./admin/AccessPermission";
-import CustomerManagement from "./admin/CustomerManagement";
-import CustomerDetail from "./admin/CustomerDetail";
-import DiscountManagement from "./admin/DiscountManagement";
-import AddRoom from "./admin/AddRoom";
-import ViewRoom from "./admin/ViewRoom";
-import EditRoom from "./admin/EditRoom";
+
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HeaderAdmin from './admin/HeaderAdmin';
+import Sidebar from './admin/Sidebar';
+import CinemaManagement from './admin/TheaterManagement';
+import MovieCategories from './admin/MovieCategories';
+import Movies from './admin/Movies';
+import RoomManagement from './admin/RoomManagement';
+import TicketPriceManagement from './admin/TicketPriceManagement';
+import ScheduleManagement from './admin/ScheduleManagement';
+import EmployeeManagement from './admin/EmployeeManagement';
+import AccessPermission from './admin/AccessPermission';
+import CustomerManagement from './admin/CustomerManagement';
+import CustomerDetail from './admin/CustomerDetail';
+import DiscountManagement from './admin/DiscountManagement';
+import AddRoom from './admin/AddRoom';
+import ViewRoom from './admin/ViewRoom';
+import EditRoom from './admin/EditRoom';
+import CinemaTicket from './admin/CinemaTicket';
+import CinemaTicket_2 from './admin/CinemaTicket_2';
+import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
-import TheaterDetails from "./customer/TheaterDetails";
+import { TheaterProvider } from "./TheaterContext";
+import TheaterDetails from './customer/TheaterDetails';
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
@@ -29,6 +34,8 @@ import SeatSelection from "./customer/SeatSelection";
 import PaymentInfo from "./customer/PaymentInfo";
 import MovieDetail from "./customer/MovieDetail";
 import UserInfor from "./customer/UserInfor";
+import ViewBooking from "./customer/ViewBooking";
+
 function App() {
   return (
     <Router>
@@ -43,27 +50,30 @@ function App() {
 function CustomerLayout() {
   return (
     <div className="customer-layout">
-      <HeaderCustomer />
-      <div className="content">
-        <Routes>
-          <Route path="" element={<HomePage />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="login-page" element={<LoginPage />} />
-          <Route path="register-page" element={<RegisterPage />} />
-          <Route path="seat-selection" element={<SeatSelection />} />
-          <Route path="payment-info" element={<PaymentInfo />} />
-          <Route path="home/movie-detail" element={<MovieDetail />} />
-          <Route path="movie-detail" element={<MovieDetail />} />
-          <Route path="cinema-system" element={<CinemaSystem />} />
-          <Route
-            path="cinema-system/theater-detail"
-            element={<TheaterDetails />}
-          />
+      <TheaterProvider>
+        <HeaderCustomer />
+        <div className="content">
+          <Routes>
+            <Route path="" element={<HomePage />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="login-page" element={<LoginPage />} />
+            <Route path="register-page" element={<RegisterPage />} />
+            <Route path="seat-selection" element={<SeatSelection />} />
+            <Route path="view-booking" element={<ViewBooking />} />
+            <Route path="payment-info" element={<PaymentInfo />} />
+            <Route path="movie-detail" element={<MovieDetail />} />
+            <Route path="cinema-system" element={<CinemaSystem />} />
+            <Route path="movie-detail" element={<MovieDetail />} />
+            <Route
+              path="cinema-system/theater-detail"
+              element={<TheaterDetails />}
+            />
           <Route path="theater-detail" element={<TheaterDetails />} />
           <Route path="user-infor" element={<UserInfor />} />
-        </Routes>
-      </div>
-      <Footer />
+          </Routes>
+        </div>
+        <Footer />
+      </TheaterProvider>
     </div>
   );
 }
@@ -87,7 +97,9 @@ function AdminLayout() {
             <Route path="movies" element={<Movies />} />
             <Route path="showtimes" element={<ScheduleManagement />} />
             <Route path="promotions" element={<DiscountManagement />} />
-            <Route path="ticket-sales" element={<div>Bán vé Content</div>} />
+            <Route path="ticket-sales" element={<CinemaTicket />} />
+            <Route path="ticket-sales/booking-seat" element={<CinemaTicket_2 />} />
+            <Route path="ticket-sales/booking-seat/view-ticket-admin" element={<ViewTicketAdmin />} />
             <Route path="staff" element={<EmployeeManagement />} />
             <Route
               path="staff/access-permission"
@@ -99,7 +111,7 @@ function AdminLayout() {
               element={<CustomerDetail />}
             />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
-            <Route path="account" element={<AddRoom />} />
+            <Route path="account" element={<div>Thống kê Content</div>} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>
         </div>
