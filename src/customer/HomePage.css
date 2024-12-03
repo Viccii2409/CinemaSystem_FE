@@ -171,6 +171,21 @@
   border-radius: 10px;
 }
 
+.homepage .category {
+  border: 1.5px solid #7add58;
+  background-color: #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
 .homepage .promotions-section {
   display: flex;
   flex-direction: column;
@@ -178,14 +193,6 @@
   padding-top: 25px;
   justify-content: center;
   align-items: center;
-}
-
-.homepage .category {
-  border: 1.5px solid #7add58;
-  background-color: #fff;
-  font-weight: bold;
-  margin-bottom: 20px;
-  border-radius: 10px;
 }
 
 .homepage .promotions-section h2 {
@@ -197,44 +204,57 @@
   color: #7add58;
 }
 
-.homepage .promotion-carousel {
+.promotion-carousel {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 20px;
+  justify-content: center;
 }
 
-.homepage .discount-item {
-  width: 320px;
-  background-color: #ffffff;
+.discount-item {
+  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 280px;
+  overflow: hidden;
 }
 
-.homepage .discount-item:hover {
-  transform: scale(1.03);
+.discount-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.homepage .discount-image {
+.discount-image {
   width: 100%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  height: 160px;
+  object-fit: cover;
+  cursor: pointer;
 }
 
-.homepage .dis-title {
+.discount-content {
   padding: 15px;
+  text-align: center;
 }
 
-.homepage .dis-title h3 {
-  color: #7add58;
-  text-align: left;
+.discount-content h3 {
+  font-size: 16px;
+  color: #34c759;
+  margin-bottom: 10px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.homepage .dis-title p {
-  text-align: left;
-  color: #666;
+.discount-content p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
 }
+
+
+
+
+
 /* Showtime Modal Overlay */
 .homepage .showtime-overlay {
   position: fixed;
@@ -433,3 +453,70 @@
   color: #7add58;
   font-size: 0.9em;
 }
+
+
+
+
+
+/* Overlay Background */
+.theater-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal */
+.theater-selector-modal {
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 15px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+.theater-selector-modal h2 {
+  font-size: 20px;
+  color: #333333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Theater List */
+.theater-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* Theater Button */
+.theater-button {
+  background-color: #ffffff;
+  border: 2px solid #7add58;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333333;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.theater-button:hover {
+  background-color: #7add58;
+  color: white;
+  transform: scale(1.05);
+}
+

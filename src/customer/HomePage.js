@@ -18,9 +18,12 @@ import {
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getTheater } from "../config/TheaterConfig.js";
 const HomePage = () => {
   const navigate = useNavigate();
-  const { selectedTheater } = useContext(TheaterContext);
+  const [theaters, setTheaters] = useState([]);
+  const [theater, setTheater] = useState([]);
+  const { selectedTheater, setSelectedTheater } = useContext(TheaterContext);
   const [movienows, setMovieNow] = useState([]);
   const [movie, setMovie] = useState([]);
   const [listDay, setListDay] = useState([]);
@@ -35,13 +38,34 @@ const HomePage = () => {
       try {
         const response = await getMovieNow();
         setMovieNow(response.data); 
+        const response_theater = await getTheater();
+        const theaterData = response_theater.data.filter(theater => theater.status);
+        setTheaters(theaterData); 
+        const selectedTheaterData = theaterData.find(
+          entry => entry.id === Number(selectedTheater)
+        );
+        
+        if (selectedTheaterData) {
+          setTheater(selectedTheaterData);
+        } else {
+          console.warn("Rạp được chọn không tồn tại:", selectedTheater);
+        }
+        
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Phim:", error);
       }
     };
-    fetchMovieNow(); // Gọi hàm fetchTheater khi component được render lần đầu
-  }, []); // Đóng ngoặc vuông để hoàn tất dependency array và gọi chỉ khi component render lần đầu
+    fetchMovieNow(); 
+  }, [selectedTheater]); 
 
+
+
+  const handleSelectTheater = (theater) => {
+    setSelectedTheater(theater.id);
+    setTheater(theater);
+    return;
+  }
+  
   const [moviesoons, setMovieSoon] = useState([]);
   useEffect(() => {
     const fetchMovieSoon = async () => {
@@ -72,14 +96,10 @@ const HomePage = () => {
   const [showScheduleModal, setScheduleModal] = useState(false);
 
   const handleScheduleModal = (id) => {
-    if (selectedTheater === null) {
-      alert("Bạn chưa chọn rạp!");
-      return;
-    }
     const movie = movienows.find(movie => movie.id === id);
     const listDay = [];
     const showtime = movie.showtime.reduce((acc, show) => {
-      if (show.theaterID === selectedTheater.id) {
+      if (show.theaterID === Number(selectedTheater)) {
         const timeObj = { startTime: show.startTime, endTime: show.endTime, id: show.id, emptySeat: show.emptySeat, typeRoomName: show.typeRoomName };
 
         // Thêm ngày vào listDay nếu chưa có
@@ -99,6 +119,7 @@ const HomePage = () => {
     }, []);
     setMovie(movie);
     setListDay(listDay)
+    setSelectedDay(listDay[0]);
     setShowtime(showtime);
     setScheduleModal(true);
   };
@@ -122,7 +143,7 @@ const HomePage = () => {
 
   const handleShowtimeSelect = (showtimeid) => {
     console.log(showtimeid);
-    navigate('/seat-selection', { state: { id: showtimeid } });
+    navigate('/seat-selection', { state: { id: showtimeid, theaterid : selectedTheater } });
   }
 
 
@@ -198,7 +219,7 @@ const HomePage = () => {
           {movienows.map((movienow) => (
             <div className="movie-item" key={movienow.id}>
               <div className="image-container">
-                <Link to="/movie-detail" state={{ id: movienow.id }}>
+                <Link to="/movie-detail" state={{ id: movienow.id, theaterid : selectedTheater }}>
                   <img
                     src={movienow.link}
                     alt="movie"
@@ -220,7 +241,7 @@ const HomePage = () => {
 
               </div>
               <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: movienow.id }}>
+                <Link to="/movie-detail" state={{ id: movienow.id, theaterid : selectedTheater }}>
                   {movienow.title}
                 </Link>
               </h3>
@@ -235,10 +256,10 @@ const HomePage = () => {
           <h2>PHIM SẮP CHIẾU</h2>
         </div>
         <div className="movie-list">
-          {moviesoons.map((moviesoon, index) => (
+          {moviesoons.map((moviesoon) => (
             <div className="movie-item" key={moviesoon.id}>
               <div className="image-container">
-                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid : selectedTheater }}>
                   <img
                     src={moviesoon.link}
                     alt="movie"
@@ -254,7 +275,7 @@ const HomePage = () => {
               </div>
 
               <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: moviesoon.id }}>
+                <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid : selectedTheater }}>
                   {moviesoon.title}
                 </Link>
               </h3>
@@ -316,7 +337,7 @@ const HomePage = () => {
               LỊCH CHIẾU -{" "}
               <span class="movie-title">{movie.title}</span>
             </h2>
-            <h3>{selectedTheater.name}</h3>
+            <h3>{theater.name}</h3>
             <div class="date-tabs">
               {listDay.length > 0 ? (
                 <div className="days-list-container">
@@ -362,6 +383,26 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+      )}
+
+
+      {selectedTheater === null && (
+        <div className="theater-selector-overlay">
+        <div className="theater-selector-modal">
+          <h2>Chào mừng quý khách đến với LAL CINEMA</h2>
+          <div className="theater-list">
+            {theaters.map((theater) => (
+              <button
+                key={theater.id}
+                className="theater-button"
+                onClick={() => handleSelectTheater(theater)}
+              >
+                {theater.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
       )}
     </div>
   );

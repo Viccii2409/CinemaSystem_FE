@@ -8,7 +8,7 @@
   font-family: Arial, sans-serif;
 }
 
-.ticket-info-title {
+.ticket-info-section .ticket-info-title {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
@@ -16,42 +16,42 @@
   margin-bottom: 20px;
 }
 
-.ticket-main {
+.ticket-info-section .ticket-main {
   display: flex;
   gap: 20px;
   align-items: flex-start;
   margin-bottom: 20px;
 }
 
-.ticket-image-container {
+.ticket-info-section .ticket-image-container {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.ticket-image {
+.ticket-info-section .ticket-image {
   max-width: 200px;
   height: auto;
   border-radius: 5px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.ticket-details {
+.ticket-info-section .ticket-details {
   flex: 2;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.ticket-other-info {
+.ticket-info-section .ticket-other-info {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.ticket-row {
+.ticket-info-section .ticket-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,49 +59,47 @@
   border-bottom: 1px solid #ddd;
 }
 
-.ticket-row:last-child {
+.ticket-info-section .ticket-row:last-child {
   border-bottom: none;
 }
 
-.ticket-label {
+.ticket-info-section .ticket-label {
   font-weight: bold;
   color: #555;
 }
 
-.ticket-value {
+.ticket-info-section .ticket-value {
   color: #333;
   max-width: 70%;
   text-align: right;
 }
 
-.barcode-row {
+.ticket-info-section .barcode-row {
   text-align: center;
 }
 
 @media (max-width: 768px) {
-  .ticket-main {
+  .ticket-info-section .ticket-main {
     flex-direction: column;
     gap: 10px;
   }
 
-  .ticket-image {
+  .ticket-info-section .ticket-image {
     margin-bottom: 10px;
   }
 
-  .ticket-value {
+  .ticket-info-section .ticket-value {
     text-align: left;
   }
 }
 
-
-
-.ticket-actions {
+.ticket-info-section .ticket-actions {
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
 }
 
-.btn-primary, .btn-secondary {
+.ticket-info-section .btn-primary, .ticket-info-section .btn-secondary {
   padding: 10px 15px;
   font-size: 16px;
   border-radius: 5px;
@@ -110,12 +108,12 @@
   font-weight: bold;
 }
 
-.btn-secondary {
+.ticket-info-section .btn-secondary {
   background-color: #6c757d;
   color: white;
   border: none;
 }
 
-.btn-secondary:hover {
+.ticket-info-section .btn-secondary:hover {
   background-color: #5a6268;
 }

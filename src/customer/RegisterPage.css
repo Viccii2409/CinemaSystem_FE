@@ -29,7 +29,6 @@
   cursor: pointer;
   font-weight: bold;
 }
-
 .register-page .tabs .active-tab {
   background-color: #66bb6a;
   color: #fff;
@@ -71,6 +70,7 @@
 }
 
 .register-page .register-button {
+  cursor: pointer;
   width: 100%;
   padding: 15px;
   background-color: #66bb6a;
@@ -78,9 +78,10 @@
   border: none;
   border-radius: 5px;
   font-size: 16px;
-  cursor: pointer;
 }
-
+.register-page .register-button:hover {
+  background-color: darkgreen;
+}
 .register-page .social-login {
   text-align: center;
   margin-top: 20px;
