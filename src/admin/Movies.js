@@ -6,10 +6,14 @@ import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@forta
 import Modal from 'react-modal';
 import MovieService from './MovieService';
 import GenreService from './MovieCategoriesService';
+import { useNavigate } from 'react-router-dom';
+
+
 
 Modal.setAppElement('#root');
 
 const Movies = () => {
+    const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [genres, setGenres] = useState([]);
@@ -125,8 +129,7 @@ const Movies = () => {
 
     // Xem chi tiết phim
     const handleViewMovie = (id) => {
-        const movie = movies.find((m) => m.id === id);
-        alert(`Xem thông tin phim: ${movie.title}`);
+        navigate(`/admin/movie-detail`, { state: { id } }); // Chuyển hướng đến trang chi tiết với `id` được truyền qua state
     };
 
     // Sửa phim
@@ -350,5 +353,5 @@ const Movies = () => {
         </div>
     );
 };
-
+ 
 export default Movies;
