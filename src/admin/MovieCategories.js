@@ -69,15 +69,15 @@ const MovieCategories = () => {
         }
     };
 
-    const handleHideGenre = async (id) => {
-        try {
-            await MovieCategoriesService.hideGenre(id);
-            await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
-            alert("Chuyển trạng thái thành công!")
-        } catch (error) {
-            console.error('Error hiding genre:', error);
-        }
-    };
+    // const handleHideGenre = async (id) => {
+    //     try {
+    //         await MovieCategoriesService.hideGenre(id);
+    //         await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
+    //         alert("Chuyển trạng thái thành công!")
+    //     } catch (error) {
+    //         console.error('Error hiding genre:', error);
+    //     }
+    // };
 
     const handleViewGenre = (genre) => {
         setSelectedGenre(genre);
@@ -138,7 +138,7 @@ const MovieCategories = () => {
                         <th>STT</th>
                         <th>Tên thể loại</th>
                         <th>Mô tả</th>
-                        <th>Trạng thái</th>
+                        {/* <th>Trạng thái</th> */}
                         <th>Thao tác</th>
                     </tr>
                 </thead>
@@ -148,7 +148,7 @@ const MovieCategories = () => {
                             <td>{(currentPage - 1) * recordsPerPage + index + 1}</td>
                             <td>{genre.name}</td>
                             <td>{genre.description}</td>
-                            <td>
+                            {/* <td>
                                 <label className="switch">
                                     <input
                                         type="checkbox"
@@ -157,7 +157,7 @@ const MovieCategories = () => {
                                     />
                                     <span className="slider round"></span>
                                 </label>
-                            </td>
+                            </td> */}
                             <td>
                                 <button className="view-button" onClick={() => handleViewGenre(genre)}>
                                     <FontAwesomeIcon icon={faEye} />

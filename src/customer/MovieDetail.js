@@ -84,7 +84,7 @@ const MovieDetail = () => {
       <main className="movie-detail-main">
         <section className="movie-info" key={movie.id}>
           <div className="movie-poster">
-            <img src={image} alt={movie.title} />
+            <img src={movie.image} alt={movie.title} />
           </div>
           <div className="movie-description">
             <h1>{movie.title}</h1>
@@ -105,7 +105,7 @@ const MovieDetail = () => {
             <iframe
               width="100%"
               height="315"
-              src={movie.trailer?.link}
+              src={movie.trailer}
               title="Trailer Video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -86,12 +86,12 @@ const Movies = () => {
                 releaseDate: '',
                 description: '',
                 status: true,
-                rating: 0,
                 director: '',
                 language: '',
                 cast: '',
                 genre: [],
-                image: ''
+                image: '',
+                trailer: ''
             });
             setIsAddModalOpen(false);
             alert("Thêm phim thành công!");
