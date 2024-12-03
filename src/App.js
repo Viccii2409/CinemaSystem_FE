@@ -21,6 +21,7 @@ import EditRoom from './admin/EditRoom';
 import CinemaTicket from './admin/CinemaTicket';
 import CinemaTicket_2 from './admin/CinemaTicket_2';
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
+import MovieDetailAdmin from "./admin/MovieDetail"
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./TheaterContext";
@@ -95,6 +96,7 @@ function AdminLayout() {
             <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
+            <Route path="movie-detail" element={<MovieDetailAdmin />} /> // xem chi tiết movie
             <Route path="showtimes" element={<ScheduleManagement />} />
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<CinemaTicket />} />
