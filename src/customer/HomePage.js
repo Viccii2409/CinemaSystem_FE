@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
-import { TheaterContext } from "../TheaterContext";
+import { TheaterContext } from "../context/TheaterContext.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from 'react-router-dom';
 import {
   faAngleLeft,
@@ -12,13 +14,11 @@ import {
 import {
   getMovieNow,
   getMovieSoon,
-  getDiscount,
   getSlideshow,
 } from "../config/MovieConfig.js";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { getTheater } from "../config/TheaterConfig.js";
+import { getAllDiscount } from "../config/TicketConfig.js";
+
 const HomePage = () => {
   const navigate = useNavigate();
   const [theaters, setTheaters] = useState([]);
@@ -84,8 +84,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchDiscount = async () => {
       try {
-        const response = await getDiscount();
-        setDiscounts(response.data); // Lưu dữ liệu vào state cinemas
+        const response = await getAllDiscount();
+        setDiscounts(response); // Lưu dữ liệu vào state cinemas
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Ưu đãi:", error);
       }
@@ -142,7 +142,7 @@ const HomePage = () => {
   };
 
   const handleShowtimeSelect = (showtimeid) => {
-    console.log(showtimeid);
+    
     navigate('/seat-selection', { state: { id: showtimeid, theaterid : selectedTheater } });
   }
 

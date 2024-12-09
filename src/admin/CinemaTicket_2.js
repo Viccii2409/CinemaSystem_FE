@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { addPayCash, addPayOnline, addSelectedSeat, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { addPayCash, addPayOnlineAdmin, addSelectedSeat, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
 import { getTypeSeat } from '../config/TheaterConfig';
+import { AuthContext } from '../context/AuthContext';
 import ConfirmModal from "../ConfirmModal";
 
 function CinemaTicket_2() {
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = location.state || '';
-    const userid = 1;
+    const { user, loading } = useContext(AuthContext);
+    // const userid = 1;
     const [currentDateTime, setCurrentDateTime] = useState('');
     const [currentDateTimeEnd, setCurrentDateTimeEnd] = useState('');
     const [timeLeft, setTimeLeft] = useState(10 * 60);
@@ -69,16 +71,21 @@ function CinemaTicket_2() {
                 navigate('/admin/ticket-sales');
                 return;
             }
+            if (loading) return;
+            if(user == null){
+              navigate('/login-page');
+              return;
+            }
             try {
                 const response_showtime = await getShowtimeByID(id);
                 setShowtime(response_showtime);
-                setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
+                setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== user.id || seat.status === "confirmed"));
 
                 const bookingData = [];
                 let startTimeData = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
                 let endTimeData = null;
                 response_showtime.selectedSeats
-                    .filter(seat => seat.userid === userid && seat.status === "pending")
+                    .filter(seat => seat.userid === user.id && seat.status === "pending")
                     .forEach(seat => {
                         bookingData.push({
                             id: seat.seatid,
@@ -129,7 +136,7 @@ function CinemaTicket_2() {
         };
         getRoomInfor();
         setViewSeat(true);
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         const stopListen = getSelectedSeatByShowtime(id, (selectedSeatData) => {
@@ -142,7 +149,7 @@ function CinemaTicket_2() {
                 if (!seatExists) {
                     // Nếu ghế chưa tồn tại và có trạng thái "pending" hoặc "confirmed"
                     if (
-                        selectedSeatData.userid !== userid &&
+                        selectedSeatData.userid !== user.id &&
                         (selectedSeatData.status === "pending" || selectedSeatData.status === "confirmed")
                     ) {
                         return [...prevSelectedSeat, selectedSeatData];
@@ -159,7 +166,7 @@ function CinemaTicket_2() {
         });
 
         return () => stopListen(); // Ngắt kết nối WebSocket khi component bị unmounted
-    }, [id, userid]);
+    }, [id]);
 
 
 
@@ -242,7 +249,7 @@ function CinemaTicket_2() {
     const handleBookingSeat = async (id) => {
         // Tạo dữ liệu selectedSeat
         const selectedSeat = {
-            user: { id: userid },
+            user: { id: user.id },
             showtime: { id: showtime.id },
             seat: { id: id },
             start: currentDateTime,
@@ -358,10 +365,12 @@ function CinemaTicket_2() {
             if(paymentMethod === "PAYONLINE") {
                 const paymentOnline = {
                     showtimeid: showtime.id,
-                    agentid: userid,
+                    userid: user.id,
                     totalPrice: totalPrice,
                     discountPrice: calculateTotalDiscount(seatCounts, priceSeat),
                     amount: totalPrice - calculateTotalDiscount(seatCounts, priceSeat),
+                    typePay: "PAYONLINE",
+                    typeBooking: "OFFLINE",
                     paytypecustomer: filterGreaterThanZero(seatCounts),
                     ticket: booking
                   };
@@ -379,7 +388,7 @@ function CinemaTicket_2() {
     //   console.log(JSON.stringify(paymentOnlineData, null, 2));
   
       try {
-        const response = await addPayOnline(paymentOnlineData);
+        const response = await addPayOnlineAdmin(paymentOnlineData);
         navigate('/admin/ticket-sales');
         return;
         // alert("Thanh toán thành công!");
@@ -460,9 +469,11 @@ function CinemaTicket_2() {
 
         const paymentCash = {
             showtimeid: showtime.id,
-            agentid: userid,
+            userid: user.id,
             totalPrice: totalPrice,
             discountPrice: calculateTotalDiscount(seatCounts, priceSeat),
+            typePay: "PAYCASH",
+            typeBooking: "OFFLINE",
             amount: amountDue,
             received: customerPaid,
             moneyReturned: change,

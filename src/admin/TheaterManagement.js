@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'; // Thêm useEffect
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater } from '../config/TheaterConfig.js';
+import { updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater, getTheater } from '../config/TheaterConfig.js';
 
 
 const CinemaManagement = () => {

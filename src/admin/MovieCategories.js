@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './MovieCategoriesService'; // Đảm bảo đường dẫn chính xác, có thể bỏ nếu không cần
 import './MovieCategories.css';
-import MovieCategoriesService from './MovieCategoriesService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faChevronLeft, faChevronRight, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { addGenre, deleteGenre, getAllGenres, hideGenre, updateGenre } from '../config/MovieConfig';
 
 const MovieCategories = () => {
     const [genres, setGenres] = useState([]);
@@ -33,9 +32,9 @@ const MovieCategories = () => {
 
     const loadGenres = async () => {
         try {
-            const response = await MovieCategoriesService.getAllGenres();
-            setGenres(response.data);
-            setFilteredGenres(response.data); // Thiết lập danh sách ban đầu
+            const response = await getAllGenres();
+            setGenres(response);
+            setFilteredGenres(response); // Thiết lập danh sách ban đầu
         } catch (error) {
             console.error('Error fetching genres:', error);
         }
@@ -48,7 +47,7 @@ const MovieCategories = () => {
         }
     
         try {
-            await MovieCategoriesService.addGenre(newGenre);
+            await addGenre(newGenre);
             await loadGenres();
             setShowAddModal(false);
             setNewGenre({ name: '', description: '' });
@@ -60,7 +59,7 @@ const MovieCategories = () => {
     const handleUpdateGenre = async () => {
         if (selectedGenre) {
             try {
-                await MovieCategoriesService.updateGenre(selectedGenre.id, selectedGenre);
+                await updateGenre(selectedGenre.id, selectedGenre);
                 await loadGenres();
                 setShowEditModal(false);
             } catch (error) {
@@ -71,7 +70,7 @@ const MovieCategories = () => {
 
     const handleHideGenre = async (id) => {
         try {
-            await MovieCategoriesService.hideGenre(id);
+            await hideGenre(id);
             await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
             alert("Chuyển trạng thái thành công!")
         } catch (error) {
@@ -92,7 +91,7 @@ const MovieCategories = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa thể loại này?')) {
             try {
-                await MovieCategoriesService.deleteGenre(id);
+                await deleteGenre(id);
                 setGenres(genres.filter(genre => genre.id !== id));
                 alert("Xóa thể loại thành công!");
             } catch (error) {

@@ -1,4 +1,4 @@
-/* CSS for LoginPage Component */
+/* Tổng thể */
 .login-page {
   display: flex;
   justify-content: center;
@@ -7,117 +7,133 @@
   background-color: #f4f4f4;
 }
 
-.login-page .login-form-container {
-  background-color: #ffffff;
-  padding: 40px;
+.login-form-container {
+  background-color: white;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 400px;
 }
 
+/* Tab đăng nhập */
 .login-page .tabs {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.login-page .tabs .button {
+.login-page .tabs button {
   background-color: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
+  color: #28a745; /* Xanh lá */
   cursor: pointer;
-  padding: 10px;
-  transition: color 0.3s;
 }
 
-.login-page .active-tab {
-  color: #00C853;
-  border-bottom: 3px solid #00C853;
+.login-page .tabs button.active-tab {
+  color: #006400; /* Xanh lá đậm cho tab đang hoạt động */
+  border-bottom: 2px solid #006400; /* Đường viền dưới màu xanh lá đậm */
 }
 
+.login-page .tabs a {
+  text-decoration: none;
+}
+
+/* Các ô nhập liệu */
 .login-page .form-group {
   margin-bottom: 20px;
 }
 
 .login-page .form-group label {
-  display: block;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .login-page .form-group input {
   width: 100%;
   padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  outline: none;
+  margin-top: 5px;
+  box-sizing: border-box;
 }
 
-.login-page .forgot-password {
-  display: block;
-  text-align: right;
-  color: #007bff;
-  text-decoration: none;
-  margin-bottom: 20px;
-  transition: color 0.3s;
+.login-page .form-group input:focus {
+  border-color: #28a745; /* Màu xanh lá khi focus vào ô nhập */
 }
 
-.login-page .forgot-password:hover {
-  color: #0056b3;
+/* Lỗi */
+.login-page .error-message {
+  color: #d9534f; /* Đỏ cho thông báo lỗi */
+  font-size: 14px;
+  margin-bottom: 15px;
 }
 
+/* Nút đăng nhập */
 .login-page .login-button {
-  background-color: #00C853;
-  color: white;
-  border: none;
-  padding: 15px;
   width: 100%;
-  cursor: pointer;
-  border-radius: 5px;
+  padding: 12px;
   font-size: 16px;
-  transition: background-color 0.3s;
+  font-weight: bold;
+  color: white;
+  background-color: #28a745; /* Nút đăng nhập màu xanh lá */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .login-page .login-button:hover {
-  background-color: #004d40;
+  background-color: #006400; /* Xanh lá đậm khi hover */
 }
 
+.login-page .login-button:active {
+  background-color: #004d00; /* Xanh lá rất đậm khi nhấn */
+}
+
+/* Đăng nhập bằng mạng xã hội */
 .login-page .social-login {
-  text-align: center;
   margin-top: 20px;
+  text-align: center;
+}
+
+.login-page .social-login p {
+  font-size: 14px;
+  color: #555;
 }
 
 .login-page .social-login-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .login-page .social-login-button {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 18px;
   width: 40px;
   height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  color: white;
+  border: none;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .login-page .social-login-button.facebook {
-  color: #3b5998;
+  background-color: #3b5998; /* Xanh dương Facebook */
 }
 
 .login-page .social-login-button.google {
-  color: #db4a39;
+  background-color: #db4437; /* Đỏ Google */
 }
 
 .login-page .social-login-button:hover {
-  background-color: #f0f0f0;
+  opacity: 0.8;
 }

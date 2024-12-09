@@ -1,20 +1,43 @@
-import React, { useState } from 'react';
-import './LoginPage.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import PasswordRecovery from './PasswordRecovery';
+import React, { useState, useContext, useEffect } from "react";
+import "./LoginPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../config/UserConfig.js"; 
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPasswordRecovery, setShowPasswordRecovery] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // State để lưu lỗi nếu có
+  const navigate = useNavigate();
+  const { handleLogin } = useContext(AuthContext);
 
-  const handleLogin = (e) => {
+  const handleLoginData = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
+    setError(""); // Reset lỗi trước mỗi lần đăng nhập
+    const loginData = { username, password };
+    try {
+      const token = await login(loginData);
+      console.log(token);
+      if (token) {
+        const role = await handleLogin(token);
+        if(role) {
+          if(role === "CUSTOMER") {
+            navigate("/home");
+          }
+          else {
+            navigate("/admin/account");
+          }
+        }
+      }
+      else {
+        setError("Tên đăng nhập hoặc mật khẩu không hợp lệ!");
+      }
+    } catch (error) {
+      console.error("Error login api: ", error);
+      return;
+    }
   };
 
   return (
@@ -22,9 +45,11 @@ const LoginPage = () => {
       <div className="login-form-container">
         <div className="tabs">
           <button className="active-tab">ĐĂNG NHẬP</button>
-          <button><Link to="/register-page">ĐĂNG KÝ</Link></button>
+          <button>
+            <Link to="/register-page">ĐĂNG KÝ</Link>
+          </button>
         </div>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLoginData}>
           <div className="form-group">
             <label htmlFor="email">
               <FontAwesomeIcon icon={faEnvelope} /> Email
@@ -32,8 +57,8 @@ const LoginPage = () => {
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Email"
               required
             />
@@ -51,8 +76,11 @@ const LoginPage = () => {
               required
             />
           </div>
-          <Link onClick={() => setShowPasswordRecovery(true)}  className="forgot-password">Quên mật khẩu?</Link>
-          <button type="submit" className="login-button">Đăng nhập</button>
+          {error && <p className="error-message">{error}</p>}{" "}
+          {/* Hiển thị lỗi */}
+          <button className="login-button">
+            Đăng nhập
+          </button>
         </form>
         <div className="social-login">
           <p>Đăng nhập bằng</p>
@@ -62,8 +90,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-
-      {showPasswordRecovery && <PasswordRecovery onClose={() => setShowPasswordRecovery(false)} />}
     </div>
   );
 };

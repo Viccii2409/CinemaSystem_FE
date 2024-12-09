@@ -269,3 +269,43 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.cinema-management-system .permission-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.cinema-management-system .permission-group {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép các checkbox xuống dòng nếu không đủ không gian */
+  gap: 20px; /* Khoảng cách giữa các phần tử checkbox */
+  /* margin-bottom: 10px; */
+}
+
+.cinema-management-system .permission-item {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Khoảng cách giữa checkbox và tên quyền */
+  font-size: 14px;
+}
+
+.cinema-management-system .permission-item .modal-input {
+  width: 20px;
+  height: 20px;
+  margin: 0; /* Loại bỏ khoảng cách mặc định của checkbox */
+}
+
+.cinema-management-system .permission-item span {
+  font-size: 14px;
+  color: #333;
+  margin-left: 5px;
+}
+
+.cinema-management-system .permission-item input:checked + span {
+  color: #007bff; /* Thay đổi màu khi checkbox được chọn */
+}
+
+
+
+

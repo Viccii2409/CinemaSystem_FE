@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/admin/CinemaManagement.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/CinemaManagement.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TheaterContext.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/TheaterManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TheaterManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/MovieConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/MovieConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/TheaterConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/TheaterConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/UserConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/UserConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/MovieDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/MovieDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/SeatSelection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/SeatSelection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,21 +29,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "loannt401"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;loannt401&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Viccii2409/Phat_trien_he_thong_ban_ve_xem_phim_SpringBoot_ReactJS_CSS.git",
-    "accountId": "ebad391c-9aba-4792-b06d-e8c8a6e03561"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Viccii2409/CinemaSystem_FE.git&quot;,
+    &quot;accountId&quot;: &quot;ebad391c-9aba-4792-b06d-e8c8a6e03561&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2o6RgUmLItyOF6n6UN5oojLuHJg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,8 +53,9 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/Phat_trien_he_thong_ban_ve_xem_phim_SpringBoot_ReactJS_CSS"
+    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

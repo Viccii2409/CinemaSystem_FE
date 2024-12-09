@@ -104,3 +104,29 @@
   transform: scale(1.05);
   color: #ffffff;
 }
+.user {
+  display: flex; /* Sử dụng flexbox để căn thẳng hàng */
+  align-items: center; /* Căn giữa theo trục dọc */
+  /* Khoảng cách giữa các phần tử */
+}
+.homepage-header .user .customer-avatar {
+  align-content: center;
+}
+.homepage-header .user-infor {
+  color: #ffffff;
+  font-size: 18px;
+}
+.user-infor:hover {
+  color: #055d05;
+}
+.homepage-header .user button {
+  border: none;
+  background-color: #7add58;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.homepage-header .user button:hover {
+  color: #055d05;
+}
