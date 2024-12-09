@@ -18,7 +18,7 @@ const HeaderCustomer = () => {
         if (response && response.data) {
           setCinemas(response.data); // Lưu dữ liệu vào state cinemas
         }
-        const theaterData = response.data.filter(theater => theater.status);
+        const theaterData = response.data.filter((theater) => theater.status);
         setTheaters(theaterData);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách rạp:", error);
@@ -33,21 +33,21 @@ const HeaderCustomer = () => {
   };
 
   useEffect(() => {
-      const fetchUser = () => {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          setCurrentUser(JSON.parse(userData)); // Cập nhật thông tin người dùng
-        }
-      };
+    const fetchUser = () => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        setCurrentUser(JSON.parse(userData)); // Cập nhật thông tin người dùng
+      }
+    };
 
-      fetchUser();
+    fetchUser();
 
-      // Lắng nghe sự thay đổi trong localStorage để cập nhật UI
-      const handleStorageChange = () => fetchUser();
-      window.addEventListener("storage", handleStorageChange);
+    // Lắng nghe sự thay đổi trong localStorage để cập nhật UI
+    const handleStorageChange = () => fetchUser();
+    window.addEventListener("storage", handleStorageChange);
 
-      return () => window.removeEventListener("storage", handleStorageChange);
-    }, []);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <header className="homepage-header">
@@ -61,14 +61,21 @@ const HeaderCustomer = () => {
         <Link to="/">Thể loại</Link>
       </nav>
 
-      <select name="id" className="location-selector" value={selectedTheater || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
-          <option value="" disabled>---Chọn rạp---</option>
-          {theaters.map((theater) => (
-            <option key={theater.id} value={theater.id}>
-              {theater.name}
-            </option>
-          ))}
-        </select>
+      <select
+        name="id"
+        className="location-selector"
+        value={selectedTheater || ""}
+        onChange={(e) => handleSelectTheater(e.target.value)}
+      >
+        <option value="" disabled>
+          ---Chọn rạp---
+        </option>
+        {theaters.map((theater) => (
+          <option key={theater.id} value={theater.id}>
+            {theater.name}
+          </option>
+        ))}
+      </select>
 
       <div>
         {currentUser ? (
@@ -78,7 +85,7 @@ const HeaderCustomer = () => {
               className="customer-avatar"
               style={{ fontSize: "22px", marginRight: "10px" }}
             />
-            <Link to="/user-infor" className="user-infor">
+            <Link to="/account-page" className="user-infor">
               {currentUser.name}
             </Link>
             {/* Hiển thị tên người dùng */}

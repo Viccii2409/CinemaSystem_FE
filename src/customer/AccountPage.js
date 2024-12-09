@@ -1,43 +1,43 @@
 import React, { useEffect, useState } from "react";
 import "./AccountPage.css";
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { getCustomerInforById } from "../config/UserConfig";
 import { creatPayOnline } from "../config/TicketConfig";
 
 const AccountPage = () => {
-    const navigate = useNavigate();
-    const userid = 3;
-    const [user, setUser] = useState([]);
+  const navigate = useNavigate();
+  const userid = 3;
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     const fetchUserInfor = async () => {
-        try {
-          const response = await getCustomerInforById(userid);
-          console.log(response);
-          setUser(response); 
-        } catch (error) {
-          console.error("Error api getCustomerInforById:", error);
-        }
-      };
-  
-      fetchUserInfor(); 
-  }, [userid])
+      try {
+        const response = await getCustomerInforById(userid);
+        console.log(response);
+        setUser(response);
+      } catch (error) {
+        console.error("Error api getCustomerInforById:", error);
+      }
+    };
+
+    fetchUserInfor();
+  }, [userid]);
 
   const handlePayment = async (barcodePayment) => {
     try {
-        await creatPayOnline(barcodePayment);
+      await creatPayOnline(barcodePayment);
     } catch (error) {
-        console.error("Error api creatPayOnline:", error); 
+      console.error("Error api creatPayOnline:", error);
     }
-  }
+  };
 
   const handleViewBooking = async (id) => {
     // console.log(id);
-    navigate('/view-booking', { state: { id: id } });
+    navigate("/view-booking", { state: { id: id } });
     return;
-  }
+  };
 
   return (
     <div className="account-page">
@@ -50,15 +50,23 @@ const AccountPage = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Họ:</label>
-                <input type="text" className="form-control" value={user.name?.firstName} />
+                <input type="text" className="form-control" value={user.name} />
               </div>
               <div className="form-group">
                 <label>Tên đệm:</label>
-                <input type="text" className="form-control" value={user.name?.midName} />
+                <input
+                  type="text"
+                  className="form-control"
+                  value={user.name?.midName}
+                />
               </div>
               <div className="form-group">
                 <label>Tên:</label>
-                <input type="text" className="form-control" value={user.name?.lastName} />
+                <input
+                  type="text"
+                  className="form-control"
+                  value={user.name?.lastName}
+                />
               </div>
             </div>
             <div className="form-row">
@@ -82,11 +90,15 @@ const AccountPage = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Ngày sinh:</label>
-                <input type="date" className="form-control" value={user.dob}/>
+                <input type="date" className="form-control" value={user.dob} />
               </div>
               <div className="form-group">
                 <label>Địa chỉ:</label>
-                <input type="text" className="form-control" value={user.address}/>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={user.address}
+                />
               </div>
             </div>
             <button className="btn btn-success">Cập nhật</button>
@@ -114,21 +126,33 @@ const AccountPage = () => {
                 <td>{index + 1}</td>
                 <td>{booking.dateBooking}</td>
                 <td>{booking.nameMovie}</td>
-                <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
-                <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" : 
-                    (booking.statusPayment === "confirmed" ? "Đã thanh toán" : 
-                        (booking.statusPayment === "expired" ? "Đã hủy" : "")
-                    )}</td>
+                <td>{booking.amount.toLocaleString("vi-VN")} VND</td>
                 <td>
-                  <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
+                  {booking.statusPayment === "pending"
+                    ? "Chưa thanh toán"
+                    : booking.statusPayment === "confirmed"
+                    ? "Đã thanh toán"
+                    : booking.statusPayment === "expired"
+                    ? "Đã hủy"
+                    : ""}
+                </td>
+                <td>
+                  <button
+                    className="view-button"
+                    onClick={() => handleViewBooking(booking.id)}
+                  >
                     <FontAwesomeIcon icon={faEye} /> Xem
                   </button>
                   {booking.statusPayment === "pending" ? (
-                  <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
-                    <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
-                  </button>
-
-                  ) : ""}
+                    <button
+                      className="payment-button"
+                      onClick={() => handlePayment(booking.barcodePayment)}
+                    >
+                      <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </td>
               </tr>
             ))}

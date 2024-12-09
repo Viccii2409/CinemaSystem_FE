@@ -27,7 +27,7 @@ export const getTheaterById = (id) => {
 };
 export const getTheaterExcept = (id) => {
   try {
-    return api.get("/theater/except/${id}");
+    return api.get(`/theater/except/${id}`);
   } catch (error) {
     console.error("Error get theater by id", error);
   }
@@ -60,15 +60,15 @@ export const getTheaterRoomDto = () => {
 
 // export const getRoomByTheater = async (id) => api.get(`/theater/${id}/room`);
 
-
 export const getTypeSeat = async () => {
-    return api.get('/theater/typeseat')
-    .then(response => response.data)
-    .catch(error => {
-        console.error("Error get all typeseat", error);
-        return null;
-    })
-}
+  return api
+    .get("/theater/typeseat")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error get all typeseat", error);
+      return null;
+    });
+};
 
 export const getRoomById = async (id) => {
   return api

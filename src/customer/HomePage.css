@@ -179,13 +179,6 @@
   border-radius: 10px;
 }
 
-
-
-
-
-
-
-
 .homepage .promotions-section {
   display: flex;
   flex-direction: column;
@@ -250,10 +243,6 @@
   color: #555;
   margin: 0;
 }
-
-
-
-
 
 /* Showtime Modal Overlay */
 .homepage .showtime-overlay {
@@ -454,10 +443,6 @@
   font-size: 0.9em;
 }
 
-
-
-
-
 /* Overlay Background */
 .theater-selector-overlay {
   position: fixed;
@@ -520,3 +505,17 @@
   transform: scale(1.05);
 }
 
+.selector {
+  padding: 10px 15px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  max-width: 250px; /* Tăng chiều rộng tối đa của dropdown */
+  min-width: 200px; /* Đảm bảo không quá nhỏ */
+  margin-bottom: 15px;
+}

@@ -16,7 +16,7 @@ import {
   getSlideshow,
   getAllGenres,
 } from "../config/MovieConfig.js";
-
+import { getRecommendMovie } from "../config/UserConfig.js";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const HomePage = () => {
@@ -201,6 +201,22 @@ const HomePage = () => {
     setSelectedDiscountId(null);
     setSelectedDiscount(null);
   };
+  // Gợi ý phim yêu thích
+  const userid = 3;
+  const [recoms, setRecom] = useState([]);
+  useEffect(() => {
+    const fetchRecom = async () => {
+      try {
+        const response = await getRecommendMovie(userid);
+        console.log(response.data); // In toàn bộ response để kiểm tra
+        setRecom(response.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách recommend:", error);
+      }
+    };
+    fetchRecom();
+  }, [userid]);
+
   return (
     <div className="homepage">
       <div className="slideshow">
@@ -230,10 +246,11 @@ const HomePage = () => {
           <h2>PHIM ĐANG CHIẾU</h2>
         </div>
         <select
+          className="selector"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
-          <option value="">Tất cả thể loại</option>
+          <option value="">Tất cả</option>
           {genres.map((genre) => (
             <option key={genre.id} value={genre.name}>
               {genre.name}
@@ -420,6 +437,41 @@ const HomePage = () => {
           </div>
         </div>
       )}
+      <div className="recommend-movie">
+        <h2>Gợi ý Phim</h2>
+        <div className="movie-list">
+          {recoms.map((recom, index) => (
+            <div className="movie-item" key={recom.id}>
+              <div className="image-container">
+                <Link to="/movie-detail" state={{ id: recom.id }}>
+                  <img
+                    src={recom.link}
+                    alt="movie"
+                    className="movie-thumbnail"
+                  />
+                </Link>
+                <button className="iconPause">
+                  <FontAwesomeIcon
+                    icon={faCirclePlay}
+                    className="control-icon"
+                  />
+                </button>
+                <button
+                  className="buy-ticket-button"
+                  onClick={() => handleScheduleModal(recom.id)}
+                >
+                  MUA VÉ NGAY
+                </button>
+              </div>
+              <h3 className="movietitle">
+                <Link to="/movie-detail" state={{ id: recom.id }}>
+                  {recom.title}
+                </Link>
+              </h3>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

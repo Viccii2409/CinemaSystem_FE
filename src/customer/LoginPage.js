@@ -37,7 +37,7 @@ const LoginPage = () => {
       const loginData = { email, password }; // Dữ liệu gửi tới API
       const response = await login(loginData); // Gọi API đăng nhập
 
-      if (response?.privileges) {
+      if (response?.user_type) {
         // Lưu thông tin người dùng vào localStorage
         const userData = {
           email: response.email,
@@ -47,12 +47,12 @@ const LoginPage = () => {
           phone: response.phone,
           dob: response.dob,
           gender: response.gender,
-          privileges: response.privileges,
+          user_type: response.user_type,
         };
         localStorage.setItem("user", JSON.stringify(userData)); // Lưu thông tin người dùng vào localStorage
 
         // Điều hướng người dùng sau khi đăng nhập thành công
-        if (response.privileges === "User") {
+        if (response.user_type === "CUSTOMER") {
           navigate("/home");
         } else {
           navigate("/admin");
