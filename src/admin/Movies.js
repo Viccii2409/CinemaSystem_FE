@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './Movies.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +8,7 @@ import Modal from 'react-modal';
 import MovieService from './MovieService';
 import GenreService from './MovieCategoriesService';
 import { useNavigate } from 'react-router-dom';
+import { getMovieById } from "../config/MovieConfig.js";
 
 
 
@@ -17,23 +19,37 @@ const Movies = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [genres, setGenres] = useState([]);
+    const [languages, setLanguages] = useState([]); // Add this line to define the languages state
     const [newMovie, setNewMovie] = useState({
         title: '',
         duration: '',
         releaseDate: '',
         description: '',
-        status: true,
-        rating: 0,
         director: '',
         language: '',
         cast: '',
         genre: [],
-        image: ''
+        image: '',
+        trailer: ''
     });
 
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [selectedMovie, setSelectedMovie] = useState({
+        title: '',
+        duration: '',
+        releaseDate: '',
+        description: '',
+        director: '',
+        language: '',
+        cast: '',
+        genre: [],
+        image: '',
+        trailer: ''
+    });
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showViewPopup, setShowViewPopup] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
     const [filteredMovies, setFilteredMovies] = useState([]);
@@ -44,6 +60,7 @@ const Movies = () => {
     useEffect(() => {
         fetchMovies();
         fetchGenres();
+        fetchLanguages(); // Fetch languages
     }, []);
 
     useEffect(() => {
@@ -75,41 +92,161 @@ const Movies = () => {
         }
     };
 
-    // Thêm phim 
-    const handleAddMovie = async () => {
+    const fetchLanguages = async () => {
         try {
-            const response = await MovieService.addMovie(newMovie);
+            const response = await MovieService.getAllLanguage();
+            setLanguages(response.data); // Set languages in state
+        } catch (error) {
+            console.error("Error fetching languages:", error);
+        }
+    };
+
+    const handleDurationChange = (e) => {
+        const value = e.target.value;
+    
+        // Kiểm tra xem giá trị có phải là số hợp lệ và không rỗng
+        if (/^\d*$/.test(value)) {
+            setNewMovie({ ...newMovie, duration: value });
+        }
+    };
+    
+
+    // Thêm phim 
+
+    const validateNewMovie = (movie) => {
+        const today = new Date();
+        const releaseDate = new Date(movie.releaseDate);
+    
+        // Kiểm tra tất cả các điều kiện
+        if (
+            !movie.title ||                   // Tiêu đề không được để trống
+            !movie.releaseDate ||             // Ngày phát hành không được để trống
+            !movie.genre.length ||            // Phải có ít nhất một thể loại
+            !movie.description ||             // Mô tả không được để trống
+            !movie.duration ||                // Duration không được để trống
+            isNaN(Number(movie.duration)) ||  // Kiểm tra nếu duration không phải là số
+            Number(movie.duration) <= 0       // Kiểm tra nếu duration nhỏ hơn hoặc bằng 0
+        ) {
+            return false;
+        }
+        return true;
+    };
+
+ 
+    const handleAddMovie = async () => {
+        if (!validateNewMovie(newMovie)) {
+            alert("Vui lòng kiểm tra lại thông tin. Một số trường bắt buộc đang bị bỏ trống.");
+            return;
+        }
+    
+        const formData = new FormData();
+    
+        // Gửi đối tượng movie dưới dạng chuỗi JSON
+        formData.append('movie', JSON.stringify(newMovie));
+    
+        // Gửi các trường khác
+        formData.append('title', newMovie.title);
+        formData.append('duration', newMovie.duration);
+        formData.append('releaseDate', newMovie.releaseDate);
+        formData.append('description', newMovie.description);
+        formData.append('director', newMovie.director);
+        formData.append("language", JSON.stringify(newMovie.language));  // Chuyển đổi language thành chuỗi JSON
+        formData.append('cast', newMovie.cast);
+        formData.append('genre', JSON.stringify(newMovie.genre));
+
+    
+        // Kiểm tra tệp ảnh
+        if (newMovie.image) {
+            const image = newMovie.image;
+            const allowedImageTypes = ['image/jpeg', 'image/png'];
+            if (!allowedImageTypes.includes(image.type)) {
+                alert("Hình ảnh phải có định dạng JPG hoặc PNG.");
+                return;
+            }
+            formData.append('image', image);  // For image file
+        } else {
+            alert("Vui lòng chọn hình ảnh cho phim.");
+            return;
+        }
+    
+        // Kiểm tra tệp trailer
+        if (newMovie.trailer) {
+            const trailer = newMovie.trailer;
+            const allowedTrailerTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+            if (!allowedTrailerTypes.includes(trailer.type)) {
+                alert("Trailer phải có định dạng video hợp lệ (mp4, webm, ogg).");
+                return;
+            }
+            formData.append('trailer', trailer);  // For trailer file
+        } else {
+            alert("Vui lòng chọn trailer cho phim.");
+            return;
+        }
+    // in form data
+        formData.forEach((value, key) => {
+            if (value instanceof File) {
+                console.log(key, value.name, value.type, value.size);  // In ra tên, loại, và kích thước tệp
+            } else {
+                console.log(key, value);
+            }
+        });
+        
+    
+        try {
+            const response = await axios.post('http://localhost:8080/api/movie/add', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+    
             setMovies([...movies, response.data]);
             setNewMovie({
                 title: '',
                 duration: '',
                 releaseDate: '',
                 description: '',
-                status: true,
                 director: '',
                 language: '',
                 cast: '',
                 genre: [],
-                image: '',
-                trailer: ''
+                image: null,
+                trailer: null,
             });
+    
             setIsAddModalOpen(false);
+            fetchMovies();
             alert("Thêm phim thành công!");
         } catch (error) {
             console.error("Error adding the movie:", error);
-            alert("Thêm phim thất bại!");
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(`Lỗi: ${error.response.data.message}`);
+            } else {
+                alert("Thêm phim thất bại! Vui lòng thử lại sau.");
+            }
         }
     };
+    
 
-    const handleGenreChange = (e) => {
-        const selectedGenres = Array.from(e.target.selectedOptions, option => option.value);
+    const handleGenreChange = (event) => {
+        const selectedGenres = Array.from(event.target.selectedOptions, option => {
+            return genres.find(g => g.name === option.value); // Lấy toàn bộ đối tượng genre
+        });
         setNewMovie({ ...newMovie, genre: selectedGenres });
     };
-
+    
+    
+    
+    
     const handleReleaseDateChange = (e) => {
         setNewMovie({ ...newMovie, releaseDate: e.target.value });
     };
 
+    // Handle language change
+    const handleLanguageChange = (e) => {
+        const selectedLanguage = languages.find(lang => lang.name === e.target.value);
+        setNewMovie({ ...newMovie, language: selectedLanguage }); // Cập nhật bằng đối tượng ngôn ngữ
+    };
+    
     // Đổi trạng thái phim
     const updateStatusMovie = async (id) => {
         try {
@@ -132,13 +269,109 @@ const Movies = () => {
         navigate(`/admin/movie-detail`, { state: { id } }); // Chuyển hướng đến trang chi tiết với `id` được truyền qua state
     };
 
+
+
     // Sửa phim
-    const handleEditMovie = (id) => {
-        const movie = movies.find((m) => m.id === id);
-        setSelectedMovie(movie);
-        alert(`Chỉnh sửa thông tin phim: ${movie.title}`);
+// Giả sử bạn có hàm để chọn phim
+
+    const handleOpenEditModal = (movieId) => {
+        // Tìm phim trong danh sách phim dựa trên movieId
+        const movieToEdit = movies.find((movie) => movie.id === movieId);
+        
+        setSelectedMovie(movieToEdit);  // Gán thông tin phim vào selectedMovie
+        setIsEditModalOpen(true);  // Mở modal chỉnh sửa
     };
 
+
+    const handleEditMovie = (movieId) => {
+        axios
+            .get(`http://localhost:8080/api/movie/${movieId}`)
+            .then((response) => {
+                setSelectedMovie({
+                    id: response.data.id,
+                    title: response.data.title || '',
+                    duration: response.data.duration || '',
+                    releaseDate: response.data.releaseDate || '',
+                    description: response.data.description || '',
+                    director: response.data.director || '',
+                    cast: response.data.cast || '',
+                    language: response.data.language || null,
+                    genre: response.data.genre || [],
+                    image: response.data.image || null,
+                    trailer: response.data.trailer || null,
+                });
+                setIsEditModalOpen(true);
+            })
+            .catch((error) => {
+                console.error('Lỗi khi tải thông tin chi tiết phim: ', error);
+                alert('Không thể tải thông tin phim. Vui lòng thử lại.');
+            });
+            console.log(selectedMovie);
+
+    };
+    
+    
+    const handleSaveMovieChanges = (movie) => {
+        const formData = new FormData();
+    
+        // Kiểm tra và giữ nguyên giá trị cũ nếu không thay đổi
+        formData.append("movie", JSON.stringify({
+            ...movie,
+            image: typeof movie.image === "string" ? movie.image : null,
+            trailer: typeof movie.trailer === "string" ? movie.trailer : null,
+        }));
+    
+        // Thêm file mới nếu có
+        if (typeof movie.image !== "string") {
+            formData.append("image", movie.image);
+        }
+        if (typeof movie.trailer !== "string") {
+            formData.append("trailer", movie.trailer);
+        }
+    
+        axios
+            .put(`http://localhost:8080/api/movie/${movie.id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then((response) => {
+                if (response.data) {
+                    fetchMovies();
+                    alert("Cập nhật phim thành công!");
+                    setIsEditModalOpen(false); // Đóng modal sau khi thành công
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng thử lại.");
+                }
+            })
+            .catch((error) => {
+                console.error("Lỗi khi cập nhật phim: ", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại.");
+            });
+    };
+    
+    const handleGenreChangeInEdit = (e) => {
+        const selectedGenres = Array.from(e.target.selectedOptions, (option) => option.value);
+        
+        // Cập nhật lại genres cho movie đang được chỉnh sửa
+        setSelectedMovie((prevMovie) => ({
+            ...prevMovie,
+            genre: genres.filter(genre => selectedGenres.includes(genre.name)), // Chỉ giữ lại các thể loại được chọn
+        }));
+    };
+    
+    const handleLanguageChangeInEdit = (e) => {
+        const selectedLanguage = e.target.value;
+    
+        // Cập nhật ngôn ngữ cho movie đang được chỉnh sửa
+        setSelectedMovie((prevMovie) => ({
+            ...prevMovie,
+            language: languages.find((language) => language.name === selectedLanguage) || null, // Lấy ngôn ngữ tương ứng
+        }));
+    };
+    
+    
+    
+    
+    
     // Xóa phim
     const handleDeleteMovie = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa phim này?')) {
@@ -215,7 +448,8 @@ const Movies = () => {
                 contentLabel="Thêm Phim"
             >
                 <h2>Thêm Phim Mới</h2>
-                <form>
+                <div>
+                    {/* Tên Phim */}
                     <div>
                         <label>Tên Phim:</label>
                         <input
@@ -223,33 +457,52 @@ const Movies = () => {
                             value={newMovie.title}
                             onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
                             placeholder="Nhập tên phim"
+                            required
                         />
                     </div>
 
+                    {/* Thời lượng */}
+                    <div>
+                        {<label>Thời lượng (phút):</label>}
+                        <input
+                            type="number"
+                            value={newMovie.duration}
+                            onChange={handleDurationChange}
+                            placeholder="Nhập thời gian phim"
+                            required
+                        />
+
+                    </div>
+
+
+                    {/* Thể loại */}
                     <div>
                         <label>Thể loại:</label>
                         <select
-                            multiple
-                            value={newMovie.genre}
-                            onChange={handleGenreChange}
-                        >
-                            {genres.map((genre) => (
-                                <option key={genre.id} value={genre.name}>
-                                    {genre.name}
-                                </option>
-                            ))}
+                        multiple
+                        value={newMovie.genre.map(genre => genre.name)}
+                        onChange={handleGenreChange}
+                    >
+                        {genres.map((genre) => (
+                            <option key={genre.id} value={genre.name}>
+                                {genre.name}
+                            </option>
+                        ))}
                         </select>
                     </div>
 
+                    {/* Ngày khởi chiếu */}
                     <div>
                         <label>Ngày khởi chiếu:</label>
                         <input
                             type="date"
                             value={newMovie.releaseDate}
-                            onChange={handleReleaseDateChange}
+                            onChange={(e) => setNewMovie({ ...newMovie, releaseDate: e.target.value })}
+                            required
                         />
                     </div>
 
+                    {/* Mô tả */}
                     <div>
                         <label>Mô tả:</label>
                         <textarea
@@ -259,10 +512,75 @@ const Movies = () => {
                         />
                     </div>
 
-                    <button type="button" onClick={handleAddMovie}>Thêm Phim</button>
-                    <button type="button" onClick={() => setIsAddModalOpen(false)}>Hủy</button>
-                </form>
+                    {/* Đạo diễn */}
+                    <div>
+                        <label>Đạo diễn:</label>
+                        <input
+                            type="text"
+                            value={newMovie.director}
+                            onChange={(e) => setNewMovie({ ...newMovie, director: e.target.value })}
+                            placeholder="Nhập tên đạo diễn"
+                        />
+                    </div>
+
+                    {/* Language */}
+                    {/* Ngôn ngữ */}
+                    <div>
+                        <label>Ngôn ngữ:</label>
+                        <select
+                            value={newMovie.language?.name || ''}
+                            onChange={handleLanguageChange}
+                            required
+                        >
+                            <option value="">Chọn ngôn ngữ</option>
+                            {languages.map((language) => (
+                                <option key={language.id} value={language.name}>
+                                    {language.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Diễn viên */}
+                    <div>
+                        <label>Diễn viên:</label>
+                        <input
+                            type="text"
+                            value={newMovie.cast}
+                            onChange={(e) => setNewMovie({ ...newMovie, cast: e.target.value })}
+                            placeholder="Nhập tên diễn viên"
+                        />
+                    </div>
+
+                    {/* Upload hình ảnh */}
+                    <div>
+                        <label>Hình ảnh:</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setNewMovie({ ...newMovie, image: e.target.files[0] })}
+                        />
+                    </div>
+
+                    {/* Upload trailer */}
+                    <div>
+                        <label>Trailer:</label>
+                        <input
+                            type="file"
+                            accept="video/*"
+                            onChange={(e) => setNewMovie({ ...newMovie, trailer: e.target.files[0] })}
+                        />
+                    </div>
+
+                    {/* Các nút */}
+                    <div className="modal-buttons-container">
+                        <button type="button" onClick={handleAddMovie}>Thêm Phim</button>
+                        <button type="button" onClick={() => setIsAddModalOpen(false)}>Hủy</button>
+                    </div>
+                </div>
             </Modal>
+
+
 
             {/* Movie table */}
             <table className="cinema-table">
@@ -332,6 +650,160 @@ const Movies = () => {
                     )}
                 </tbody>
             </table>
+
+            {/* Modal for editing movie */}
+            <Modal
+                isOpen={isEditModalOpen}
+                onRequestClose={() => setIsEditModalOpen(false)}
+                contentLabel="Sửa Phim"
+                className="Modal__Content"
+                overlayClassName="Modal__Overlay"
+            >
+                <h2>Sửa Phim</h2>
+                <div>
+                    {/* Tên Phim */}
+                    <div>
+                        <label>Tên Phim:</label>
+                        <input
+                            type="text"
+                            value={selectedMovie?.title || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, title: e.target.value })}
+                            placeholder="Nhập tên phim"
+                            required
+                        />
+                    </div>
+
+                    {/* Thời lượng */}
+                    <div>
+                        <label>Thời lượng (phút):</label>
+                        <input
+                            type="number"
+                            value={selectedMovie?.duration || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, duration: e.target.value })}
+                            placeholder="Nhập thời gian phim"
+                            required
+                        />
+                    </div>
+
+                    {/* Thể loại */}
+                    <div>
+                        <label>Thể loại:</label>
+                        <select
+                            multiple
+                            value={selectedMovie?.genre.map(genre => genre.name) || []}
+                            onChange={handleGenreChangeInEdit}
+                        >
+                            {genres.map((genre) => (
+                                <option key={genre.id} value={genre.name}>
+                                    {genre.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Ngày khởi chiếu */}
+                    <div>
+                        <label>Ngày khởi chiếu:</label>
+                        <input
+                            type="date"
+                            value={selectedMovie?.releaseDate || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, releaseDate: e.target.value })}
+                            required
+                        />
+                    </div>
+
+                    {/* Mô tả */}
+                    <div>
+                        <label>Mô tả:</label>
+                        <textarea
+                            value={selectedMovie?.description || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, description: e.target.value })}
+                            placeholder="Nhập mô tả phim"
+                        />
+                    </div>
+
+                    {/* Đạo diễn */}
+                    <div>
+                        <label>Đạo diễn:</label>
+                        <input
+                            type="text"
+                            value={selectedMovie?.director || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, director: e.target.value })}
+                            placeholder="Nhập tên đạo diễn"
+                        />
+                    </div>
+
+                    {/* Ngôn ngữ */}
+                    <div>
+                        <label>Ngôn ngữ:</label>
+                        <select
+                            value={selectedMovie?.language?.name || ''}
+                            onChange={handleLanguageChangeInEdit}
+                            required
+                        >
+                            <option value="">Chọn ngôn ngữ</option>
+                            {languages.map((language) => (
+                                <option key={language.id} value={language.name}>
+                                    {language.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Diễn viên */}
+                    <div>
+                        <label>Diễn viên:</label>
+                        <input
+                            type="text"
+                            value={selectedMovie?.cast || ''}
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, cast: e.target.value })}
+                            placeholder="Nhập tên diễn viên"
+                        />
+                    </div>
+
+                    {/* Hình ảnh */}
+                    <div>
+                        <label>Hình ảnh:</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, image: e.target.files[0] })}
+                        />
+                        {selectedMovie?.image && typeof selectedMovie.image === "string" && (
+                            <div>
+                                <p>Hình ảnh hiện tại:</p>
+                                <img src={selectedMovie.image} alt="Movie Poster" style={{ width: '100px', height: '150px' }} />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Trailer */}
+                    <div>
+                        <label>Trailer:</label>
+                        <input
+                            type="file"
+                            accept="video/*"
+                            onChange={(e) => setSelectedMovie({ ...selectedMovie, trailer: e.target.files[0] })}
+                        />
+                        {selectedMovie?.trailer && typeof selectedMovie.trailer === "string" && (
+                            <div>
+                                <p>Trailer hiện tại:</p>
+                                <a href={selectedMovie.trailer} target="_blank" rel="noopener noreferrer">
+                                    Xem Trailer
+                                </a>
+                            </div>
+                        )}
+                    </div>
+
+
+                    {/* Các nút */}
+                    <div className="modal-buttons-container">
+                        <button type="button" onClick={() => handleSaveMovieChanges(selectedMovie)}>Cập nhật</button>
+                        <button type="button" onClick={() => setIsEditModalOpen(false)}>Hủy</button>
+                    </div>
+                </div>
+            </Modal>
+
 
             <div className="pagination">
                 <button

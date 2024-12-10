@@ -55,9 +55,6 @@ const MovieDetail = () => {
             <h1>{movie.title}</h1>
             <p>Mô tả: {movie.description}</p>
             <p>
-              Định dạng: <span className="highlight">2D</span>
-            </p>
-            <p>
               Diễn viên: {movie.cast || "Thông tin diễn viên chưa có"}
             </p>
             <p>

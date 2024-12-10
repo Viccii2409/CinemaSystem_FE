@@ -24,6 +24,9 @@ const MovieService = {
 
     // Tìm phim theo thể loại
     searchMoviesByGenre: (genreName) => axios.get(`${API_BASE_URL}/searchByGenre`, { params: { genreName } }),
+
+    // hiển thị danh sách ngônn ngữ
+    getAllLanguage: () => axios.get(`${API_BASE_URL}/getAllLanguage`),
 };
 
 export default MovieService;

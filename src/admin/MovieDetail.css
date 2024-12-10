@@ -26,7 +26,7 @@
   }
   
   .movie-detail .movie-description h1 {
-    color: #28a745;
+    color: #000000;
     font-size: 1.8em;
     margin-bottom: 15px;
   }
@@ -38,8 +38,7 @@
   }
   
   .movie-detail .highlight {
-    color: #28a745;
-    font-weight: bold;
+    color: #000000;
   }
   
   /* Trailer Section */
@@ -195,7 +194,7 @@
 /* Tên người dùng */
 .feedback strong {
   font-weight: bold;
-  color: #0073e6;
+  color: #e66400;
 }
 
 /* Đánh giá */
@@ -235,4 +234,30 @@
 }
 .fas.fa-star {
   color: #ffd700; /* Màu vàng cho sao đã đánh giá */
+}
+
+
+/* Định dạng cho dropdown chứa thể loại */
+form select[multiple] {
+    height: 150px; /* Cho phép hiển thị nhiều lựa chọn */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #555;
+    box-sizing: border-box;
+    resize: none; /* Tắt khả năng kéo dài */
+}
+
+/* Thêm hiệu ứng hover cho các options */
+form select[multiple] option:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Khi chọn nhiều thể loại, thay đổi giao diện */
+form select[multiple] option:checked {
+    background-color: #007bff;
+    color: white;
 }
