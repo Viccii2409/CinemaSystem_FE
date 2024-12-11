@@ -21,15 +21,29 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/home" className="user-info">
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            className="user-icon"
-          />
-          {user && (<span className="user-name">{user.name}</span>)}
-          {/* <span className="user-name">{user.name}</span> */}
-          
-        </Link>
+        {user && (
+          <Link to="/home" className="user-info">
+            {user.image ? (
+              // Nếu có hình ảnh, hiển thị ảnh
+              <img
+                src={user.image}
+                alt="User Avatar"
+                className="customer-avatar"
+                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+              />
+            ) : (
+              // Nếu không có hình ảnh, hiển thị biểu tượng mặc định
+              <FontAwesomeIcon
+                icon={faUserCircle}
+                className="customer-avatar"
+                style={{ fontSize: "22px", marginRight: "10px" , color: "black"}}
+              />
+            )}
+            {user && (<span className="user-name">{user.name}</span>)}
+            {/* <span className="user-name">{user.name}</span> */}
+
+          </Link>
+        )}
       </div>
     </header>
   );

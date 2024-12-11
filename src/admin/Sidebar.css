@@ -1,46 +1,72 @@
-
+/* Tiêu đề header */
 .header-title {
   font-size: 1.5em;
   font-weight: bold;
   text-transform: uppercase;
+  margin-bottom: 20px; /* Thêm một khoảng cách dưới */
+  text-align: center; /* Căn giữa tiêu đề */
 }
 
+/* Sidebar */
 .sidebar {
-    background-color: #f4f4f4;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-    
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin: 15px 0;
-  }
-  
-  .sidebar ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    display: flex; /* Sử dụng flex để căn chỉnh icon và text */
-    align-items: center;
-    padding: 8px 15px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .sidebar ul li a svg {
-    margin-right: 10px; /* Thêm khoảng cách giữa icon và văn bản */
-    font-size: 1.2em; /* Đặt kích thước cho icon */
-  }
-  
-  
-  .sidebar ul li a:hover {
-    background-color: rgba(47, 216, 4, 0.24);
-  }
+  background-color: #f4f4f4;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  position: fixed; /* Đảm bảo sidebar cố định */
+  top: 0; /* Cố định ở trên cùng */
+  left: 0;
+  bottom: 0; /* Đảm bảo sidebar kéo dài hết chiều cao */
+}
 
-  
-  
+/* Danh sách các mục trong sidebar */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Xóa margin mặc định của ul */
+}
+
+/* Mỗi mục trong sidebar */
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+/* Liên kết trong sidebar */
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  display: flex; /* Sử dụng flex để căn chỉnh icon và text */
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px; /* Bo góc liên kết */
+  transition: background-color 0.3s, color 0.3s, padding 0.3s; /* Thêm hiệu ứng thay đổi padding khi hover */
+}
+
+.sidebar ul li a svg {
+  margin-right: 10px; /* Khoảng cách giữa icon và văn bản */
+  font-size: 1.2em; /* Kích thước icon */
+  transition: transform 0.3s ease; /* Thêm hiệu ứng cho icon khi hover */
+}
+
+/* Khi hover trên liên kết */
+.sidebar ul li a:hover {
+  background-color: rgba(47, 216, 4, 0.24);
+  color: #47d704; /* Thay đổi màu chữ khi hover */
+  padding-left: 20px; /* Thêm khoảng cách bên trái khi hover */
+}
+
+/* Khi mục trong sidebar có class "active" */
+.sidebar ul li a.active {
+  background-color: #47d704; /* Màu nền khi mục được chọn */
+  color: white; /* Màu chữ khi mục được chọn */
+}
+
+.sidebar ul li a.active svg {
+  transform: scale(1.2); /* Phóng to icon khi mục được chọn */
+}
+
+/* Thêm hiệu ứng cho icon khi hover */
+.sidebar ul li a:hover svg {
+  transform: rotate(20deg); /* Quay icon một chút khi hover */
+}

@@ -3,7 +3,7 @@ import "./HeaderCustomer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { getTheater } from "../config/TheaterConfig.js";
+import { getAllNameTheater, getTheater } from "../config/TheaterConfig.js";
 import { TheaterContext } from "../context/TheaterContext.js";
 import { AuthContext } from '../context/AuthContext';
 
@@ -17,9 +17,9 @@ const HeaderCustomer = () => {
   useEffect(() => {
     const fetchTheater = async () => {
       try {
-        const response = await getTheater();
-        const theaterData = response.data.filter(theater => theater.status);
-        setTheaters(theaterData);
+        const response = await getAllNameTheater();
+        // console.log(response.data);
+        setTheaters(response.data);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách rạp:", error);
       }
@@ -76,7 +76,7 @@ const HeaderCustomer = () => {
                 style={{ fontSize: "22px", marginRight: "10px" }}
               />
             )}
-            {user.role.name === "CUSTOMER" ? (
+            {!user.statusEmployee ? (
               <Link to="/user-infor" className="user-infor">
                 {user.name}
               </Link>

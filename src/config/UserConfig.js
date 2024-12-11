@@ -1,8 +1,6 @@
 import api from '../Api.js';
 import axios from 'axios';
 
-export const getAllCustomer = () => api.get("/user/all-customers");
-
 export const verify = async (token) => {
   try {
       const response = await axios.get('http://localhost:8080/api/user/public/verify', {
@@ -43,6 +41,15 @@ export const check = async (email) => {
     return null;
   })
 };
+
+export const getUserById = async (id) => {
+  return api.get(`/user/${id}`)
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error getUserById: ", error);
+      return null;
+  })
+}
 
 export const getCustomerById = async (id) => {
   return api.get(`/user/customer/${id}`)
@@ -135,11 +142,75 @@ export const deleteRole = async (id) => {
   })
 };
 
-// export const getCustomerInforById = async (id) => {
-//   return api.get(`/user/inforaccount/${id}`)
-//   .then(response => response.data)
-//   .catch(error => {
-//       console.error("Error getCustomerInforById: ", error);
-//       return null;
-//   })
-// }
+export const getAllEmployee = async () => {
+  return api.get('/user/employee')
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error getAllEmployee: ", error);
+      return null;
+  })
+};
+
+export const checkEmployee = async (email) => {
+  console.log(email);
+  return api.post('/user/employee/check', { username: email })
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error checkEmployee: ", error);
+    return null;
+  })
+};
+
+export const addEmployee = async (employee) => {
+  return api.post('/user/employee/add', employee)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error addEmployee: ", error);
+    return null;
+  })
+};
+
+export const getEmployeeById = async (id) => {
+  return api.get(`/user/employee/${id}`)
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error getEmployeeById: ", error);
+      return null;
+  })
+}
+
+export const updateStatusEmployee = async (id) => {
+  return api.put(`/user/employee/${id}/updatestatus`)
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error updateStatusEmployee: ", error);
+      return null;
+  })
+}
+
+export const getAllCustomer = async () => {
+  return api.get('/user/customer')
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error getAllCustomer: ", error);
+      return null;
+  })
+};
+
+export const updateStatusUser = async (id) => {
+  return api.put(`/user/${id}/updatestatus`)
+  .then(response => response.data)
+  .catch(error => {
+      console.error("Error updateStatusUser: ", error);
+      return null;
+  })
+}
+
+export const addGenreFauvorite = async (data) => {
+  return api.post('/user/customer/genre/add', data)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error addGenreFauvorite: ", error);
+    return null;
+  })
+};

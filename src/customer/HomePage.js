@@ -16,7 +16,7 @@ import {
   getMovieSoon,
   getSlideshow,
 } from "../config/MovieConfig.js";
-import { getTheater } from "../config/TheaterConfig.js";
+import { getAllNameTheater } from "../config/TheaterConfig.js";
 import { getAllDiscount } from "../config/TicketConfig.js";
 
 const HomePage = () => {
@@ -38,10 +38,9 @@ const HomePage = () => {
       try {
         const response = await getMovieNow();
         setMovieNow(response.data); 
-        const response_theater = await getTheater();
-        const theaterData = response_theater.data.filter(theater => theater.status);
-        setTheaters(theaterData); 
-        const selectedTheaterData = theaterData.find(
+        const response_theater = await getAllNameTheater();
+        setTheaters(response_theater.data); 
+        const selectedTheaterData = response_theater.data.find(
           entry => entry.id === Number(selectedTheater)
         );
         

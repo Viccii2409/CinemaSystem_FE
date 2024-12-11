@@ -6,14 +6,14 @@
   color: white;
   border-radius: 10px;
   width: 8em;
-  height: 3em;
+  height: 2.5em;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 15px;
   text-transform: uppercase;
   font-weight: bold;
-  margin: 10px 20px 20px 0;
+  margin: 10px 20px 10px 0;
 }
 
 .cinema-management-system .add-button {
@@ -59,6 +59,9 @@
   padding: 10px;
   text-align: left;
 }
+
+
+
 
 .cinema-management-system .switch {
   position: relative;
@@ -116,6 +119,8 @@
   border-radius: 50%;
 }
 
+
+
 .cinema-management-system .view-button,
 .cinema-management-system .edit-button,
 .cinema-management-system .delete-button {
@@ -160,11 +165,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50em;
+  max-height: 50em;
   background-color: #ffffff;
   padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .cinema-management-system .modal-overlay {
@@ -190,6 +197,10 @@
   margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.cinema-management-system .input-long {
+  width: 98%;
 }
 
 .cinema-management-system .modal-buttons {
@@ -235,6 +246,8 @@
   flex: 1;
 }
 
+
+
 .cinema-management-system .modal-image {
   width: 100%;
   height: 12em;
@@ -263,11 +276,12 @@
   margin-bottom: 20px;
 }
 
-.cinema-management-system .search-theater select {
+.cinema-management-system .search-theater .input-search {
   padding: 10px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 20em;
 }
 
 .cinema-management-system .permission-label {
@@ -307,5 +321,103 @@
 }
 
 
+.cinema-management-system .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
 
+.cinema-management-system .pagination button {
+  background-color: #e7f7e7; 
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
 
+.cinema-management-system .pagination button:hover {
+  background-color: #d0f0d0; /* Màu nền khi hover vào nút */
+}
+
+.cinema-management-system .pagination button:disabled {
+  background-color: #f0f0f0; /* Nút vô hiệu hóa có màu nền nhạt hơn */
+  cursor: not-allowed;
+}
+
+.cinema-management-system .pagination .active {
+  background-color: #4CAF50; /* Nút hiện tại có màu nền xanh lá */
+  color: white;
+  border: 1px solid #4CAF50; /* Viền nút hiện tại cũng là màu xanh lá */
+}
+
+.cinema-management-system .pagination button:first-child, .pagination button:last-child {
+  font-weight: bold;
+}
+
+.cinema-management-system .pagination button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Hiệu ứng focus với màu xanh lá */
+}
+
+.cinema-management-system .profile-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cinema-management-system .avatar {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.cinema-management-system .profile-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cinema-management-system .user-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.cinema-management-system .user-stats {
+  font-size: 14px;
+  color: #555;
+}
+
+.cinema-management-system .transaction-history h3 {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.cinema-management-system .table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cinema-management-system .table th,
+.cinema-management-system .table td {
+  text-align: left;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.cinema-management-system .table th {
+  background: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.cinema-management-system .table td {
+  color: #555;
+  font-size: 0.9em;
+}

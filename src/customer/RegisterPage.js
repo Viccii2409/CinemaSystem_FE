@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./RegisterPage.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../context/AuthContext';
@@ -15,7 +15,7 @@ import { check, register } from "../config/UserConfig";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin, user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,6 +26,14 @@ const RegisterPage = () => {
     gender: "other",
     address: "",
   });
+
+  
+  useEffect(() => {
+    if(user) {
+      navigate("/home");
+      return;
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,31 +63,17 @@ const RegisterPage = () => {
       if (response_register) {
         alert("Bạn đã đăng kí thành công!");
         await handleLogin(response_register); 
-        navigate("/home");
+        navigate("/genre-favourite");
       } else {
         alert("Lỗi không đăng kí được!");
         return;
       }
     }
-
-    // const response = await fetch("http://localhost:8080/api/user/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
-
-    // if (response.ok) {
-    //   const result = await response.json();
-    //   alert("Đăng ký thành công!");
-    //   console.log("Response:", result);
-    // } else {
-    //   const errorData = await response.json();
-    //   alert("Lỗi đăng ký: " + errorData.message || "Unknown error");
-    //   console.error("Error response:", errorData);
-    // }
   };
+  
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div className="register-page">

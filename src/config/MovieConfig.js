@@ -130,12 +130,11 @@ export const deleteMovie = (id) => {
   })
 };
 
-// export const addGenre = async (genre) => {
-//   try {
-//     const response = await api.post('/movie/genre/add', genre);
-//     return response;
-//   } catch (error) {
-//     console.error("Error adding genre", error);
-//     throw error; // Ném lỗi ra ngoài để có thể xử lý thêm nếu cần
-//   }
-// };
+export const getAllGenreCustomer = () => {
+  return api.get('/movie/public/genre')
+  .then(response => response.data)
+  .catch(error => {
+    console.error("Error getAllGenreCustomer", error);
+    return null;
+  })
+};

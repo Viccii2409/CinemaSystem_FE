@@ -11,7 +11,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State để lưu lỗi nếu có
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if(user) {
+      navigate("/home");
+      return;
+    }
+  }, [user]);
 
   const handleLoginData = async (e) => {
     e.preventDefault();
@@ -21,14 +28,12 @@ const LoginPage = () => {
       const token = await login(loginData);
       console.log(token);
       if (token) {
-        const role = await handleLogin(token);
-        if(role) {
-          if(role === "CUSTOMER") {
-            navigate("/home");
-          }
-          else {
-            navigate("/admin/account");
-          }
+        const statusEmployee = await handleLogin(token);
+        if(statusEmployee) {
+          navigate("/admin/account");
+        }
+        else {
+          navigate("/home");
         }
       }
       else {
