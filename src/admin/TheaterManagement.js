@@ -200,16 +200,6 @@ const CinemaManagement = () => {
     });
   };
 
-  // const validateFormData = (data) => {
-  //   for (let key in data) {
-  //     if (data[key] === '' || data[key] === null) {
-  //       alert('Vui lòng điền đầy đủ thông tin');
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // };
-
   const validateFormData = (data) => {
     let check = true;
 
@@ -390,9 +380,11 @@ const CinemaManagement = () => {
                   <button className="edit-button" onClick={() => handleEditCinema(theater.id)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
+                  {theater.quantityRoom === 0 && (
                   <button className="delete-button" onClick={() => handleDeleteCinema(theater.id)}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
+                  )}
                 </td>
               </tr>
             ))}

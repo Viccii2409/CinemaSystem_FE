@@ -46,6 +46,7 @@ function RoomManagement() {
     const handleListRoom = (id) => {
         setTheaterID(id);
         const theaterInfor = theaters.find(x => x.id === Number(id));
+        console.log(theaterInfor);
         setRooms(theaterInfor ? theaterInfor.room : []);
     }
 
@@ -111,6 +112,7 @@ function RoomManagement() {
                             <th>Tên phòng</th>
                             <th>Loại phòng</th>
                             <th>Số ghế</th>
+                            <th>Số lịch chiếu</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
@@ -122,6 +124,7 @@ function RoomManagement() {
                                 <td>{room.name}</td>
                                 <td>{room.typeRoom.name}</td>
                                 <td>{room.quantitySeat}</td>
+                                <td>{room.quantityShowtime}</td>
                                 <td>
                                     <label className="switch">
                                         <input
@@ -141,9 +144,11 @@ function RoomManagement() {
                                     <button className="edit-button" onClick={() => handleEditRoom(room.id)}>
                                         <FontAwesomeIcon icon={faEdit} />
                                     </button>
+                                    {room.quantityShowtime === 0 && (
                                     <button className="delete-button" onClick={() => handleDeleteRoom(room.id)}>
                                         <FontAwesomeIcon icon={faTrashAlt} />
                                     </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

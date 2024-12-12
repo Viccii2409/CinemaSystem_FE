@@ -199,7 +199,7 @@ const DiscountManagement = () => {
       end: discountData.end || "",
       description: discountData.description || "",
       image: discountData.image || null,
-      status: discountData.status || ""
+      status: discountData.status
     });
     setShowEditModal(true);
 
@@ -211,6 +211,8 @@ const DiscountManagement = () => {
       if (!validateFormData(formDataState)) {
         return;
       }
+      console.log(formDataState);
+
       const updateDicount = await editDiscount(formDataState);
       setDiscounts((prevList) =>
         prevList.map((discount) =>

@@ -37,7 +37,7 @@ const EmployeeInfor = () => {
     const fetchUserInfor = async () => {
       try {
         const response = await getUserById(user.id);
-        // console.log(response);
+        console.log(response);
         if (response) {
           setCurrentUser(response);
           setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
@@ -517,7 +517,7 @@ const EmployeeInfor = () => {
       {showImageModal && (
         <>
           <div className="modal-overlay" onClick={handleCloseModal}></div>
-          <div className="modal">
+          <div className="modal modal-pass">
             <div className="modal-header">Chỉnh sửa hình ảnh </div>
             <form className="modal-info" onSubmit={handleSubmitChangeImage}
               encType="multipart/form-data">
