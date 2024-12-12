@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MovieDetail.css";
 import { useLocation } from "react-router-dom";
-import { getMovieById } from "../config/MovieConfig.js";
+import { getMovieDetails } from "../config/MovieConfig.js";
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import FontAwesome CSS
 
 const MovieDetail = () => {
@@ -14,7 +14,7 @@ const MovieDetail = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await getMovieById(id);
+        const response = await getMovieDetails(id);
         console.log("Dữ liệu trả về từ API: ", response); // Kiểm tra toàn bộ response
     
         // Trực tiếp sử dụng response mà không cần truy cập data
@@ -126,7 +126,7 @@ const MovieDetail = () => {
                   {Array.from({ length: 5 }, (_, index) => (
                     <i
                       key={index}
-                      className={`fa-star ${feedback.rating?.star > index ? 'fas' : 'far'}`}
+                      className={`fa-star ${feedback.star > index ? 'fas' : 'far'}`}
                     ></i>
                   ))}
                 </p>

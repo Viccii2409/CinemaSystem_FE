@@ -14,6 +14,15 @@ export const getMovieById = (id) => {
   })
 };
 
+export const getMovieDetails = (id) => {
+  return api.get(`/movie/moviedetails/${id}`)
+  .then(response => response.data)
+  .catch(error => {
+    console.error("Error get movie by id", error);
+    return null;
+  })
+};
+
 export const getAllGenres = () => {
   try {
     return api.get("/movie/genre");
