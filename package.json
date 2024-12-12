@@ -17,6 +17,7 @@
     "font-awesome": "^4.7.0",
     "giaodien": "file:",
     "jsbarcode": "^3.11.6",
+    "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.46",
     "react": "^18.3.1",

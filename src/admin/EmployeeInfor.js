@@ -1,23 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import "./UserInfor.css";
+import "../customer/UserInfor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faCreditCard,
-  faComment,
-} from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  changePassword,
-  getCustomerById,
-  updateImage,
-  updateUser,
-  addFeedback,
-} from "../config/UserConfig";
+import { faEye, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from 'react-router-dom';
+import { changePassword, getCustomerById, updateImage, updateUser } from "../config/UserConfig";
 import { creatPayOnline } from "../config/TicketConfig";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from '../context/AuthContext';
 
-const AccountPage = () => {
+const EmployeeInfor = () => {
   const { user, setUser, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -32,7 +22,7 @@ const AccountPage = () => {
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      navigate("/login-page");
+      navigate('/login-page');
       return;
     }
     console.log(user);
@@ -43,12 +33,13 @@ const AccountPage = () => {
         if (response) {
           const revenue = response.bookings.reduce((total, entry) => {
             if (entry.statusPayment === "confirmed") {
-              return total + entry.amount;
+              return total + entry.amount; 
             }
-            return total;
+            return total; 
           }, 0);
-
+          
           setCurrentUser({ ...response, revenue });
+
         }
       } catch (error) {
         console.error("Error api getCustomerInforById:", error);
@@ -63,26 +54,20 @@ const AccountPage = () => {
     // localStorage.setItem("user", JSON.stringify(currentUser));
     console.log(currentUser);
     const formData = {
-      id: currentUser.id,
-      name: currentUser.name,
-      email: currentUser.email,
-      phone: currentUser.phone,
-      gender: currentUser.gender,
-      dob: currentUser.dob,
-      address: currentUser.address,
-    };
+      "id": currentUser.id,
+      "name": currentUser.name,
+      "email": currentUser.email,
+      "phone": currentUser.phone,
+      "gender": currentUser.gender,
+      "dob": currentUser.dob,
+      "address": currentUser.address
+    }
+
+
     console.log(formData);
     const response_check = await updateUser(formData);
     if (response_check) {
-      setUser({
-        ...user,
-        name: currentUser.name,
-        email: currentUser.email,
-        phone: currentUser.phone,
-        gender: currentUser.gender,
-        dob: currentUser.dob,
-        address: currentUser.address,
-      });
+      setUser({ ...user, name: currentUser.name, email: currentUser.email, phone: currentUser.phone, gender: currentUser.gender, dob: currentUser.dob, address: currentUser.address });
       alert("Cập nhật thông tin thành công!");
     } else {
       alert("Lỗi khi cập nhật thông tin!");
@@ -92,17 +77,16 @@ const AccountPage = () => {
 
   const handleChangePass = () => {
     setShowPasswordModal(true);
-  };
+  }
 
   const handleChangeImage = () => {
     setShowImageModal(true);
-  };
+  }
 
   const handleCloseModal = () => {
     setShowPasswordModal(false);
     setShowImageModal(false);
-    setShowFeedbackForm(false);
-  };
+  }
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -118,7 +102,7 @@ const AccountPage = () => {
     const formPassData = {
       passwordOld,
       passwordNew,
-      username: currentUser.username,
+      "username": currentUser.username,
     };
     // console.log(formPassData);
 
@@ -126,21 +110,24 @@ const AccountPage = () => {
     if (response_change) {
       alert("Đổi mật khẩu thành công!");
       setShowPasswordModal(false);
-    } else {
+    }
+    else {
       alert("Mật khẩu không đúng!");
     }
 
     passwordOldRef.current.value = "";
     passwordNewRef.current.value = "";
     passwordNew2Ref.current.value = "";
-  };
+
+
+  }
 
   const handleSubmitChangeImage = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     const file = imageRef.current.files[0];
-    formData.append("file", file);
-    formData.append("id", currentUser.id);
+    formData.append('file', file);
+    formData.append('id', currentUser.id);
     const response_image = await updateImage(formData);
     if (response_image) {
       setCurrentUser({ ...currentUser, image: response_image });
@@ -150,7 +137,7 @@ const AccountPage = () => {
       alert("Đổi hình ảnh thất bại!");
     }
     imageRef.current.value = "";
-  };
+  }
 
   const handlePayment = async (barcodePayment) => {
     try {
@@ -158,52 +145,13 @@ const AccountPage = () => {
     } catch (error) {
       console.error("Error api creatPayOnline:", error);
     }
-  };
+  }
 
   const handleViewBooking = async (id) => {
     // console.log(id);
-    navigate("/view-booking", { state: { id: id } });
+    navigate('/view-booking', { state: { id: id } });
     return;
-  };
-
-  const formattedDate = new Date(currentUser.startDate).toLocaleDateString();
-
-  //FEEDBACK
-  const [text, setText] = useState("");
-  const [star, setStar] = useState(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null);
-  const handleFeedback = (bookingId) => {
-    setSelectedBooking({ bookingId });
-    setShowFeedbackForm(true);
-  };
-
-  const handleFeedbackSubmit = async (bookingID) => {
-    setSuccess(false);
-
-    if (!text || !star) {
-      setError("Vui lòng nhập đầy đủ thông tin.");
-      return;
-    }
-
-    const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
-    console.log(feedbackData);
-    try {
-      const response = await addFeedback(feedbackData);
-
-      setSuccess(true);
-      setText("");
-      setStar(null);
-
-      alert("Feedback đã được gửi!");
-      handleCloseModal();
-      window.location.reload();
-    } catch (error) {
-      setError(error.message || "Có lỗi xảy ra.");
-    }
-  };
+  }
 
   return (
     <div className="account-page">
@@ -214,16 +162,17 @@ const AccountPage = () => {
           <div className="account-form">
             <div className="profile-info">
               <Link onClick={handleChangeImage}>
-                <img src={currentUser.image} alt="Avatar" className="avatar" />
+                <img
+                  src={currentUser.image}
+                  alt="Avatar"
+                  className="avatar"
+                />
               </Link>
               <div className="profile-details">
                 <p className="user-name">{currentUser.name}</p>
                 <p className="user-stats">
-                  Tên đăng nhập: {currentUser.username}
-                  <br />
-                  Điểm: {currentUser.points} | Tổng chi tiêu:{" "}
-                  {currentUser.revenue} VND <br />
-                  Ngày bắt đầu: {formattedDate}
+                  Tên đăng nhập: {currentUser.username}<br />
+                  Điểm: {currentUser.points} | Tổng chi tiêu: {currentUser.revenue} VND <br />
                 </p>
               </div>
             </div>
@@ -301,11 +250,7 @@ const AccountPage = () => {
                 Cập nhật thông tin
               </button>
 
-              <button
-                type="button"
-                className="btn btn-change"
-                onClick={handleChangePass}
-              >
+              <button type="button" className="btn btn-change" onClick={handleChangePass}>
                 Đổi mật khẩu
               </button>
             </form>
@@ -315,76 +260,50 @@ const AccountPage = () => {
         <p>Chưa đăng nhập. Vui lòng đăng nhập để xem thông tin.</p>
       )}
 
-      {currentUser &&
-        currentUser.bookings &&
-        currentUser.bookings.length > 0 && (
-          <div className="transaction-history">
-            <h3>Lịch sử giao dịch</h3>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Ngày giao dịch</th>
-                  <th>Phim</th>
-                  <th>Số tiền</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentUser.bookings?.map((booking, index) => (
-                  <tr key={booking.id}>
-                    <td>{index + 1}</td>
-                    <td>{booking.dateBooking}</td>
-                    <td>{booking.nameMovie}</td>
-                    <td>{booking.amount.toLocaleString("vi-VN")} VND</td>
-                    <td>
-                      {booking.statusPayment === "pending"
-                        ? "Chưa thanh toán"
-                        : booking.statusPayment === "confirmed"
-                        ? "Đã thanh toán"
-                        : booking.statusPayment === "expired"
-                        ? "Đã hủy"
-                        : ""}
-                    </td>
-                    <td>
-                      <button
-                        className="view-button"
-                        onClick={() => handleViewBooking(booking.id)}
-                      >
-                        <FontAwesomeIcon icon={faEye} /> Xem
+      {currentUser && currentUser.bookings && currentUser.bookings.length > 0 && (
+        <div className="transaction-history">
+          <h3>Lịch sử giao dịch</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Ngày giao dịch</th>
+                <th>Phim</th>
+                <th>Số tiền</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentUser.bookings?.map((booking, index) => (
+                <tr key={booking.id}>
+                  <td>{index + 1}</td>
+                  <td>{booking.dateBooking}</td>
+                  <td>{booking.nameMovie}</td>
+                  <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                  <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                    (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                      (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                    )}</td>
+                  <td>
+                    <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
+                      <FontAwesomeIcon icon={faEye} /> Xem
+                    </button>
+                    {booking.statusPayment === "pending" ? (
+                      <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
+                        <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
                       </button>
-                      {booking.statusPayment === "pending" ? (
-                        <button
-                          className="payment-button"
-                          onClick={() => handlePayment(booking.barcodePayment)}
-                        >
-                          <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
-                        </button>
-                      ) : booking.statusPayment === "confirmed" &&
-                        booking.feedback === null &&
-                        new Date(
-                          new Date(
-                            `${booking.dateShowtime}T${booking.endTime}`
-                          ).getTime() +
-                            10 * 60 * 1000
-                        ) < new Date() ? (
-                        <button
-                          className="feedback-button"
-                          onClick={() => handleFeedback(booking.id)}
-                        >
-                          <FontAwesomeIcon icon={faComment} /> Feedback
-                        </button>
-                      ) : (
-                        ""
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+
+                    ) : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+
 
       {showPasswordModal && (
         <>
@@ -432,11 +351,7 @@ const AccountPage = () => {
                 </label>
               </div>
               <div className="modal-buttons">
-                <button
-                  type="button"
-                  className="close-button"
-                  onClick={handleCloseModal}
-                >
+                <button type="button" className="close-button" onClick={handleCloseModal}>
                   Hủy
                 </button>
                 <button className="save-button" type="submit">
@@ -445,19 +360,18 @@ const AccountPage = () => {
               </div>
             </form>
           </div>
+
         </>
       )}
+
 
       {showImageModal && (
         <>
           <div className="modal-overlay" onClick={handleCloseModal}></div>
           <div className="modal">
             <div className="modal-header">Chỉnh sửa hình ảnh </div>
-            <form
-              className="modal-info"
-              onSubmit={handleSubmitChangeImage}
-              encType="multipart/form-data"
-            >
+            <form className="modal-info" onSubmit={handleSubmitChangeImage}
+              encType="multipart/form-data">
               <div className="form-group">
                 <label>
                   <strong>Hình ảnh:</strong>
@@ -482,11 +396,7 @@ const AccountPage = () => {
                 </label>
               </div>
               <div className="modal-buttons">
-                <button
-                  type="button"
-                  className="close-button"
-                  onClick={handleCloseModal}
-                >
+                <button type="button" className="close-button" onClick={handleCloseModal}>
                   Hủy
                 </button>
                 <button className="save-button" type="submit">
@@ -495,67 +405,11 @@ const AccountPage = () => {
               </div>
             </form>
           </div>
+
         </>
-      )}
-      {showFeedbackForm && (
-        <div class="feedback-modal">
-          <div class="feedback-form">
-            {error && <p className="error">{error}</p>}
-            {success && (
-              <p className="success">Feedback đã được gửi thành công!</p>
-            )}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleFeedbackSubmit();
-              }}
-            >
-              <div>
-                <label>
-                  Nhận xét:
-                  <textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Nhập nhận xét của bạn"
-                    required
-                  ></textarea>
-                </label>
-              </div>
-              <div>
-                <label>
-                  Đánh giá sao:
-                  <select
-                    value={star || ""}
-                    onChange={(e) => setStar(e.target.value)}
-                    required
-                  >
-                    <option value="" disabled>
-                      Chọn số sao
-                    </option>
-                    <option value="1">1 Sao</option>
-                    <option value="2">2 Sao</option>
-                    <option value="3">3 Sao</option>
-                    <option value="4">4 Sao</option>
-                    <option value="5">5 Sao</option>
-                  </select>
-                </label>
-              </div>
-              <button type="submit" className="submit-btn">
-                Gửi Feedback
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setShowFeedbackForm(false)}
-              >
-                Hủy
-              </button>
-            </form>
-          </div>
-        </div>
       )}
     </div>
   );
 };
 
-export default AccountPage;
+export default EmployeeInfor;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
-import { TheaterContext } from "../TheaterContext";
+import { TheaterContext } from "../context/TheaterContext.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 import {
   faAngleLeft,
@@ -12,13 +14,13 @@ import {
 import {
   getMovieNow,
   getMovieSoon,
-  getDiscount,
   getSlideshow,
   getAllGenres,
 } from "../config/MovieConfig.js";
 import { getRecommendMovie } from "../config/UserConfig.js";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { getAllDiscount } from "../config/TicketConfig.js";
+import { AuthContext } from "../context/AuthContext";
+
 const HomePage = () => {
   const navigate = useNavigate();
   const { selectedTheater } = useContext(TheaterContext);
@@ -84,7 +86,7 @@ const HomePage = () => {
   const fetchGenres = async () => {
     try {
       const response = await getAllGenres();
-      setGenres(response.data);
+      setGenres(response);
     } catch (error) {
       console.error("Error fetching genres:", error);
     }
@@ -92,8 +94,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchDiscount = async () => {
       try {
-        const response = await getDiscount();
-        setDiscounts(response.data); // Lưu dữ liệu vào state cinemas
+        const response = await getAllDiscount();
+        setDiscounts(response); // Lưu dữ liệu vào state cinemas
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Ưu đãi:", error);
       }
@@ -202,20 +204,39 @@ const HomePage = () => {
     setSelectedDiscount(null);
   };
   // Gợi ý phim yêu thích
-  const userid = 3;
+  const { user, loading } = useContext(AuthContext);
   const [recoms, setRecom] = useState([]);
+
   useEffect(() => {
     const fetchRecom = async () => {
       try {
-        const response = await getRecommendMovie(userid);
-        console.log(response.data); // In toàn bộ response để kiểm tra
-        setRecom(response.data);
+        if (loading) {
+          console.log("User data is still loading...");
+          return; // Chờ `loading` hoàn tất
+        }
+
+        if (!user || !user.id) {
+          console.error("User is not defined or does not have an ID.");
+          return;
+        }
+
+        // Gọi API lấy danh sách phim
+        const data = await getRecommendMovie(user.id);
+
+        if (data && Array.isArray(data)) {
+          setRecom(data); // Cập nhật state
+        } else {
+          console.error(
+            "No recommended movies found or data format is incorrect."
+          );
+        }
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách recommend:", error);
+        console.error("Error fetching recommended movies:", error);
       }
     };
+
     fetchRecom();
-  }, [userid]);
+  }, [user, loading]);
 
   return (
     <div className="homepage">
@@ -437,41 +458,51 @@ const HomePage = () => {
           </div>
         </div>
       )}
-      <div className="recommend-movie">
-        <h2>Gợi ý Phim</h2>
-        <div className="movie-list">
-          {recoms.map((recom, index) => (
-            <div className="movie-item" key={recom.id}>
-              <div className="image-container">
-                <Link to="/movie-detail" state={{ id: recom.id }}>
-                  <img
-                    src={recom.link}
-                    alt="movie"
-                    className="movie-thumbnail"
-                  />
-                </Link>
-                <button className="iconPause">
-                  <FontAwesomeIcon
-                    icon={faCirclePlay}
-                    className="control-icon"
-                  />
-                </button>
-                <button
-                  className="buy-ticket-button"
-                  onClick={() => handleScheduleModal(recom.id)}
-                >
-                  MUA VÉ NGAY
-                </button>
-              </div>
-              <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: recom.id }}>
-                  {recom.title}
-                </Link>
-              </h3>
+      {loading ? (
+        <div>Loading...</div> // Hiển thị trong lúc chờ tải dữ liệu
+      ) : user ? (
+        <div className="recommend-movie">
+          <h2>Gợi ý Phim</h2>
+          {recoms.length > 0 ? (
+            <div className="movie-list">
+              {recoms.map((recom) => (
+                <div className="movie-item" key={recom.id}>
+                  <div className="image-container">
+                    <Link to="/movie-detail" state={{ id: recom.id }}>
+                      <img
+                        src={recom.link || "placeholder-image.jpg"} // Dùng ảnh placeholder nếu `link` bị null
+                        alt="movie"
+                        className="movie-thumbnail"
+                      />
+                    </Link>
+                    <button className="iconPause">
+                      <FontAwesomeIcon
+                        icon={faCirclePlay}
+                        className="control-icon"
+                      />
+                    </button>
+                    <button
+                      className="buy-ticket-button"
+                      onClick={() => handleScheduleModal(recom.id)}
+                    >
+                      MUA VÉ NGAY
+                    </button>
+                  </div>
+                  <h3 className="movietitle">
+                    <Link to="/movie-detail" state={{ id: recom.id }}>
+                      {recom.title}
+                    </Link>
+                  </h3>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <p>Không có phim nào được gợi ý.</p> // Thông báo nếu không có phim
+          )}
         </div>
-      </div>
+      ) : (
+        "" // Thông báo nếu chưa đăng nhập
+      )}
     </div>
   );
 };

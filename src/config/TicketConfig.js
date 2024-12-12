@@ -2,8 +2,10 @@ import api from '../Api.js';
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
+// export const getDiscount = () => api.get("/ticket/public/discount");
+
 export const getTimeFrame = async () => {
-    return api.get('/ticket/timeframe')
+    return api.get('/movie/timeframe')
         .then(response => response.data)
         .catch(error => {
             console.error("Error get timeframe", error);
@@ -12,7 +14,7 @@ export const getTimeFrame = async () => {
 };
 
 export const getDayOfWeek = async () => {
-    return api.get('/ticket/dayofweek')
+    return api.get('/movie/dayofweek')
         .then(response => response.data)
         .catch(error => {
             console.error("Error get dayofweek", error);
@@ -39,7 +41,7 @@ export const getTypeDiscount = async () => {
 };
 
 export const getAllDiscount = async () => {
-    return api.get('/ticket/discount')
+    return api.get('/ticket/public/discount')
     .then(response => response.data)
     .catch(error => {
         console.error("Error getAllDiscount", error);
@@ -48,7 +50,7 @@ export const getAllDiscount = async () => {
 }
 
 export const getBasePrice = async () => {
-    return api.get('/ticket/baseprice')
+    return api.get('/movie/baseprice')
         .then(response => response.data)
         .catch(error => {
             console.error("Error get baseprice", error);
@@ -146,8 +148,8 @@ export const addPayCashCustomer = async (payment) => {
         })
 }
 
-export const addPayOnlineCustomer = async (payment) => {
-    return api.post('ticket/customer/booking/payonline', payment)
+export const addPayOnline = async (payment) => {
+    return api.post('ticket/booking/payonline/add', payment)
         .then(response => {
             if (response.data) {
                 const paymentUrl = response.data;
@@ -165,8 +167,8 @@ export const addPayOnlineCustomer = async (payment) => {
         });
 };
 
-export const addPayOnline = async (payment) => {
-    return api.post('ticket/booking/payonline', payment)
+export const addPayOnlineAdmin = async (payment) => {
+    return api.post('ticket/admin/booking/payonline/add', payment)
         .then(response => {
             if (response.data) {
                 const paymentUrl = response.data;
@@ -185,7 +187,7 @@ export const addPayOnline = async (payment) => {
 };
 
 export const creatPayOnline = async (barcode) => {
-    return api.post(`ticket/booking/payonline/${barcode}`)
+    return api.post(`ticket/booking/payonline/add/${barcode}`)
         .then(response => {
             if (response.data) {    
                 const paymentUrl = response.data;
@@ -220,10 +222,11 @@ export const addDiscount = async (discountData) => {
             formData.append('file', discountData.image);
         }
 
+        const token = localStorage.getItem('token');
         const response = await api.post('/ticket/discount/add', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer <token>'
+                'Authorization': `Bearer ${token}`
             },
         });
 
@@ -288,10 +291,11 @@ export const editDiscount = async (discountData) => {
             formData.append('file', discountData.image);
         }
 
+        const token = localStorage.getItem('token');
         const response = await api.put('/ticket/discount/update', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer <token>'
+                'Authorization': `Bearer ${token}`
             },
         });
 
@@ -318,6 +322,5 @@ export const deleteDiscount = async (id) => {
         return null;
     })
 }
-
 
 
