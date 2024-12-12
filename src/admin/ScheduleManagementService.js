@@ -82,6 +82,7 @@ class ScheduleManagementService {
         throw error;
       });
   }
+
 }
 
 export default ScheduleManagementService;
