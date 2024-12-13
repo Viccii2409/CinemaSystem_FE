@@ -214,3 +214,23 @@ export const addGenreFauvorite = async (data) => {
     return null;
   })
 };
+
+export const getRecommendMovie = async (customerID) => {
+  try {
+    const response = await api.get(`/user/public/recommend/${customerID}`);
+    return response.data; // Trả về dữ liệu nhận được từ API
+  } catch (error) {
+    console.error("Error getting recommended movies", error);
+    return null; // Trả về null nếu có lỗi
+  }
+};
+
+export const addFeedback = async (formData) => {
+  return api
+    .post("/feedback/add-feedback", formData)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log("Error addRole: ", error);
+      return null;
+    });
+};

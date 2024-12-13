@@ -5,10 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/customer/GenreFavourite.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/customer/GenreFavourite.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/Movies.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/AccessPermission.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/AccessPermission.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/CustomerDetail.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/CustomerDetail.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/CustomerManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/CustomerManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/DiscountManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/DiscountManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/EmployeeInfor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/EmployeeInfor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/EmployeeManagement.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/EmployeeManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/EmployeeManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/HeaderAdmin.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/HeaderAdmin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/HeaderAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/HeaderAdmin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/MovieCategoriesService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/MovieService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/RoomManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/RoomManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Sidebar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/TheaterManagement.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TheaterManagement.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/TheaterManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TheaterManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/MovieConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/MovieConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/TheaterConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/TheaterConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/UserConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/UserConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/AccountPage.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/AccountPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/AccountPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HeaderCustomer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HeaderCustomer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/customer/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/RegisterPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/UserInfor.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/UserInfor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/UserInfor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/UserInfor.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,11 +49,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="Anh" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -43,15 +71,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "#12 on Merging Anh",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
