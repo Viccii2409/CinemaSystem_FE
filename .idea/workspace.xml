@@ -5,21 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/MovieDetail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/MovieDetail.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/admin/ScheduleManagementService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TheaterContext.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/TheaterManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/TheaterManagement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/MovieConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/MovieConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/TheaterConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/TheaterConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Movies.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/Movies.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/admin/ScheduleManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ScheduleManagement.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/config/UserConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/UserConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HeaderCustomer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/customer/MovieDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/MovieDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/SeatSelection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/SeatSelection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,15 +46,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

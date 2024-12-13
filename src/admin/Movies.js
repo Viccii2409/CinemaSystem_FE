@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import './Movies.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +9,7 @@ import { addMovie, deleteMovie, getAllGenres, getAllMovies } from '../config/Mov
 Modal.setAppElement('#root');
 
 const Movies = () => {
+    const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [genres, setGenres] = useState([]);
@@ -123,8 +125,7 @@ const Movies = () => {
 
     // Xem chi tiết phim
     const handleViewMovie = (id) => {
-        const movie = movies.find((m) => m.id === id);
-        alert(`Xem thông tin phim: ${movie.title}`);
+        navigate(`/admin/movie-detail`, { state: { id } }); // Chuyển hướng đến trang chi tiết với `id` được truyền qua state
     };
 
     // Sửa phim
@@ -283,7 +284,6 @@ const Movies = () => {
                                         <img
                                             src={movie.link}
                                             alt={movie.title}
-                                    
                                         />
                                     </td>
                                     <td>{movie.title || 'Chưa cập nhật'}</td>

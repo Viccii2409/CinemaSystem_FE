@@ -96,6 +96,7 @@ const MovieDetail = () => {
             <p>Thời lượng: {movie.duration} phút</p>
             <p>Ngôn ngữ: {movie.language?.name}</p>
             <p>Ngày khởi chiếu: {movie.releaseDate}</p>
+
           </div>
         </section>
         <section className="trailer-section">

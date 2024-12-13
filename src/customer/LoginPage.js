@@ -3,7 +3,7 @@ import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../config/UserConfig.js"; 
+import { login } from "../config/UserConfig.js";
 import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {

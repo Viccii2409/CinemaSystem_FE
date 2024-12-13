@@ -20,6 +20,7 @@ import CinemaTicket_2 from './admin/CinemaTicket_2';
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 import ManagerRole from "./admin/ManagerRole";
 import EmployeeInfor from "./admin/EmployeeInfor";
+import MovieDetailAdmin from "./admin/MovieDetail"
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./context/TheaterContext";
@@ -113,6 +114,7 @@ function AdminLayout() {
             <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
+            <Route path="movie-detail" element={<MovieDetailAdmin />} /> // xem chi tiết movie
             <Route path="showtimes" element={<ScheduleManagement />} />
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<CinemaTicket />} />

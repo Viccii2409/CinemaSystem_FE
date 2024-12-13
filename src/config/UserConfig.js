@@ -8,7 +8,7 @@ export const verify = async (token) => {
               'Authorization': `Bearer ${token}`
           }
       });
-      return response.data; 
+      return response.data;
   } catch (error) {
       console.error('Token không hợp lệ:', error);
       localStorage.removeItem('token');
