@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import "./UserInfor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCreditCard, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faCreditCard, faUserCircle, faEdit, faComment } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from 'react-router-dom';
-import { addGenreFauvorite, changePassword, getCustomerById, getUserById, updateImage, updateUser } from "../config/UserConfig";
+import { addGenreFauvorite, changePassword, getCustomerById, getUserById, updateImage, updateUser, addFeedback } from "../config/UserConfig";
 import { creatPayOnline, getBookingById } from "../config/TicketConfig";
 import { AuthContext } from '../context/AuthContext';
 import BarcodeGenerator from "../BarcodeGenerator";
@@ -207,6 +207,43 @@ const AccountPage = () => {
 
   const formattedDate = new Date(currentUser.startDate).toLocaleDateString();
 
+  //FEEDBACK
+    const [text, setText] = useState("");
+    const [star, setStar] = useState(null);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
+    const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const handleFeedback = (bookingId) => {
+      setSelectedBooking({ bookingId });
+      setShowFeedbackForm(true);
+    };
+
+    const handleFeedbackSubmit = async (bookingID) => {
+      setSuccess(false);
+
+      if (!text || !star) {
+        setError("Vui lòng nhập đầy đủ thông tin.");
+        return;
+      }
+
+      const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
+      console.log(feedbackData);
+      try {
+        const response = await addFeedback(feedbackData);
+
+        setSuccess(true);
+        setText("");
+        setStar(null);
+
+        alert("Feedback đã được gửi!");
+        handleCloseModal();
+        window.location.reload();
+      } catch (error) {
+        setError(error.message || "Có lỗi xảy ra.");
+      }
+    };
+
   return (
     <div className="account-page">
       <h2 className="title">Thông tin tài khoản</h2>
@@ -407,11 +444,30 @@ const AccountPage = () => {
                       <FontAwesomeIcon icon={faEye} /> Xem
                     </button>
                     {booking.statusPayment === "pending" ? (
-                      <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
-                        <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
-                      </button>
-
-                    ) : ""}
+                                            <button
+                                              className="payment-button"
+                                              onClick={() => handlePayment(booking.barcodePayment)}
+                                            >
+                                              <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
+                                            </button>
+                                          ) : booking.statusPayment === "confirmed"
+                                             && booking.feedback === null
+                                             && new Date(
+                                              new Date(
+                                                `${booking.dateShowtime}T${booking.endTime}`
+                                              ).getTime() +
+                                                10 * 60 * 1000
+                                            ) < new Date()
+                                            ? (
+                                            <button
+                                              className="feedback-button"
+                                              onClick={() => handleFeedback(booking.id)}
+                                            >
+                                              <FontAwesomeIcon icon={faComment} /> Feedback
+                                            </button>
+                                          ) : (
+                                            ""
+                                          )}
                   </td>
                 </tr>
               ))}
@@ -760,6 +816,64 @@ const AccountPage = () => {
           </div>
         </>
       )}
+
+      {showFeedbackForm && (
+              <div class="feedback-modal">
+                <div class="feedback-form">
+                  {error && <p className="error">{error}</p>}
+                  {success && (
+                    <p className="success">Feedback đã được gửi thành công!</p>
+                  )}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleFeedbackSubmit();
+                    }}
+                  >
+                    <div>
+                      <label>
+                        Nhận xét:
+                        <textarea
+                          value={text}
+                          onChange={(e) => setText(e.target.value)}
+                          placeholder="Nhập nhận xét của bạn"
+                          required
+                        ></textarea>
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        Đánh giá sao:
+                        <select
+                          value={star || ""}
+                          onChange={(e) => setStar(e.target.value)}
+                          required
+                        >
+                          <option value="" disabled>
+                            Chọn số sao
+                          </option>
+                          <option value="1">1 Sao</option>
+                          <option value="2">2 Sao</option>
+                          <option value="3">3 Sao</option>
+                          <option value="4">4 Sao</option>
+                          <option value="5">5 Sao</option>
+                        </select>
+                      </label>
+                    </div>
+                    <button type="submit" className="submit-btn">
+                      Gửi Feedback
+                    </button>
+                    <button
+                      type="button"
+                      className="cancel-btn"
+                      onClick={() => setShowFeedbackForm(false)}
+                    >
+                      Hủy
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
     </div>
   );
 };

@@ -188,7 +188,8 @@
 /* Căn chỉnh nút */
 .account-page .view-button,
 .account-page .genre-button,
-.account-page .payment-button {
+.account-page .payment-button,
+.account-page .feedback-button{
   padding: 8px 12px;
   font-size: 0.9em;
   color: #fff;
@@ -208,7 +209,8 @@
   margin: 20px 10px 0 0;
 }
 
-.account-page .payment-button {
+.account-page .payment-button,
+.account-page .feedback-button {
   background-color: #28a745;
 }
 
@@ -217,7 +219,8 @@
   transform: scale(1.1);
 }
 
-.account-page .payment-button:hover {
+.account-page .payment-button:hover,
+.account-page .feedback-button:hover {
   background-color: #218838;
   transform: scale(1.1);
 
@@ -446,4 +449,107 @@
   color: white;
   transform: scale(1.05);
   /* Phóng to nhẹ */
+}
+
+
+
+/* Feedback Modal Styles */
+/* Feedback Modal Styles */
+.feedback-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.feedback-form {
+  background-color: #fff;
+  width: 95%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.feedback-form label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.feedback-form textarea,
+.feedback-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.feedback-form textarea:focus,
+.feedback-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.feedback-form .submit-btn,
+.feedback-form .cancel-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.feedback-form .submit-btn {
+  background-color: #007bff;
+}
+
+.feedback-form .submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.feedback-form .cancel-btn {
+  background-color: #6c757d;
+}
+
+.feedback-form .cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.feedback-form .error {
+  color: #be1728;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.feedback-form .success {
+  color: #28a745;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 576px) {
+  .feedback-form {
+    width: 95%;
+    padding: 20px;
+  }
 }

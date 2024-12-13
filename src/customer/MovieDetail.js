@@ -36,9 +36,9 @@ const MovieDetail = () => {
         setMovie(response_movie);
         handleScheduleModal(response_movie, selectedTheater);
         const image_true = response_movie.image.find(
-          (img) => img.type === true
-        );
-        setImage(image_true || "");
+                  (img) => img.type === true
+                );
+                setImage(image_true || "");
       } catch (error) {
         console.error(error);
       }
