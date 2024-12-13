@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/MovieDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/MovieDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/UserInfor.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/UserInfor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/UserInfor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/UserInfor.js" afterDir="false" />
-    </list>
+    <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="Anh" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,7 +41,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Anh",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Admin/Documents/DoAn/movie_fe_edit_2/CinemaSystem_FE"
