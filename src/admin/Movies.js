@@ -1,18 +1,27 @@
-
+import React, { useState, useEffect } from "react";
+import "./Movies.css";
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faEye,
+    faEdit,
+    faTrashCan,
+    faChevronLeft,
+    faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-modal";
+import {
+    addMovie,
+    deleteMovie,
+    getAllGenres,
+    getAllLanguage,
+    getAllMovies,
+    getMovieById,
+    getMovieDetails
+} from "../config/MovieConfig";
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import './Movies.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Modal from 'react-modal';
-import MovieService from './MovieService';
-import GenreService from './MovieCategoriesService';
-import { useNavigate } from 'react-router-dom';
-import { getMovieDetails } from "../config/MovieConfig.js";
 
-
-
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const Movies = () => {
     const navigate = useNavigate();
@@ -69,12 +78,13 @@ const Movies = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await MovieService.getAllMovies();
-            const normalizedMovies = response.data.map((movie) => ({
+            const response = await getAllMovies();
+            const normalizedMovies = response.map((movie) => ({
                 ...movie,
                 genre: Array.isArray(movie.genres) ? movie.genres : [], // Normalize genre
             }));
             setMovies(normalizedMovies);
+            console.log(normalizedMovies);
             setFilteredMovies(normalizedMovies);
             setLoading(false);
         } catch (error) {
@@ -85,8 +95,8 @@ const Movies = () => {
 
     const fetchGenres = async () => {
         try {
-            const response = await GenreService.getAllGenres();
-            setGenres(response.data);
+            const response = await getAllGenres();
+            setGenres(response);
         } catch (error) {
             console.error("Error fetching genres:", error);
         }
@@ -94,8 +104,8 @@ const Movies = () => {
 
     const fetchLanguages = async () => {
         try {
-            const response = await MovieService.getAllLanguage();
-            setLanguages(response.data); // Set languages in state
+            const response = await getAllLanguage();
+            setLanguages(response); // Set languages in state
         } catch (error) {
             console.error("Error fetching languages:", error);
         }
@@ -103,20 +113,20 @@ const Movies = () => {
 
     const handleDurationChange = (e) => {
         const value = e.target.value;
-    
+
         // Kiểm tra xem giá trị có phải là số hợp lệ và không rỗng
         if (/^\d*$/.test(value)) {
             setNewMovie({ ...newMovie, duration: value });
         }
     };
-    
 
-    // Thêm phim 
+
+    // Thêm phim
 
     const validateNewMovie = (movie) => {
         const today = new Date();
         const releaseDate = new Date(movie.releaseDate);
-    
+
         // Kiểm tra tất cả các điều kiện
         if (
             !movie.title ||                   // Tiêu đề không được để trống
@@ -132,18 +142,18 @@ const Movies = () => {
         return true;
     };
 
- 
+
     const handleAddMovie = async () => {
         if (!validateNewMovie(newMovie)) {
             alert("Vui lòng kiểm tra lại thông tin. Một số trường bắt buộc đang bị bỏ trống.");
             return;
         }
-    
+
         const formData = new FormData();
-    
+
         // Gửi đối tượng movie dưới dạng chuỗi JSON
         formData.append('movie', JSON.stringify(newMovie));
-    
+
         // Gửi các trường khác
         formData.append('title', newMovie.title);
         formData.append('duration', newMovie.duration);
@@ -154,7 +164,7 @@ const Movies = () => {
         formData.append('cast', newMovie.cast);
         formData.append('genre', JSON.stringify(newMovie.genre));
 
-    
+
         // Kiểm tra tệp ảnh
         if (newMovie.image) {
             const image = newMovie.image;
@@ -168,7 +178,7 @@ const Movies = () => {
             alert("Vui lòng chọn hình ảnh cho phim.");
             return;
         }
-    
+
         // Kiểm tra tệp trailer
         if (newMovie.trailer) {
             const trailer = newMovie.trailer;
@@ -182,7 +192,7 @@ const Movies = () => {
             alert("Vui lòng chọn trailer cho phim.");
             return;
         }
-    // in form data
+        // in form data
         formData.forEach((value, key) => {
             if (value instanceof File) {
                 console.log(key, value.name, value.type, value.size);  // In ra tên, loại, và kích thước tệp
@@ -190,42 +200,29 @@ const Movies = () => {
                 console.log(key, value);
             }
         });
-        
-    
-        try {
-            const response = await axios.post('http://localhost:8080/api/movie/add', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-    
-            setMovies([...movies, response.data]);
-            setNewMovie({
-                title: '',
-                duration: '',
-                releaseDate: '',
-                description: '',
-                director: '',
-                language: '',
-                cast: '',
-                genre: [],
-                image: null,
-                trailer: null,
-            });
-    
-            setIsAddModalOpen(false);
-            fetchMovies();
-            alert("Thêm phim thành công!");
-        } catch (error) {
-            console.error("Error adding the movie:", error);
-            if (error.response && error.response.data && error.response.data.message) {
-                alert(`Lỗi: ${error.response.data.message}`);
-            } else {
-                alert("Thêm phim thất bại! Vui lòng thử lại sau.");
-            }
+
+
+        const response = await addMovie(formData);
+        if (response) {
+        setMovies([...movies, response]);
+        setNewMovie({
+            title: '',
+            duration: '',
+            releaseDate: '',
+            description: '',
+            director: '',
+            language: '',
+            cast: '',
+            genre: [],
+            image: null,
+            trailer: null,
+        });
+        } else {
+            alert("Thêm phim thất bại! Vui lòng thử lại sau.");
+            
         }
     };
-    
+
 
     const handleGenreChange = (event) => {
         const selectedGenres = Array.from(event.target.selectedOptions, option => {
@@ -233,10 +230,10 @@ const Movies = () => {
         });
         setNewMovie({ ...newMovie, genre: selectedGenres });
     };
-    
-    
-    
-    
+
+
+
+
     const handleReleaseDateChange = (e) => {
         setNewMovie({ ...newMovie, releaseDate: e.target.value });
     };
@@ -246,23 +243,23 @@ const Movies = () => {
         const selectedLanguage = languages.find(lang => lang.name === e.target.value);
         setNewMovie({ ...newMovie, language: selectedLanguage }); // Cập nhật bằng đối tượng ngôn ngữ
     };
-    
+
     // Đổi trạng thái phim
     const updateStatusMovie = async (id) => {
         try {
-            
-            await MovieService.updateStatusMovie(id);
-    
+
+            await updateStatusMovie(id);
+
             // Tải lại danh sách phim sau khi thay đổi trạng thái
-            fetchMovies();  
-    
+            fetchMovies();
+
             alert("Chuyển trạng thái thành công!");
         } catch (error) {
             console.error('Error updating status:', error);
             alert("Cập nhật trạng thái thất bại!");
         }
     };
-    
+
 
     // Xem chi tiết phim
     const handleViewMovie = (id) => {
@@ -272,48 +269,43 @@ const Movies = () => {
 
 
     // Sửa phim
-        // Mở modal chỉnh sửa
+    // Mở modal chỉnh sửa
     const handleOpenEditModal = (movieId) => {
         const movieToEdit = movies.find((movie) => movie.id === movieId);
         if (movieToEdit) {
-            setSelectedMovie(movieToEdit); 
-            setIsEditModalOpen(true);  
+            setSelectedMovie(movieToEdit);
+            setIsEditModalOpen(true);
         } else {
-            handleEditMovie(movieId);  
+            handleEditMovie(movieId);
         }
     };
 
     // Lấy thông tin chi tiết phim
-    const handleEditMovie = (movieId) => {
-        axios.get(`http://localhost:8080/api/movie/moviedetails/${movieId}`)
-            .then((response) => {
-                setSelectedMovie({
-                    id: response.data.id,
-                    title: response.data.title || '',
-                    duration: response.data.duration || '',
-                    releaseDate: response.data.releaseDate || '',
-                    description: response.data.description || '',
-                    director: response.data.director || '',
-                    cast: response.data.cast || '',
-                    language: response.data.language || null,
-                    genre: response.data.genre || [],
-                    image: response.data.image || null,
-                    trailer: response.data.trailer || null,
-                });
-                setIsEditModalOpen(true);
-            })
-            .catch((error) => {
-                console.error('Lỗi khi tải thông tin chi tiết phim: ', error);
-                alert('Không thể tải thông tin phim. Vui lòng thử lại.');
-            });
+    const handleEditMovie = async (movieId) => {
+        console.log(movieId);
+        const response = await getMovieById(movieId);
+        setSelectedMovie({
+            id: response.id,
+            title: response.title || '',
+            duration: response.duration || '',
+            releaseDate: response.releaseDate || '',
+            description: response.description || '',
+            director: response.director || '',
+            cast: response.cast || '',
+            language: response.language || null,
+            genre: response.genre || [],
+            image: response.image || null,
+            trailer: response.trailer || null,
+        });
+        setIsEditModalOpen(true);
     };
 
     // Lưu các thay đổi sau khi chỉnh sửa thông tin phim
     const handleSaveMovieChanges = (movie) => {
         const formData = new FormData();
-        
+
         console.log(JSON.stringify(movie.genre));
-    
+
         // Gửi thông tin phim
         formData.append("movie", JSON.stringify({
             id: movie.id,
@@ -329,7 +321,7 @@ const Movies = () => {
             genre: movie.genre,
             language: movie.language
         }));
-    
+
         // Kiểm tra và gửi ảnh (image) nếu có
         if (movie.image) {
             if (movie.image instanceof File) {
@@ -341,7 +333,7 @@ const Movies = () => {
             // Nếu không có ảnh, gửi giá trị mặc định (chuỗi rỗng hoặc null)
             formData.append("imageFile", "");  // Gửi một chuỗi rỗng thay vì không gửi gì cả
         }
-    
+
         // Kiểm tra và gửi trailer nếu có
         if (movie.trailer) {
             if (movie.trailer instanceof File) {
@@ -350,8 +342,8 @@ const Movies = () => {
                 formData.append("trailerFile", movie.trailer);  // Gửi URL trailer nếu có
             }
         }
-    
-      
+
+
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
@@ -359,27 +351,27 @@ const Movies = () => {
         axios.put(`http://localhost:8080/api/movie/${movie.id}`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
-        .then((response) => {
-            if (response.data) {
-                fetchMovies();  // Lấy lại danh sách phim sau khi cập nhật thành công
-                alert("Cập nhật phim thành công!");
-                setIsEditModalOpen(false);  // Đóng modal sau khi thành công
-            } else {
+            .then((response) => {
+                if (response.data) {
+                    fetchMovies();  // Lấy lại danh sách phim sau khi cập nhật thành công
+                    alert("Cập nhật phim thành công!");
+                    setIsEditModalOpen(false);  // Đóng modal sau khi thành công
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng thử lại.");
+                }
+            })
+            .catch((error) => {
+                console.error("Lỗi khi cập nhật phim: ", error);
                 alert("Có lỗi xảy ra, vui lòng thử lại.");
-            }
-        })
-        .catch((error) => {
-            console.error("Lỗi khi cập nhật phim: ", error);
-            alert("Có lỗi xảy ra, vui lòng thử lại.");
-        });
+            });
     };
-    
-    
-    
+
+
+
     // Thay đổi thể loại khi chỉnh sửa
     const handleGenreChangeInEdit = (e) => {
         const selectedGenres = Array.from(e.target.selectedOptions, (option) => option.value);
-        
+
         // Cập nhật lại genres cho movie đang được chỉnh sửa
         setSelectedMovie((prevMovie) => ({
             ...prevMovie,
@@ -398,14 +390,14 @@ const Movies = () => {
         }));
     };
 
-    
-    
-    
+
+
+
     // Xóa phim
     const handleDeleteMovie = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa phim này?')) {
             try {
-                await MovieService.deleteMovie(id);
+                await deleteMovie(id);
                 setMovies(movies.filter((m) => m.id !== id));
                 fetchMovies();
                 alert('Xóa phim thành công!');
@@ -426,7 +418,7 @@ const Movies = () => {
         );
     };
 
-    // Lọc phim theo thể loại 
+    // Lọc phim theo thể loại
     const filterMoviesByGenre = () => {
         if (selectedGenre) {
             setFilteredMovies(
@@ -453,7 +445,7 @@ const Movies = () => {
                     value={searchTerm}
                     onChange={handleSearch}
                 />
-                
+
                 {/* Combobox to filter movies by genre */}
                 <select
                     value={selectedGenre}
@@ -467,7 +459,9 @@ const Movies = () => {
                     ))}
                 </select>
 
-                <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm</button>
+                <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
+                    Thêm
+                </button>
             </div>
 
             {/* Modal for adding movie */}
@@ -508,15 +502,15 @@ const Movies = () => {
                     <div>
                         <label>Thể loại:</label>
                         <select
-                        multiple
-                        value={newMovie.genre.map(genre => genre.name)}
-                        onChange={handleGenreChange}
-                    >
-                        {genres.map((genre) => (
-                            <option key={genre.id} value={genre.name}>
-                                {genre.name}
-                            </option>
-                        ))}
+                            multiple
+                            value={newMovie.genre.map(genre => genre.name)}
+                            onChange={handleGenreChange}
+                        >
+                            {genres.map((genre) => (
+                                <option key={genre.id} value={genre.name}>
+                                    {genre.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
@@ -633,7 +627,7 @@ const Movies = () => {
                                     <td>{(currentPage - 1) * recordsPerPage + index + 1}</td>
                                     <td>
                                         <img
-                                            src={movie.link}
+                                            src={movie.image}
                                             alt={movie.title}
                                         />
                                     </td>
@@ -641,15 +635,15 @@ const Movies = () => {
                                     <td>{movie.genres.map(genre => genre.name).join(', ') || 'Chưa có thể loại'}</td>
                                     <td>{new Date(movie.releaseDate).toLocaleDateString() || 'Chưa có ngày'}</td>
                                     <td>
-                                    <label className="switch">
-                                    <input
-                                        type="checkbox"
-                                        checked={movie.status}
-                                        onChange={() => updateStatusMovie(movie.id)}
-                                    />
-                                    <span className="slider round"></span>
-                                     </label>
-                                     </td>
+                                        <label className="switch">
+                                            <input
+                                                type="checkbox"
+                                                checked={movie.status}
+                                                onChange={() => updateStatusMovie(movie.id)}
+                                            />
+                                            <span className="slider round"></span>
+                                        </label>
+                                    </td>
                                     <td>
                                         <button
                                             className="action-button view-button"
@@ -854,5 +848,5 @@ const Movies = () => {
         </div>
     );
 };
- 
+
 export default Movies;

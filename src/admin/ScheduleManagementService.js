@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8080/api/movie';
 class ScheduleManagementService {
     // Lấy danh sách tất cả các rạp và lọc các rạp có status = 1 (hoạt động)
     static fetchActiveTheaters() {
-        return axios.get('http://localhost:8080/api/theater')  // Lấy tất cả các rạp
+        return axios.get('http://localhost:8080/api/theater/all')  // Lấy tất cả các rạp
             .then(response => {
                 // Lọc các rạp có status = 1 (hoạt động)
                 const activeTheaters = response.data.filter(theater => theater.status === true);

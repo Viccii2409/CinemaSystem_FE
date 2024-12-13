@@ -392,20 +392,20 @@ Styles for Movies Management Component
   border: none;
   cursor: pointer;
 }
-.fa-star, .fa-star-half-alt {
+.movies-management .fa-star, .fa-star-half-alt {
   color: #ffd700; /* Màu vàng cho sao đầy và nửa sao */
   margin-right: 5px; /* Khoảng cách giữa các sao */
   font-size: 18px; /* Kích thước sao */
 }
 
-.far.fa-star {
+.movies-management .far.fa-star {
   color: #ccc; /* Màu xám cho sao chưa đánh giá */
 }
 
 
 /* thêm  */
 /* Modal container */
-.ReactModal__Overlay {
+.movies-management .ReactModal__Overlay {
   background-color: rgba(0, 0, 0, 0.5); /* Overlay background */
   display: flex;
   justify-content: center; /* Căn giữa theo chiều ngang */
@@ -419,7 +419,7 @@ Styles for Movies Management Component
 }
 
 /* Modal content */
-.ReactModal__Content {
+.movies-management .ReactModal__Content {
   background-color: #fff;
   padding: 20px;
   width: 80%;
@@ -432,19 +432,19 @@ Styles for Movies Management Component
 }
 
 /* Modal title */
-.ReactModal__Content h2 {
+.movies-management .ReactModal__Content h2 {
   font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
 }
 
 /* Form sections */
-.ReactModal__Content div {
+.movies-management .ReactModal__Content div {
   margin-bottom: 15px;
 }
 
 /* Labels */
-.ReactModal__Content label {
+.movies-management .ReactModal__Content label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
@@ -453,9 +453,9 @@ Styles for Movies Management Component
 }
 
 /* Input fields */
-.ReactModal__Content input,
-.ReactModal__Content select,
-.ReactModal__Content textarea {
+.movies-management .ReactModal__Content input,
+.movies-management .ReactModal__Content select,
+.movies-management .ReactModal__Content textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -466,21 +466,27 @@ Styles for Movies Management Component
   margin-top: 5px;
 }
 
+
+
+
+
+
+
 /* Input file */
-.ReactModal__Content input[type="file"] {
+.movies-management .ReactModal__Content input[type="file"] {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 /* Textarea */
-.ReactModal__Content textarea {
+.movies-management .ReactModal__Content textarea {
   resize: vertical;
   min-height: 100px;
 }
 
 /* Buttons */
-.ReactModal__Content button {
+.movies-management .ReactModal__Content button {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
@@ -493,22 +499,22 @@ Styles for Movies Management Component
 }
 
 /* Hover effect for buttons */
-.ReactModal__Content button:hover {
+.movies-management .ReactModal__Content button:hover {
   background-color: #45a049;
 }
 
 /* Cancel button */
-.ReactModal__Content button[type="button"] {
+.movies-management .ReactModal__Content button[type="button"] {
   background-color: #f44336;
   margin-left: 10px;
 }
 
-.ReactModal__Content button[type="button"]:hover {
+.movies-management .ReactModal__Content button[type="button"]:hover {
   background-color: #e53935;
 }
 
 /* Close button (X) */
-.ReactModal__Content .close {
+.movies-management .ReactModal__Content .close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -518,7 +524,7 @@ Styles for Movies Management Component
 }
 
 /* Close button hover */
-.ReactModal__Content .close:hover {
+.movies-management .ReactModal__Content .close:hover {
   color: #333;
 }
 /* Modal container (overlay) */
@@ -612,16 +618,16 @@ body, html {
 }
 
 /* Input focus effect */
-input:focus,
-textarea:focus,
-select:focus {
+.movies-management input:focus,
+.movies-management textarea:focus,
+.movies-management select:focus {
   border-color: #4CAF50;
   outline: none;
 }
 
 /* Error message for missing fields */
-input:invalid,
-textarea:invalid,
-select:invalid {
+.movies-management input:invalid,
+.movies-management textarea:invalid,
+.movies-management select:invalid {
   border-color: red;
 }

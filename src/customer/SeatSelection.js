@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import '../admin/CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { TheaterContext } from "../TheaterContext";
-import { addPayOnlineCustomer, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { TheaterContext } from "../context/TheaterContext";
+import { addPayOnline, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
-import { getCustomerById } from '../config/UserConfig';
+// import { getCustomerById } from '../config/UserConfig';
+import { AuthContext } from '../context/AuthContext';
 import ConfirmModal from "../ConfirmModal";
 
 function SeatSelection() {
+  const { user, loading } = useContext(AuthContext);
   const { setSelectedTheater } = useContext(TheaterContext);
   const navigate = useNavigate();
   const location = useLocation();
   const { id, theaterid } = location.state || '';
-  const userid = 3;
-  const [customer, setCustomer] = useState([]);
+  // const [customer, setCustomer] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [currentDateTimeEnd, setCurrentDateTimeEnd] = useState('');
   const [timeLeft, setTimeLeft] = useState(10 * 60);
@@ -27,12 +28,10 @@ function SeatSelection() {
 
   const [discounts, setDiscounts] = useState('');
   const [discount, setDiscount] = useState('');
-  const [discountPrice, setDiscountPrice] = useState('');
+  const [discountPrice, setDiscountPrice] = useState(0);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [paymentOnlineData, setPaymentOnlineData] = useState(null);
-
-
 
 
 
@@ -50,15 +49,17 @@ function SeatSelection() {
         navigate('/home');
         return;
       }
+      if (loading) return;
+      if(user == null){
+        navigate('/login-page');
+        return;
+      }
       try {
         setSelectedTheater(theaterid);
-        const response_customer = await getCustomerById(Number(userid));
-        setCustomer(response_customer);
-        console.log(response_customer);
 
         const response_discount = await getAllDiscount();
         const discountActive = response_discount.filter(entry => entry.status);
-        const customerDiscountIds = response_customer.discounts.map(discount => discount.id);
+        const customerDiscountIds = user.discounts.map(discount => discount.id);
         const discountNotInCustomer = discountActive.filter(
           discount => !customerDiscountIds.includes(discount.id)
         );
@@ -66,14 +67,14 @@ function SeatSelection() {
 
         const response_showtime = await getShowtimeByID(id);
         setShowtime(response_showtime);
-        setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== userid || seat.status === "confirmed"));
+        setSelectedSeat(response_showtime.selectedSeats.filter(seat => seat.userid !== user.id || seat.status === "confirmed"));
 
 
         const bookingData = [];
         let startTimeData = moment().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DDTHH:mm:ss");
         let endTimeData = null;
         response_showtime.selectedSeats
-          .filter(seat => seat.userid === userid && seat.status === "pending")
+          .filter(seat => seat.userid === user.id && seat.status === "pending")
           .forEach(seat => {
             bookingData.push({
               id: seat.seatid,
@@ -113,18 +114,14 @@ function SeatSelection() {
         }
       } catch (error) {
         console.error("Error get showtime by id api", error);
+        navigate('/403');
       }
     };
     getRoomInfor();
     setViewSeat(true);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    // if(selectedTheater === null){
-    //   handleExit();
-    //   return;
-    // }
-    // Hàm đếm ngược thời gian
     const interval = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
@@ -140,6 +137,11 @@ function SeatSelection() {
   }, []);
 
   useEffect(() => {
+    
+    // if(user == null){
+    //   navigate('/login-page');
+    //   return;
+    // }
     const stopListen = getSelectedSeatByShowtime(id, (selectedSeatData) => {
       console.log("Received seat data:", selectedSeatData);
 
@@ -150,7 +152,7 @@ function SeatSelection() {
         if (!seatExists) {
           // Nếu ghế chưa tồn tại và có trạng thái "pending" hoặc "confirmed"
           if (
-            selectedSeatData.userid !== userid &&
+            selectedSeatData.userid !== user.id &&
             (selectedSeatData.status === "pending" || selectedSeatData.status === "confirmed")
           ) {
             return [...prevSelectedSeat, selectedSeatData];
@@ -167,7 +169,7 @@ function SeatSelection() {
     });
 
     return () => stopListen(); // Ngắt kết nối WebSocket khi component bị unmounted
-  }, [id, userid]);
+  }, [id]);
 
 
 
@@ -248,15 +250,17 @@ function SeatSelection() {
 
 
   const handleBookingSeat = async (id) => {
+
     // Tạo dữ liệu selectedSeat
     const selectedSeat = {
-      user: { id: userid },
+      user: { id: user.id },
       showtime: { id: showtime.id },
       seat: { id: id },
       start: currentDateTime,
       end: currentDateTimeEnd,
       status: "pending"
     };
+
 
     // Kiểm tra nếu ghế đã được chọn
     const existingSeat = booking.find((seat) => seat.id === id);
@@ -341,11 +345,13 @@ function SeatSelection() {
 
       const paymentOnline = {
         showtimeid: showtime.id,
-        customerid: userid,
+        userid: user.id,
         discountid: discount.id,
         totalPrice: totalPrice,
         discountPrice: discountPrice,
         amount: totalPrice - discountPrice,
+        typePay: "PAYONLINE",
+        typeBooking: "ONLINE",
         paytypecustomer: initialData,
         ticket: booking
       };
@@ -361,8 +367,8 @@ function SeatSelection() {
     console.log(JSON.stringify(paymentOnlineData, null, 2));
 
     try {
-      const response = await addPayOnlineCustomer(paymentOnlineData);
-      navigate('/home');
+      await addPayOnline(paymentOnlineData);
+      navigate('/user-infor');
       return;
       // alert("Thanh toán thành công!");
     } catch (error) {
@@ -489,7 +495,7 @@ function SeatSelection() {
                     type="text"
                     name="reducedValue"
                     className="modal-input"
-                    value={customer.fullname}
+                    value={user.name}
                     readOnly
                   />
                   <br />
@@ -502,7 +508,7 @@ function SeatSelection() {
                     type="text"
                     name="discountCode"
                     className="modal-input"
-                    value={customer.email}
+                    value={user.email}
                     readOnly
                   />
                   <br />
@@ -515,7 +521,7 @@ function SeatSelection() {
                     type="text"
                     name="discountCode"
                     className="modal-input"
-                    value={customer.phone}
+                    value={user.phone}
                     readOnly
                   />
                   <br />

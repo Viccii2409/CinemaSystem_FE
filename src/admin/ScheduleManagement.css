@@ -138,7 +138,7 @@
 
 /* css thêm lịch chiếu */
 /* Modal */
- .modal {
+.schedule-management .modal {
   width: 400px;
   max-width: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
@@ -148,7 +148,7 @@
 } 
 
 /* Modal Content */
-.modal-content {
+.schedule-management .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -158,14 +158,14 @@
 }
 
 /* Tiêu đề modal */
-.modal-content h3 {
+.schedule-management .modal-content h3 {
   margin-bottom: 15px;
   text-align: center;
   font-size: 20px;
 }
 
 /* Label */
-.modal-content label {
+.schedule-management .modal-content label {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
@@ -173,8 +173,8 @@
 }
 
 /* Select and Input */
-.modal-content select,
-.modal-content input[type="time"] {
+.schedule-management .modal-content select,
+.schedule-management .modal-content input[type="time"] {
   width: 100%;
   padding: 8px;
   margin-bottom: 20px;
@@ -184,14 +184,14 @@
 }
 
 /* Loading Text */
-.modal-content p {
+.schedule-management .modal-content p {
   font-size: 14px;
   color: #666;
   text-align: center;
 }
 
 /* Button Styles */
-.modal-content button {
+.schedule-management .modal-content button {
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
@@ -203,21 +203,20 @@
   transition: background-color 0.3s;
 }
 
-.modal-content button:hover {
+.schedule-management .modal-content button:hover {
   background-color: #45a049;
 }
 
 /* Close button */
-.modal-content button:last-child {
+.schedule-management .modal-content button:last-child {
   background-color: #f44336;
 }
 
-.modal-content button:last-child:hover {
+.schedule-management .modal-content button:last-child:hover {
   background-color: #e53935;
 }
 
-
-
+/* Edit and Delete buttons */
 .schedule-management .edit-button,
 .schedule-management .delete-button {
   background: none;
@@ -231,7 +230,6 @@
 .schedule-management .edit-button {
   color: #007bff;
 }
-
 
 .schedule-management .delete-button {
   color: #dc3545;

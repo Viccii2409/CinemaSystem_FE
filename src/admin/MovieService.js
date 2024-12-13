@@ -5,7 +5,7 @@ const API_BASE_URL = 'http://localhost:8080/api/movie';
 
 const MovieService = {
     // Lấy tất cả phim
-    getAllMovies: () => axios.get(`${API_BASE_URL}/getAllMovies`),
+    getAllMovies: () => axios.get(`${API_BASE_URL}/all`),
 
     // Thêm phim mới
     addMovie: (movie) => axios.post(`${API_BASE_URL}/add`, movie),

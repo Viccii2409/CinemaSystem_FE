@@ -46,6 +46,7 @@ function RoomManagement() {
     const handleListRoom = (id) => {
         setTheaterID(id);
         const theaterInfor = theaters.find(x => x.id === Number(id));
+        console.log(theaterInfor);
         setRooms(theaterInfor ? theaterInfor.room : []);
     }
 
@@ -95,7 +96,7 @@ function RoomManagement() {
         <div className="cinema-management-system">
             <h2>Quản lý phòng - ghế</h2>
             <div className='search-theater'>
-                <select name="id" value={theaterID} onChange={(e) => handleListRoom(e.target.value)}>
+                <select name="id" className='input-search' value={theaterID} onChange={(e) => handleListRoom(e.target.value)}>
                     <option value="" disabled>---Chọn rạp---</option>
                     {theaters.map(theater => (
                         <option key={theater.id} value={theater.id}>{theater.name}</option>
@@ -111,6 +112,7 @@ function RoomManagement() {
                             <th>Tên phòng</th>
                             <th>Loại phòng</th>
                             <th>Số ghế</th>
+                            <th>Số lịch chiếu</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
@@ -122,6 +124,7 @@ function RoomManagement() {
                                 <td>{room.name}</td>
                                 <td>{room.typeRoom.name}</td>
                                 <td>{room.quantitySeat}</td>
+                                <td>{room.quantityShowtime}</td>
                                 <td>
                                     <label className="switch">
                                         <input
@@ -141,9 +144,11 @@ function RoomManagement() {
                                     <button className="edit-button" onClick={() => handleEditRoom(room.id)}>
                                         <FontAwesomeIcon icon={faEdit} />
                                     </button>
+                                    {room.quantityShowtime === 0 && (
                                     <button className="delete-button" onClick={() => handleDeleteRoom(room.id)}>
                                         <FontAwesomeIcon icon={faTrashAlt} />
                                     </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

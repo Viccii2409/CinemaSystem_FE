@@ -1,5 +1,16 @@
 import api from "../Api.js";
 
+
+
+export const getAllNameTheater = () => {
+  try {
+    return api.get('/theater/public/all');
+  } catch (error) {
+    console.error("Error getAllNameTheater", error);
+    return null;
+  }
+};
+
 export const deleteRoom = (id, roomid) => {
   try {
     return api.delete(`/theater/${id}/room/${roomid}/delete`);
@@ -16,18 +27,18 @@ export const deleteTheater = (id) => {
   }
 };
 
-export const getTheater = () => api.get("/theater");
+export const getTheater = () => api.get("/theater/all");
 
 export const getTheaterById = (id) => {
   try {
-    return api.get(`/theater/${id}`);
+    return api.get(`/theater/public/${id}`);
   } catch (error) {
     console.error("Error get theater by id", error);
   }
 };
 export const getTheaterExcept = (id) => {
   try {
-    return api.get("/theater/except/${id}");
+    return api.get(`/theater/except/${id}`);
   } catch (error) {
     console.error("Error get theater by id", error);
   }
@@ -60,15 +71,15 @@ export const getTheaterRoomDto = () => {
 
 // export const getRoomByTheater = async (id) => api.get(`/theater/${id}/room`);
 
-
 export const getTypeSeat = async () => {
-    return api.get('/theater/typeseat')
-    .then(response => response.data)
-    .catch(error => {
-        console.error("Error get all typeseat", error);
-        return null;
-    })
-}
+  return api
+    .get("/theater/typeseat")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error get all typeseat", error);
+      return null;
+    });
+};
 
 export const getRoomById = async (id) => {
   return api
@@ -106,10 +117,11 @@ export const addTheater = async (theaterData) => {
       formData.append("file", theaterData.image);
     }
 
+    const token = localStorage.getItem("token");
     const response = await api.post("/theater/add", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer <token>",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -188,10 +200,11 @@ export const editTheater = async (theaterData) => {
       formData.append("file", theaterData.image);
     }
 
+    const token = localStorage.getItem("token");
     const response = await api.put("/theater/update", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer <token>",
+        Authorization: `Bearer ${token}`,
       },
     });
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./MovieDetail.css";
-import { useNavigate, useLocation } from 'react-router-dom';
-import { TheaterContext } from "../TheaterContext";
-import { getMovieById } from "../config/MovieConfig.js";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import { TheaterContext } from "../context/TheaterContext.js";
+import { getMovieById, getFeedback } from "../config/MovieConfig.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 const MovieDetail = () => {
   const { selectedTheater, setSelectedTheater } = useContext(TheaterContext);
   const navigate = useNavigate();
@@ -12,43 +13,55 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState(null);
   const [image, setImage] = useState("");
   const [showtime, setShowtime] = useState([]);
-
+  const [feedbacks, setFeedback] = useState([]);
   useEffect(() => {
     if (!theaterid) {
       alert("Bạn chưa chọn rạp!");
-      navigate('/home');
+      navigate("/home");
       return;
     }
-  
+
     if (!id) {
       console.warn("ID của phim không tồn tại.");
-      navigate('/home');
+      navigate("/home");
       return;
     }
-  
+
     const fetchMovie = async () => {
       try {
-        if(selectedTheater === null){
-          setSelectedTheater(theaterid); 
+        if (selectedTheater === null) {
+          setSelectedTheater(theaterid);
         }
         const response_movie = await getMovieById(id);
         setMovie(response_movie);
         handleScheduleModal(response_movie, selectedTheater);
-        const image_true = response_movie.image?.find((img) => img.type === true);
-        setImage(image_true?.link || "");
+        const image_true = response_movie.image.find(
+                  (img) => img.type === true
+                );
+                setImage(image_true || "");
       } catch (error) {
         console.error(error);
       }
     };
-  
+    const fetchFeedback = async () => {
+      try {
+        if (selectedTheater === null) {
+          setSelectedTheater(theaterid);
+        }
+        const response_feedback = await getFeedback(id);
+        setFeedback(response_feedback);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchMovie();
+    fetchFeedback();
   }, [id, selectedTheater, navigate]);
 
   useEffect(() => {
     console.log(selectedTheater);
   }, [selectedTheater]);
-  
-  
 
   const handleScheduleModal = (movieData, theaterid) => {
     const schedule = movieData.showtime
@@ -61,7 +74,11 @@ const MovieDetail = () => {
         emptySeat: show.emptySeat,
         typeRoomName: show.typeRoomName,
       }))
-      .sort((a, b) => new Date(a.day + "T" + a.startTime) - new Date(b.day + "T" + b.startTime));
+      .sort(
+        (a, b) =>
+          new Date(a.day + "T" + a.startTime) -
+          new Date(b.day + "T" + b.startTime)
+      );
 
     const groupedSchedule = schedule.reduce((acc, show) => {
       if (!acc[show.day]) acc[show.day] = [];
@@ -74,7 +91,9 @@ const MovieDetail = () => {
 
   const handleShowtimeSelect = (showtimeid) => {
     console.log(showtimeid);
-    navigate('/seat-selection', { state: { id: showtimeid, theaterid : theaterid } });
+    navigate("/seat-selection", {
+      state: { id: showtimeid, theaterid: theaterid },
+    });
   };
 
   if (!movie) return <p>Đang tải thông tin phim...</p>;
@@ -92,11 +111,15 @@ const MovieDetail = () => {
             {/* <p>Định dạng: <span className="highlight">2D</span></p> */}
             <p>Diễn viên: {movie.cast}</p>
             <p>Đạo diễn: {movie.director}</p>
-            <p>Thể loại: <span className="highlight">{movie.genre?.map((actor) => actor.name).join(", ")}</span></p>
+            <p>
+              Thể loại:{" "}
+              <span className="highlight">
+                {movie.genre?.map((actor) => actor.name).join(", ")}
+              </span>
+            </p>
             <p>Thời lượng: {movie.duration} phút</p>
             <p>Ngôn ngữ: {movie.language?.name}</p>
             <p>Ngày khởi chiếu: {movie.releaseDate}</p>
-
           </div>
         </section>
         <section className="trailer-section">
@@ -129,7 +152,9 @@ const MovieDetail = () => {
                         >
                           {show.startTime} - {show.typeRoomName}
                         </button>
-                        <span className="seats-info">{show.emptySeat} ghế trống</span>
+                        <span className="seats-info">
+                          {show.emptySeat} ghế trống
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -138,6 +163,35 @@ const MovieDetail = () => {
             </div>
           ) : (
             <p>Không có lịch chiếu cho phim này.</p>
+          )}
+        </section>
+        
+        {/* Feedback Section */}
+        <section className="feedback-section">
+          <h2>Bình luận</h2>
+          {feedbacks.length > 0 ? (
+            feedbacks.map((feedback) => (
+              <div key={feedback.id} className="feedback">
+                <p>
+                  <strong>{feedback.booking.nameCustomer}</strong>
+                </p>
+                <p className="feedback-text">{feedback.text}</p>
+                <p>
+                  <span>Đánh giá: </span>
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <i
+                      key={index}
+                      className={`fa-star ${feedback.star > index ? 'fas' : 'far'}`}
+                    ></i>
+                  ))}
+                </p>
+                <p>
+                  <em>{new Date(feedback.date).toLocaleDateString()}</em>
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>Chưa có bình luận.</p>
           )}
         </section>
       </main>

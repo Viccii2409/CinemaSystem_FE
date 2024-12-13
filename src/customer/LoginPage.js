@@ -3,66 +3,45 @@ import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../config/UserConfig.js"; // Cấu hình để gọi API đăng nhập
+import { login } from "../config/UserConfig.js";
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State để lưu lỗi nếu có
   const navigate = useNavigate();
-
-  // Hàm kiểm tra xem người dùng đã đăng nhập hay chưa
-  const checkLoggedIn = () => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      return parsedUser;
-    }
-    return null;
-  };
+  const { handleLogin, user } = useContext(AuthContext);
 
   useEffect(() => {
-    const loggedInUser = checkLoggedIn();
-    if (loggedInUser) {
-      // Nếu người dùng đã đăng nhập, điều hướng đến trang home
+    if(user) {
       navigate("/home");
+      return;
     }
-  }, [navigate]);
+  }, [user]);
 
-  const handleLogin = async (e) => {
+  const handleLoginData = async (e) => {
     e.preventDefault();
     setError(""); // Reset lỗi trước mỗi lần đăng nhập
-
+    const loginData = { username, password };
     try {
-      const loginData = { email, password }; // Dữ liệu gửi tới API
-      const response = await login(loginData); // Gọi API đăng nhập
-
-      if (response?.privileges) {
-        // Lưu thông tin người dùng vào localStorage
-        const userData = {
-          email: response.email,
-          password: response.password,
-          name: response.name || "Người dùng",
-          address: response.address,
-          phone: response.phone,
-          dob: response.dob,
-          gender: response.gender,
-          privileges: response.privileges,
-        };
-        localStorage.setItem("user", JSON.stringify(userData)); // Lưu thông tin người dùng vào localStorage
-
-        // Điều hướng người dùng sau khi đăng nhập thành công
-        if (response.privileges === "User") {
-          navigate("/home");
-        } else {
-          navigate("/admin");
+      const token = await login(loginData);
+      console.log(token);
+      if (token) {
+        const statusEmployee = await handleLogin(token);
+        if(statusEmployee) {
+          navigate("/admin/account");
         }
-      } else {
-        setError("Phản hồi từ máy chủ không hợp lệ.");
+        else {
+          navigate("/home");
+        }
+      }
+      else {
+        setError("Tên đăng nhập hoặc mật khẩu không hợp lệ!");
       }
     } catch (error) {
-      console.error("Lỗi khi đăng nhập:", error);
-      setError("Email hoặc mật khẩu không đúng!");
+      console.error("Error login api: ", error);
+      return;
     }
   };
 
@@ -75,7 +54,7 @@ const LoginPage = () => {
             <Link to="/register-page">ĐĂNG KÝ</Link>
           </button>
         </div>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLoginData}>
           <div className="form-group">
             <label htmlFor="email">
               <FontAwesomeIcon icon={faEnvelope} /> Email
@@ -83,8 +62,8 @@ const LoginPage = () => {
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Email"
               required
             />
@@ -104,7 +83,7 @@ const LoginPage = () => {
           </div>
           {error && <p className="error-message">{error}</p>}{" "}
           {/* Hiển thị lỗi */}
-          <button type="submit" className="login-button">
+          <button className="login-button">
             Đăng nhập
           </button>
         </form>

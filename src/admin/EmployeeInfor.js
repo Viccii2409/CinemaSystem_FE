@@ -1,31 +1,32 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import "./UserInfor.css";
+import "../customer/UserInfor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCreditCard, faUserCircle, faEdit, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faCreditCard, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from 'react-router-dom';
-import { addGenreFauvorite, changePassword, getCustomerById, getUserById, updateImage, updateUser, addFeedback } from "../config/UserConfig";
+import { changePassword, getUserById, updateImage, updateStatusEmployee, updateUser } from "../config/UserConfig";
 import { creatPayOnline, getBookingById } from "../config/TicketConfig";
 import { AuthContext } from '../context/AuthContext';
 import BarcodeGenerator from "../BarcodeGenerator";
-import { getAllGenreCustomer } from "../config/MovieConfig";
 
-const AccountPage = () => {
-  const { user, setUser, loading } = useContext(AuthContext);
+const EmployeeInfor = () => {
   const navigate = useNavigate();
+  const { user, setUser, loading } = useContext(AuthContext);
 
   const [currentUser, setCurrentUser] = useState([]);
   const [bookingCustomer, setBookingCustomer] = useState([]);
+  const [bookingAgent, setBookingAgent] = useState([]);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const passwordOldRef = useRef(null);
   const passwordNewRef = useRef(null);
   const passwordNew2Ref = useRef(null);
   const imageRef = useRef(null);
+  const [agent, setAgent] = useState([]);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [bookingCustomerAgent, setBookingCustomerAgent] = useState([]);
+  const [bookingAgentAgent, setBookingAgentAgent] = useState([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({});
-  const [showGenreModal, setShowGenreModal] = useState(false);
-  const [genres, setGenres] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([]);
 
   useEffect(() => {
     if (loading) return;
@@ -33,27 +34,15 @@ const AccountPage = () => {
       navigate('/login-page');
       return;
     }
-    console.log(user);
     const fetchUserInfor = async () => {
       try {
         const response = await getUserById(user.id);
         console.log(response);
-        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-        console.log(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'));
         if (response) {
-          const revenue = response.bookings.reduce((total, entry) => {
-            if (entry.statusPayment === "confirmed") {
-              return total + entry.amount;
-            }
-            return total;
-          }, 0);
-
-          setCurrentUser({ ...response, revenue });
-
+          setCurrentUser(response);
+          setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
+          setBookingAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE'))
         }
-        const response_genre = await getAllGenreCustomer();
-        setGenres(response_genre);
-        setSelectedGenres(response.genres.map(genre => genre.id));
       } catch (error) {
         console.error("Error api getCustomerInforById:", error);
       }
@@ -61,10 +50,6 @@ const AccountPage = () => {
 
     fetchUserInfor();
   }, [user, navigate]);
-
-  useEffect(() => {
-    console.log(selectedGenres);
-  }, [selectedGenres]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -103,8 +88,8 @@ const AccountPage = () => {
   const handleCloseModal = () => {
     setShowPasswordModal(false);
     setShowImageModal(false);
+    setShowViewModal(false);
     setShowBookingModal(false);
-    setShowGenreModal(false);
   }
 
   const handleChangePassword = async (e) => {
@@ -179,71 +164,26 @@ const AccountPage = () => {
     }
   }
 
-  const handleCheckboxChange = (e) => {
-    const genreId = e.target.value;
-    if (e.target.checked) {
-      setSelectedGenres([...selectedGenres, parseInt(genreId)]);
-    } else {
-      setSelectedGenres(selectedGenres.filter(id => id !== parseInt(genreId)));
-    }
+  const handleStatusChange = async (id) => {
+    const response_status = await updateStatusEmployee(id);
+    const agents = currentUser.agents.map(a => a.id === id ? { ...a, statusEmployee: response_status } : a);
+    setCurrentUser({ ...currentUser, agents })
   };
 
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    const genreData = {
-      customerid: user.id,
-      genres: selectedGenres
-    }
+  const handleViewModal = async (id) => {
     try {
-      await addGenreFauvorite(genreData);
-      setCurrentUser({ ...currentUser, genres: genres.filter(genre => selectedGenres.includes(genre.id)) });
-      handleCloseModal();
+      const response = await getUserById(id);
+      // console.log(response);
+      if (response) {
+        setAgent(response);
+        setBookingCustomerAgent(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
+        setBookingAgentAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE'))
+      }
     } catch (error) {
-      console.error("Error addGenreFauvorite api", error);
-      alert("Lỗi chỉnh sửa thể loại yêu thích!");
+      console.error("Error api getUserById:", error);
     }
-
+    setShowViewModal(true);
   }
-
-  const formattedDate = new Date(currentUser.startDate).toLocaleDateString();
-
-  //FEEDBACK
-  const [text, setText] = useState("");
-  const [star, setStar] = useState(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null);
-  const handleFeedback = (bookingId) => {
-    setSelectedBooking({ bookingId });
-    setShowFeedbackForm(true);
-  };
-
-  const handleFeedbackSubmit = async (bookingID) => {
-    setSuccess(false);
-
-    if (!text || !star) {
-      setError("Vui lòng nhập đầy đủ thông tin.");
-      return;
-    }
-
-    const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
-    console.log(feedbackData);
-    try {
-      const response = await addFeedback(feedbackData);
-
-      setSuccess(true);
-      setText("");
-      setStar(null);
-
-      alert("Feedback đã được gửi!");
-      handleCloseModal();
-      window.location.reload();
-    } catch (error) {
-      setError(error.message || "Có lỗi xảy ra.");
-    }
-  };
-
   return (
     <div className="account-page">
       <h2 className="title">Thông tin tài khoản</h2>
@@ -268,28 +208,20 @@ const AccountPage = () => {
                 <p className="user-stats">
                   Tên đăng nhập: {currentUser.username}<br />
                   Vai trò: {currentUser.role?.name} <br />
+                  Chức vụ: {currentUser.position}<br />
                   {currentUser.role?.id === 1 && (
                     <>
-                      Chức vụ: {currentUser.position}<br />
                       Mức độ truy cập: {currentUser.accessLevel}<br />
                     </>
                   )}
                   {currentUser.role?.id === 2 && (
                     <>
-                      Chức vụ: {currentUser.position}<br />
                       Rạp quản lý: {currentUser.nameTheater}<br />
                     </>
                   )}
                   {currentUser.role?.id === 3 && (
                     <>
-                      Chức vụ: {currentUser.position}<br />
                       Người quản lý: {currentUser.nameManager}<br />
-                    </>
-                  )}
-                  {currentUser.role?.id === 4 && (
-                    <>
-                      Điểm: {currentUser.points} |
-                      Tổng chi tiêu: {currentUser.revenue}<br />
                     </>
                   )}
                 </p>
@@ -307,29 +239,6 @@ const AccountPage = () => {
                   }
                   required
                 />
-              </div>
-              <div className="form-group form-row">
-                <div className="form-column">
-
-                  <label>Thể loại yêu thích </label>
-                  <input
-                    type="text"
-                    value={
-                      Array.isArray(currentUser.genres) && currentUser.genres.length > 0
-                        ? currentUser.genres.map((genre) => genre.name).join(', ')
-                        : "Không có thể loại yêu thích"
-                    }
-                    className="modal-input"
-                    readOnly
-                  />
-                </div>
-                <div className="form-column">
-                  <button className="genre-button" type="button"
-                    onClick={() => setShowGenreModal(true)}
-                  >
-                    <FontAwesomeIcon icon={faEdit} /> Chỉnh sửa
-                  </button>
-                </div>
               </div>
 
               <div className="form-group">
@@ -414,9 +323,54 @@ const AccountPage = () => {
         <p>Chưa đăng nhập. Vui lòng đăng nhập để xem thông tin.</p>
       )}
 
+      {currentUser && currentUser.agents && currentUser.agents.length > 0 && (
+        <div className="transaction-history">
+          <h3>Nhân viên</h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Tên tài khoản </th>
+                <th>Họ và tên </th>
+                <th>Vai trò </th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentUser.agents.map((employee, index) => (
+                <tr key={employee.id}>
+                  <td>{index + 1}</td>
+                  <td>{employee.username}</td>
+                  <td>{employee.name}</td>
+                  <td>{employee.role?.name}</td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={employee.statusEmployee}
+                        onChange={() => handleStatusChange(employee.id)}
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <button className="view-button"
+                      onClick={() => handleViewModal(employee.id)}
+                    >
+                      <FontAwesomeIcon icon={faEye} /> Xem
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {bookingCustomer && bookingCustomer.length > 0 && (
         <div className="transaction-history">
-          <h3>Lịch sử giao dịch</h3>
+          <h3>Lịch sử mua vé </h3>
           <table className="table">
             <thead>
               <tr>
@@ -429,7 +383,7 @@ const AccountPage = () => {
               </tr>
             </thead>
             <tbody>
-              {bookingCustomer?.map((booking, index) => (
+              {bookingCustomer.map((booking, index) => (
                 <tr key={booking.id}>
                   <td>{index + 1}</td>
                   <td>{booking.dateBooking}</td>
@@ -443,18 +397,12 @@ const AccountPage = () => {
                     <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
                       <FontAwesomeIcon icon={faEye} /> Xem
                     </button>
-
-                    {booking.statusPayment === "confirmed" && booking.feedback === null &&
-                      new Date(`${booking.dateShowtime}T${booking.endTime}`).getTime() < new Date().getTime() ? (
-                      <button
-                        className="feedback-button"
-                        onClick={() => handleFeedback(booking.id)}
-                      >
-                        <FontAwesomeIcon icon={faComment} /> Feedback
+                    {booking.statusPayment === "pending" ? (
+                      <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
+                        <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
                       </button>
-                    ) : null
-                    }
 
+                    ) : ""}
                   </td>
                 </tr>
               ))}
@@ -463,7 +411,48 @@ const AccountPage = () => {
         </div>
       )}
 
+      {bookingAgent && bookingAgent.length > 0 && (
+        <div className="transaction-history">
+          <h3>Lịch sử bán vé </h3>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Ngày giao dịch</th>
+                <th>Phim</th>
+                <th>Số tiền</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookingAgent.map((booking, index) => (
+                <tr key={booking.id}>
+                  <td>{index + 1}</td>
+                  <td>{booking.dateBooking}</td>
+                  <td>{booking.nameMovie}</td>
+                  <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                  <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                    (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                      (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                    )}</td>
+                  <td>
+                    <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
+                      <FontAwesomeIcon icon={faEye} /> Xem
+                    </button>
+                    {booking.statusPayment === "pending" ? (
+                      <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
+                        <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
+                      </button>
 
+                    ) : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {showPasswordModal && (
         <>
@@ -524,43 +513,6 @@ const AccountPage = () => {
         </>
       )}
 
-      {showGenreModal && (
-        <>
-          <div className="modal-overlay" onClick={handleCloseModal}></div>
-          <div className="modal  modal-pass">
-            <div className="modal-header">Chọn thể loại yêu thích </div>
-            <hr />
-            <form
-              onSubmit={handleEditSubmit}
-            >
-              <div className="checkbox-group">
-                {genres.map((genre) => (
-                  <label key={genre.id} className="checkbox-button">
-                    <input
-                      type="checkbox"
-                      name="genreid"
-                      value={genre.id}
-                      checked={selectedGenres.includes(genre.id)}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span>{genre.name}</span>
-                  </label>
-                ))}
-              </div>
-
-              <div className="modal-buttons">
-                <button type="button" className="close-button" onClick={handleCloseModal}>
-                  Hủy
-                </button>
-                <button className="save-button" type="submit">
-                  Lưu
-                </button>
-              </div>
-            </form>
-          </div>
-        </>
-      )}
-
 
       {showImageModal && (
         <>
@@ -601,6 +553,202 @@ const AccountPage = () => {
                 </button>
               </div>
             </form>
+          </div>
+
+        </>
+      )}
+
+      {showViewModal && (
+        <>
+          <div className="modal-overlay" onClick={handleCloseModal}></div>
+          <div className="modal">
+            <div className="modal-header">Thông tin nhân viên </div>
+            <div className="profile-info">
+              {agent.image === null ? (<FontAwesomeIcon
+                icon={faUserCircle}
+                className="customer-avatar"
+                style={{ fontSize: "120px", marginRight: "20px", color: "black" }}
+              />) : (<img
+                src={agent.image}
+                alt="Avatar"
+                className="avatar"
+              />)}
+              <div className="profile-details">
+                {/* <p className="user-name">{currentUser.name}</p> */}
+                <p className="user-stats">
+                  Tên đăng nhập: {agent.username}<br />
+                  Vai trò: {agent.role?.name} <br />
+                  Chức vụ: {agent.position}<br />
+                  {agent.role?.id === 1 && (
+                    <>
+                      Mức độ truy cập: {agent.accessLevel}<br />
+                    </>
+                  )}
+                  {agent.role?.id === 2 && (
+                    <>
+                      Rạp quản lý: {agent.nameTheater}<br />
+                    </>
+                  )}
+                  {agent.role?.id === 3 && (
+                    <>
+                      Người quản lý: {agent.nameManager}<br />
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <form className="modal-info">
+              <div className="form-group">
+
+                <div className="form-group form-row">
+                  <div className="form-column">
+                    <label>
+                      <strong>Họ và Tên:</strong>
+                      <input
+                        type="text"
+                        value={agent.name}
+                        className="modal-input"
+                        readOnly
+                      />
+                      <br />
+                    </label>
+                  </div>
+                  <div className="form-column">
+                    <label>
+                      <strong>Email:</strong>
+                      <input type="email"
+                        value={agent.email}
+                        className="modal-input"
+                        readOnly
+                      />
+                      <br />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="form-group form-row">
+                  <div className="form-column">
+                    <label>
+                      <strong>Số điện thoại:</strong>
+                      <input
+                        type="text"
+                        value={agent.phone || ""}
+                        className="modal-input"
+                        readOnly
+                      />
+                      <br />
+                    </label>
+                  </div>
+                  <div className="form-column">
+                    <label>
+                      <strong>Giới tính:</strong>
+                      <input
+                        type="text"
+                        value={
+                          agent.gender === 'male' ? 'Nam' :
+                            agent.gender === 'female' ? 'Nữ' :
+                              agent.gender === 'other' ? 'Khác' :
+                                ''
+                        }
+                        className="modal-input"
+                        readOnly
+                      />
+
+                      <br />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="form-group form-row">
+                  <div className="form-column">
+                    <label>
+                      <strong>Ngày sinh:</strong>
+                      <input
+                        type="text"
+                        value={agent.dob || ""}
+                        className="modal-input"
+                        readOnly
+                      />
+                      <br />
+                    </label>
+                  </div>
+                  <div className="form-column">
+                    <label>
+                      <strong>Tỉnh/Thành phố:</strong>
+                      <input type="text"
+                        value={agent.address || ""}
+                        className="modal-input"
+                        readOnly
+                      />
+                      <br />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            {bookingCustomerAgent && bookingCustomerAgent.length > 0 && (
+              <div className="transaction-history">
+                <h3>Lịch sử mua vé </h3>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Ngày giao dịch</th>
+                      <th>Phim</th>
+                      <th>Số tiền</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookingCustomerAgent.map((booking, index) => (
+                      <tr key={booking.id}>
+                        <td>{index + 1}</td>
+                        <td>{booking.dateBooking}</td>
+                        <td>{booking.nameMovie}</td>
+                        <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                        <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                          (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                            (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                          )}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {bookingAgentAgent && bookingAgentAgent.length > 0 && (
+              <div className="transaction-history">
+                <h3>Lịch sử bán vé </h3>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Ngày giao dịch</th>
+                      <th>Phim</th>
+                      <th>Số tiền</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookingAgentAgent.map((booking, index) => (
+                      <tr key={booking.id}>
+                        <td>{index + 1}</td>
+                        <td>{booking.dateBooking}</td>
+                        <td>{booking.nameMovie}</td>
+                        <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                        <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                          (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                            (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                          )}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
         </>
@@ -662,7 +810,7 @@ const AccountPage = () => {
                         type="text"
                         className="modal-input"
                         value={
-                          bookingDetail.dateShowtime
+                          bookingDetail.dateShowtime 
                             ? `${new Date(bookingDetail.dateShowtime).toLocaleDateString()} ${bookingDetail.startTime} - ${bookingDetail.endTime}`
                             : "N/A"
                         }
@@ -748,7 +896,7 @@ const AccountPage = () => {
                     </label>
                   </div>
                 </div>
-
+                
                 <div className="form-group  form-row">
                   <div className="form-column">
                     <label>
@@ -803,66 +951,8 @@ const AccountPage = () => {
           </div>
         </>
       )}
-
-      {showFeedbackForm && (
-        <div class="feedback-modal">
-          <div class="feedback-form">
-            {error && <p className="error">{error}</p>}
-            {success && (
-              <p className="success">Feedback đã được gửi thành công!</p>
-            )}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleFeedbackSubmit();
-              }}
-            >
-              <div>
-                <label>
-                  Nhận xét:
-                  <textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Nhập nhận xét của bạn"
-                    required
-                  ></textarea>
-                </label>
-              </div>
-              <div>
-                <label>
-                  Đánh giá sao:
-                  <select
-                    value={star || ""}
-                    onChange={(e) => setStar(e.target.value)}
-                    required
-                  >
-                    <option value="" disabled>
-                      Chọn số sao
-                    </option>
-                    <option value="1">1 Sao</option>
-                    <option value="2">2 Sao</option>
-                    <option value="3">3 Sao</option>
-                    <option value="4">4 Sao</option>
-                    <option value="5">5 Sao</option>
-                  </select>
-                </label>
-              </div>
-              <button type="submit" className="submit-btn">
-                Gửi Feedback
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setShowFeedbackForm(false)}
-              >
-                Hủy
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default AccountPage;
+export default EmployeeInfor;
