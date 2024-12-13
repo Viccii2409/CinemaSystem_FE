@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6997fea6-9427-4ad5-a8d9-fc1fd92607f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/admin/MovieDetail.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin/MovieDetail.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/admin/ScheduleManagementService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/Movies.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/admin/Movies.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/Movies.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/admin/ScheduleManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/admin/ScheduleManagement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/UserConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/UserConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/customer/MovieDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/MovieDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customer/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/customer/HomePage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +16,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Anh" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './Movies.css';
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
