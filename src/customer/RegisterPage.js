@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./RegisterPage.css";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -15,7 +15,7 @@ import { check, register } from "../config/UserConfig";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin, user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,6 +26,14 @@ const RegisterPage = () => {
     gender: "other",
     address: "",
   });
+
+  
+  useEffect(() => {
+    if(user) {
+      navigate("/home");
+      return;
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,40 +53,27 @@ const RegisterPage = () => {
     console.log(formData);
     const response_check = await check(formData.email);
     console.log(response_check);
-    if (response_check) {
+    if(response_check){
       alert("Email đã được sử dụng. Vui lòng nhập email khác!");
       return;
-    } else {
+    }
+    else {
       const response_register = await register(formData);
       console.log(response_check);
       if (response_register) {
         alert("Bạn đã đăng kí thành công!");
-        await handleLogin(response_register);
-        navigate("/home");
+        await handleLogin(response_register); 
+        navigate("/genre-favourite");
       } else {
         alert("Lỗi không đăng kí được!");
         return;
       }
     }
-
-    // const response = await fetch("http://localhost:8080/api/user/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
-
-    // if (response.ok) {
-    //   const result = await response.json();
-    //   alert("Đăng ký thành công!");
-    //   console.log("Response:", result);
-    // } else {
-    //   const errorData = await response.json();
-    //   alert("Lỗi đăng ký: " + errorData.message || "Unknown error");
-    //   console.error("Error response:", errorData);
-    // }
   };
+  
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div className="register-page">
@@ -120,7 +115,7 @@ const RegisterPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="email">
-              <FontAwesomeIcon icon={faEnvelope} /> Giới tính
+              <FontAwesomeIcon icon={faEnvelope} /> Giới tính 
             </label>
             <div className="gender-options">
               <label>
@@ -155,35 +150,35 @@ const RegisterPage = () => {
               </label>
             </div>
           </div>
-
+          
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="password">
-                <FontAwesomeIcon icon={faLock} /> Mật khẩu
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Mật khẩu"
-                required
-              />
+            <label htmlFor="password">
+                  <FontAwesomeIcon icon={faLock} /> Mật khẩu
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Mật khẩu"
+                  required
+                />
             </div>
             <div className="form-group">
-              <label htmlFor="confirmPassword">
-                <FontAwesomeIcon icon={faLock} /> Xác nhận lại mật khẩu
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                placeholder="Xác nhận lại mật khẩu"
-                required
-              />
+            <label htmlFor="confirmPassword">
+                  <FontAwesomeIcon icon={faLock} /> Xác nhận lại mật khẩu
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Xác nhận lại mật khẩu"
+                  required
+                />
             </div>
           </div>
 

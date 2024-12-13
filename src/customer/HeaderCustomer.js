@@ -3,9 +3,11 @@ import "./HeaderCustomer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { getTheater } from "../config/TheaterConfig.js";
+import { getAllNameTheater, getTheater } from "../config/TheaterConfig.js";
 import { TheaterContext } from "../context/TheaterContext.js";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from '../context/AuthContext';
+
+
 
 const HeaderCustomer = () => {
   const { user, handleLogout } = useContext(AuthContext);
@@ -15,9 +17,9 @@ const HeaderCustomer = () => {
   useEffect(() => {
     const fetchTheater = async () => {
       try {
-        const response = await getTheater();
-        const theaterData = response.data.filter((theater) => theater.status);
-        setTheaters(theaterData);
+        const response = await getAllNameTheater();
+        // console.log(response.data);
+        setTheaters(response.data);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách rạp:", error);
       }
@@ -32,7 +34,7 @@ const HeaderCustomer = () => {
 
   const handleLogoutData = () => {
     handleLogout();
-  };
+  }
 
   return (
     <header className="homepage-header">
@@ -46,15 +48,8 @@ const HeaderCustomer = () => {
         <Link to="/">Thể loại</Link>
       </nav>
 
-      <select
-        name="id"
-        className="location-selector"
-        value={selectedTheater || ""}
-        onChange={(e) => handleSelectTheater(e.target.value)}
-      >
-        <option value="" disabled>
-          ---Chọn rạp---
-        </option>
+      <select name="id" className="location-selector" value={selectedTheater || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
+        <option value="" disabled>---Chọn rạp---</option>
         {theaters.map((theater) => (
           <option key={theater.id} value={theater.id}>
             {theater.name}
@@ -71,12 +66,7 @@ const HeaderCustomer = () => {
                 src={user.image}
                 alt="User Avatar"
                 className="customer-avatar"
-                style={{
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
+                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
               />
             ) : (
               // Nếu không có hình ảnh, hiển thị biểu tượng mặc định
@@ -86,7 +76,7 @@ const HeaderCustomer = () => {
                 style={{ fontSize: "22px", marginRight: "10px" }}
               />
             )}
-            {user.role.name === "CUSTOMER" ? (
+            {!user.statusEmployee ? (
               <Link to="/user-infor" className="user-infor">
                 {user.name}
               </Link>
@@ -96,7 +86,10 @@ const HeaderCustomer = () => {
               </Link>
             )}
             {/* Hiển thị tên người dùng */}
-            <button className="logout-button" onClick={handleLogoutData}>
+            <button
+              className="logout-button"
+              onClick={handleLogoutData}
+            >
               / Thoát
             </button>
           </div>

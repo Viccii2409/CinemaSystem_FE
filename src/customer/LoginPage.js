@@ -4,14 +4,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../config/UserConfig.js";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State để lưu lỗi nếu có
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if(user) {
+      navigate("/home");
+      return;
+    }
+  }, [user]);
 
   const handleLoginData = async (e) => {
     e.preventDefault();
@@ -21,15 +28,15 @@ const LoginPage = () => {
       const token = await login(loginData);
       console.log(token);
       if (token) {
-        const role = await handleLogin(token);
-        if (role) {
-          if (role === "CUSTOMER") {
-            navigate("/home");
-          } else {
-            navigate("/admin/account");
-          }
+        const statusEmployee = await handleLogin(token);
+        if(statusEmployee) {
+          navigate("/admin/account");
         }
-      } else {
+        else {
+          navigate("/home");
+        }
+      }
+      else {
         setError("Tên đăng nhập hoặc mật khẩu không hợp lệ!");
       }
     } catch (error) {
@@ -76,7 +83,9 @@ const LoginPage = () => {
           </div>
           {error && <p className="error-message">{error}</p>}{" "}
           {/* Hiển thị lỗi */}
-          <button className="login-button">Đăng nhập</button>
+          <button className="login-button">
+            Đăng nhập
+          </button>
         </form>
         <div className="social-login">
           <p>Đăng nhập bằng</p>

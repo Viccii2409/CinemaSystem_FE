@@ -17,6 +17,7 @@ import {
   getSlideshow,
   getAllGenres,
 } from "../config/MovieConfig.js";
+import { getAllNameTheater } from "../config/TheaterConfig.js";
 import { getRecommendMovie } from "../config/UserConfig.js";
 import { getAllDiscount } from "../config/TicketConfig.js";
 import { AuthContext } from "../context/AuthContext";
