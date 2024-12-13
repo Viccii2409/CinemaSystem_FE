@@ -82,6 +82,48 @@ class ScheduleManagementService {
         throw error;
       });
   }
+// Cập nhật thông tin lịch chiếu
+static updateShowtime(showtimeId, showtimeData) {
+  return axios.put(`${API_URL}/showtime/update/${showtimeId}`, showtimeData)
+      .then(response => response.data)
+      .catch(error => {
+          console.error("Lỗi khi cập nhật lịch chiếu:", error);
+          throw error;
+      });
+}
+// Hàm lấy thông tin chi tiết lịch chiếu theo ID
+static fetchShowtimeById(showtimeId) {
+  if (!showtimeId) {
+    console.error("ID lịch chiếu không hợp lệ");
+    throw new Error("ID lịch chiếu không hợp lệ");
+  }
+
+  return axios.get(`${API_URL}/showtime/${showtimeId}`)
+    .then(response => {
+      console.log("Dữ liệu trả về từ API:", response); // Kiểm tra toàn bộ phản hồi
+      if (response.data) {
+        return response.data;  // Trả về dữ liệu lịch chiếu
+      } else {
+        throw new Error("Không tìm thấy lịch chiếu với ID: " + showtimeId);
+      }
+    })
+    .catch(error => {
+      console.error("Lỗi khi tải thông tin lịch chiếu:", error);
+      // Kiểm tra lỗi chi tiết từ phản hồi
+      console.error(error.response ? error.response.data : error.message);
+      throw new Error(error.response ? error.response.data.message : "Lỗi không xác định");
+    });
+}
+// Xóa lịch chiếu theo ID
+static deleteShowtime(showtimeId) {
+  return axios.delete(`${API_URL}/showtime/${showtimeId}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Lỗi khi xóa lịch chiếu:", error);
+      throw error;
+    });
+}
+
 
 }
 

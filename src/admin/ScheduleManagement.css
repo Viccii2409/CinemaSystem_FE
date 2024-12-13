@@ -217,3 +217,22 @@
 }
 
 
+
+.schedule-management .edit-button,
+.schedule-management .delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.schedule-management .edit-button {
+  color: #007bff;
+}
+
+
+.schedule-management .delete-button {
+  color: #dc3545;
+}

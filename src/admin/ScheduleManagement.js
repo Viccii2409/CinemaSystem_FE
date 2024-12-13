@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import ScheduleManagementService from './ScheduleManagementService';
 import MovieService from './MovieService';
 import './ScheduleManagement.css';
@@ -14,10 +16,13 @@ function ScheduleManagement() {
   const [theaters, setTheaters] = useState([]);
   const [errorMessage, setErrorMessage] = useState(''); // Thêm state để lưu lỗi
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); // Hiển thị modal
+  const [modalVisibleAdd, setModalVisibleAdd] = useState(false); // Hiển thị modal
+  const [modalVisible, setModalVisible] = useState(false); 
+  const [showtimeToEdit, setShowtimeToEdit] = useState(null);  // Add this line
+
   const [newShowtime, setNewShowtime] = useState({
-    movieId: '',
-    startTime: '',
+    movieId: null,
+    startTime: null,
     date: '',  // Thêm trường cho ngày
     theaterId: '',  // Thêm trường cho theaterId
     roomId: '',
@@ -157,7 +162,7 @@ function ScheduleManagement() {
   
     ScheduleManagementService.addShowtime(showtimeData)
       .then(() => {
-        setModalVisible(false);
+        setModalVisibleAdd(false);
         reloadShowtimes();
       })
       .catch((error) => {
@@ -187,11 +192,126 @@ function ScheduleManagement() {
       console.log("newShowtime khi mở modal: ", updatedState);  // Kiểm tra giá trị của newShowtime
       return updatedState;
     });
-    setModalVisible(true); // Hiển thị modal
+    setModalVisibleAdd(true); // Hiển thị modal
   };
   
+  const handleEditShowtime = () => {
+    if (!showtimeToEdit) return;  
+    const updatedShowtime = {
+      ...newShowtime,
+      startTime: appendSecondsToTime(newShowtime.startTime), // Thêm giây vào thời gian
+    };  
+    console.log("test",newShowtime);
+    console.log("Dữ liệu gửi lên backend:", updatedShowtime);
+
+    ScheduleManagementService.updateShowtime(showtimeToEdit.id, updatedShowtime)
+      .then(() => {
+        setModalVisible(false);
+        reloadShowtimes();
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          // Hiển thị thông báo lỗi chi tiết từ backend
+          alert(error.response.data.message);  // Lỗi từ backend (nếu có)
+        } else {
+          // Trường hợp lỗi không xác định (chẳng hạn mạng, lỗi server, ...)
+          alert('Lỗi khi sửa lịch chiếu. Vui lòng thử lại.');
+        }
+      });
+  };
+
+  const openModalForRoomEdit = (showtimeId) => {
+    console.log("id showtime:", showtimeId);
   
+    ScheduleManagementService.fetchShowtimeById(showtimeId)
+      .then(response => {
+        console.log("Toàn bộ phản hồi từ API:", response);
+        console.log("Dữ liệu response.data:", response.data);
+
+        const showtimeData = response;
+        // if (showtimeData && showtimeData.id && showtimeData.movieId && showtimeData.roomId) {
+        if (showtimeData && showtimeData.id && showtimeData.movieId && showtimeData.roomId) {
+          console.log("Thông tin showtime nhận được:", showtimeData);
+          console.log("Dữ liệu nhận được từ API:", showtimeData);
+          console.log("Kiểm tra các trường:", {
+            id: typeof showtimeData.id,
+            movieId: typeof showtimeData.movieId,
+            roomId: typeof showtimeData.roomId,
+          });
+
+
+          setShowtimeToEdit(showtimeData);
   
+          // Định dạng dữ liệu cho modal
+          setNewShowtime({
+            movieId: showtimeData.movieId,
+            startTime: formatTimeForInput(showtimeData.startTime),
+            date: showtimeData.date,
+            theaterId: showtimeData.theaterId,
+            roomId: showtimeData.roomId,
+          });
+          console.log("Dữ liệu newShowtime sau khi mở modal:", {
+            movieId: showtimeData.movieId,
+            // startTime: formatTimeForInput(showtimeData.startTime),
+            startTime: showtimeData.startTime,
+            date: showtimeData.date,
+            theaterId: showtimeData.theaterId,
+            roomId: showtimeData.roomId,
+          });
+          
+          setModalVisible(true);
+        } else {
+          console.error("Dữ liệu không hợp lệ. Các trường kiểm tra:", {
+            id: showtimeData?.id,
+            movieId: showtimeData?.movieId,
+            roomId: showtimeData?.roomId,
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Lỗi khi lấy thông tin lịch chiếu:", error);
+        alert("Lỗi khi lấy thông tin lịch chiếu");
+      });
+      console.log("Modal hiển thị: ", modalVisible);
+
+  };
+  
+  const formatTimeForInput = (time) => {
+    return time ? time.slice(0, 5) : ""; // Lấy 5 ký tự đầu "HH:mm"
+  };
+  
+  const appendSecondsToTime = (time) => {
+    if (time) {
+      // Kiểm tra xem thời gian có phải là dạng "HH:mm" không
+      const timeParts = time.split(":");
+  
+      // Nếu thời gian có 2 phần (giờ và phút), thêm giây vào
+      if (timeParts.length === 2) {
+        time = `${timeParts[0]}:${timeParts[1]}:00`;  // Thêm giây "00"
+      }
+    }
+  
+    return time; // Trả về thời gian đã hoàn chỉnh
+  };
+  
+
+  //xóa lịch chiếu
+  const handleDeleteShowtime = (showtimeId) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa lịch chiếu này?')) {
+      setLoading(true); 
+      ScheduleManagementService.deleteShowtime(showtimeId)
+        .then(() => {
+          reloadShowtimes();
+        })
+        .catch((error) => {
+          console.error("Lỗi khi xóa lịch chiếu:", error);
+          setErrorMessage('Không thể xóa lịch chiếu. Vui lòng thử lại.');
+        })
+        .finally(() => {
+          setLoading(false); 
+        });
+    }
+  };
   
 
   return (
@@ -254,7 +374,16 @@ function ScheduleManagement() {
                           </label>
                           </td>
                           <td>
-                            <button className="edit-button">Sửa</button>
+                          <button 
+                            className="action-button edit-button" 
+                            onClick={() => openModalForRoomEdit(showtime.id)}>
+                              <FontAwesomeIcon icon={faEdit}/>
+                            </button>
+                          <button 
+                            className="action-button delete-button" 
+                            onClick={() => handleDeleteShowtime(showtime.id)}>
+                              <FontAwesomeIcon icon={faTrashCan}/>
+                            </button>
                           </td>
                         </tr>
                       ))
@@ -272,7 +401,7 @@ function ScheduleManagement() {
         </div>
       </div>
       
-      {modalVisible && (
+      {modalVisibleAdd && (
       <div className="modal">
         <div className="modal-content">
           <h3>Thêm lịch chiếu mới</h3>
@@ -299,10 +428,46 @@ function ScheduleManagement() {
             onChange={handleStartTimeChange}
           />
           <button onClick={handleAddShowtime}>Thêm</button>
-          <button onClick={() => setModalVisible(false)}>Đóng</button>
+          <button onClick={() => setModalVisibleAdd(false)}>Đóng</button>
         </div>
       </div>
     )}
+
+
+{modalVisible && (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>{showtimeToEdit ? 'Sửa lịch chiếu' : 'Thêm lịch chiếu mới'}</h3>
+
+      <label>Phim:</label>
+      <select
+        value={newShowtime.movieId}
+        onChange={(e) => setNewShowtime({ ...newShowtime, movieId: e.target.value })}
+        disabled={loadingMovies} 
+      >
+        <option value="">Chọn phim</option>
+        {movies.map((movie) => (
+          <option key={movie.id} value={movie.id}>
+            {movie.title}
+          </option>
+        ))}
+      </select>
+      {loadingMovies && <p>Đang tải danh sách phim...</p>}
+
+      <label>Thời gian bắt đầu:</label>
+      <input
+        type="time"
+        value={newShowtime.startTime}
+        onChange={handleStartTimeChange}
+      />
+
+      <button onClick={showtimeToEdit ? handleEditShowtime : handleAddShowtime}>
+        {showtimeToEdit ? 'Cập nhật' : 'Thêm'}
+      </button>
+      <button onClick={() => setModalVisible(false)}>Đóng</button>
+    </div>
+  </div>
+)}
 
     </div>
   );

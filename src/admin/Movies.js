@@ -272,110 +272,14 @@ const Movies = () => {
 
 
     // Sửa phim
-// Giả sử bạn có hàm để chọn phim
-
-    // const handleOpenEditModal = (movieId) => {
-    //     // Tìm phim trong danh sách phim dựa trên movieId
-    //     const movieToEdit = movies.find((movie) => movie.id === movieId);
-        
-    //     setSelectedMovie(movieToEdit);  // Gán thông tin phim vào selectedMovie
-    //     setIsEditModalOpen(true);  // Mở modal chỉnh sửa
-    // };
-
-
-    // const handleEditMovie = (movieId) => {
-    //     axios
-    //         .get(`http://localhost:8080/api/movie/moviedetails/${movieId}`)
-    //         .then((response) => {
-    //             setSelectedMovie({
-    //                 id: response.data.id,
-    //                 title: response.data.title || '',
-    //                 duration: response.data.duration || '',
-    //                 releaseDate: response.data.releaseDate || '',
-    //                 description: response.data.description || '',
-    //                 director: response.data.director || '',
-    //                 cast: response.data.cast || '',
-    //                 language: response.data.language || null,
-    //                 genre: response.data.genre || [],
-    //                 image: response.data.image || null,
-    //                 trailer: response.data.trailer || null,
-    //             });
-    //             setIsEditModalOpen(true);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Lỗi khi tải thông tin chi tiết phim: ', error);
-    //             alert('Không thể tải thông tin phim. Vui lòng thử lại.');
-    //         });
-    //         console.log(selectedMovie);
-
-    // };
-    
-    
-    // const handleSaveMovieChanges = (movie) => {
-    //     const formData = new FormData();
-    
-    //     // Kiểm tra và giữ nguyên giá trị cũ nếu không thay đổi
-    //     formData.append("movie", JSON.stringify({
-    //         ...movie,
-    //         image: typeof movie.image === "string" ? movie.image : null,
-    //         trailer: typeof movie.trailer === "string" ? movie.trailer : null,
-    //     }));
-    
-    //     // Thêm file mới nếu có
-    //     if (typeof movie.image !== "string") {
-    //         formData.append("image", movie.image);
-    //     }
-    //     if (typeof movie.trailer !== "string") {
-    //         formData.append("trailer", movie.trailer);
-    //     }
-    
-    //     axios
-    //         .put(`http://localhost:8080/api/movie/${movie.id}`, formData, {
-    //             headers: { "Content-Type": "multipart/form-data" },
-    //         })
-    //         .then((response) => {
-    //             if (response.data) {
-    //                 fetchMovies();
-    //                 alert("Cập nhật phim thành công!");
-    //                 setIsEditModalOpen(false); // Đóng modal sau khi thành công
-    //             } else {
-    //                 alert("Có lỗi xảy ra, vui lòng thử lại.");
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error("Lỗi khi cập nhật phim: ", error);
-    //             alert("Có lỗi xảy ra, vui lòng thử lại.");
-    //         });
-    // };
-    
-    // const handleGenreChangeInEdit = (e) => {
-    //     const selectedGenres = Array.from(e.target.selectedOptions, (option) => option.value);
-        
-    //     // Cập nhật lại genres cho movie đang được chỉnh sửa
-    //     setSelectedMovie((prevMovie) => ({
-    //         ...prevMovie,
-    //         genre: genres.filter(genre => selectedGenres.includes(genre.name)), // Chỉ giữ lại các thể loại được chọn
-    //     }));
-    // };
-    
-    // const handleLanguageChangeInEdit = (e) => {
-    //     const selectedLanguage = e.target.value;
-    
-    //     // Cập nhật ngôn ngữ cho movie đang được chỉnh sửa
-    //     setSelectedMovie((prevMovie) => ({
-    //         ...prevMovie,
-    //         language: languages.find((language) => language.name === selectedLanguage) || null, // Lấy ngôn ngữ tương ứng
-    //     }));
-    // };
-        // Mở modal để chỉnh sửa thông tin phim
         // Mở modal chỉnh sửa
     const handleOpenEditModal = (movieId) => {
         const movieToEdit = movies.find((movie) => movie.id === movieId);
         if (movieToEdit) {
-            setSelectedMovie(movieToEdit);  // Gán thông tin phim vào selectedMovie
-            setIsEditModalOpen(true);  // Mở modal chỉnh sửa
+            setSelectedMovie(movieToEdit); 
+            setIsEditModalOpen(true);  
         } else {
-            handleEditMovie(movieId);  // Nếu không tìm thấy trong danh sách, tải thông tin từ API
+            handleEditMovie(movieId);  
         }
     };
 
@@ -447,7 +351,7 @@ const Movies = () => {
             }
         }
     
-        // In ra tất cả các cặp key-value trong FormData để kiểm tra
+      
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
