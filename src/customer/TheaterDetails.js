@@ -5,7 +5,7 @@ import { getTheaterById, getTheaterExcept } from "../config/TheaterConfig.js";
 
 const CinemaDetails = () => {
   const location = useLocation();
-  const { id } = location.state || {};
+  const { id } = location.state;
   const [theater, setTheater] = useState(null);
   const [theaterEx, setTheaterEx] = useState([]);
   useEffect(() => {
@@ -49,7 +49,9 @@ const CinemaDetails = () => {
           <p>{theater.description}</p>
           <h3>Thông tin liên hệ</h3>
           <p>
-            <b>Địa chỉ</b>: {theater.address}
+            <b>Địa chỉ</b>: {theater.address.addressDetail},{" "}
+            {theater.address.ward.name}, {theater.address.district.name},{" "}
+            {theater.address.city.name}
           </p>
           <p>
             <b>Điện thoại</b>: {theater.phone}
@@ -62,7 +64,7 @@ const CinemaDetails = () => {
       <div className="other-locations">
         <h3>Địa điểm khác</h3>
         {theaterEx.length > 0 ? (
-          theaterEx.map((theaterEx, index) => (
+          theaterEx.map((theaterEx) => (
             <ul className="location-list" key={theaterEx.id}>
               <li>
                 <Link to="/theater-detail" state={{ id: theaterEx.id }}>

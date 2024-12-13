@@ -24,7 +24,7 @@ import MovieDetailAdmin from "./admin/MovieDetail"
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./context/TheaterContext";
-import TheaterDetails from './customer/TheaterDetails';
+import TheaterDetails from "./customer/TheaterDetails";
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
