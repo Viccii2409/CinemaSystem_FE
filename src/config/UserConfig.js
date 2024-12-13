@@ -1,7 +1,15 @@
 import api from "../Api.js";
 import axios from "axios";
 
-export const getAllCustomer = () => api.get("/user/all-customers");
+export const getAllCustomer = () => {
+  return api
+    .get("/user/all-customers")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error getAllCustomer: ", error);
+      return null;
+    });
+};
 
 export const verify = async (token) => {
   try {
@@ -59,7 +67,15 @@ export const getCustomerById = async (id) => {
       return null;
     });
 };
-
+export const getCustomerInfor = async (id) => {
+  return api
+    .get(`/user/inforaccount/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error getCustomerInfor: ", error);
+      return null;
+    });
+};
 export const changePassword = async (formPassData) => {
   return api
     .put("/user/changepassword", formPassData)

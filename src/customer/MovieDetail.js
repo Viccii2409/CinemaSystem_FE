@@ -35,10 +35,10 @@ const MovieDetail = () => {
         const response_movie = await getMovieById(id);
         setMovie(response_movie);
         handleScheduleModal(response_movie, selectedTheater);
-        const image_true = response_movie.image?.find(
+        const image_true = response_movie.image.find(
           (img) => img.type === true
         );
-        setImage(image_true?.link || "");
+        setImage(image_true || "");
       } catch (error) {
         console.error(error);
       }
@@ -128,7 +128,7 @@ const MovieDetail = () => {
             <iframe
               width="100%"
               height="315"
-              src={movie.trailer?.link}
+              src={movie.trailer}
               title="Trailer Video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -10,8 +10,8 @@ const CustomerManagement = () => {
     const fetchCustomer = async () => {
       try {
         const response = await getAllCustomer();
-        console.log(response.data);
-        setCustomers(response.data);
+        console.log(response);
+        setCustomers(response);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách khách hàng:", error);
       }
@@ -47,7 +47,7 @@ const CustomerManagement = () => {
               <td>{customer.address}</td>
               <td>
                 <button className="action-button">
-                  <Link to="customer-detail">
+                  <Link to="/customer-detail" state={{ id: customer.id }}>
                     <FontAwesomeIcon icon={faEye} />
                   </Link>
                 </button>

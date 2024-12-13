@@ -20,7 +20,7 @@ export const getTheater = () => api.get("/theater/public/all");
 
 export const getTheaterById = (id) => {
   try {
-    return api.get(`/theater/${id}`);
+    return api.get(`/theater/public/${id}`);
   } catch (error) {
     console.error("Error get theater by id", error);
   }
@@ -49,7 +49,8 @@ export const getTheaterExcept = (id) => {
 // Nếu bạn muốn sử dụng await, hãy chắc chắn rằng hàm của bạn là async
 
 export const getTheaterRoomDto = () => {
-  return api.get("/theater/room")
+  return api
+    .get("/theater/room")
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error get theaterroomdto", error);
@@ -105,11 +106,11 @@ export const addTheater = async (theaterData) => {
       formData.append("file", theaterData.image);
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const response = await api.post("/theater/add", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -187,12 +188,12 @@ export const editTheater = async (theaterData) => {
     if (theaterData.image) {
       formData.append("file", theaterData.image);
     }
-    
-    const token = localStorage.getItem('token');
+
+    const token = localStorage.getItem("token");
     const response = await api.put("/theater/update", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
 

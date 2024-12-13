@@ -285,7 +285,7 @@ const HomePage = () => {
                 <div className="image-container">
                   <Link to="/movie-detail" state={{ id: movienow.id }}>
                     <img
-                      src={movienow.link}
+                      src={movienow.image}
                       alt="movie"
                       className="movie-thumbnail"
                     />
@@ -329,7 +329,7 @@ const HomePage = () => {
               <div className="image-container">
                 <Link to="/movie-detail" state={{ id: moviesoon.id }}>
                   <img
-                    src={moviesoon.link}
+                    src={moviesoon.image}
                     alt="movie"
                     className="movie-thumbnail"
                   />
@@ -470,7 +470,7 @@ const HomePage = () => {
                   <div className="image-container">
                     <Link to="/movie-detail" state={{ id: recom.id }}>
                       <img
-                        src={recom.link || "placeholder-image.jpg"} // Dùng ảnh placeholder nếu `link` bị null
+                        src={recom.image || "placeholder-image.jpg"} // Dùng ảnh placeholder nếu `link` bị null
                         alt="movie"
                         className="movie-thumbnail"
                       />

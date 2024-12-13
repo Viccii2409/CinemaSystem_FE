@@ -1,19 +1,26 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import './CustomerDetail.css';
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import "./CustomerDetail.css";
+import { getCustomerById } from "../config/UserConfig";
+import { useLocation } from "react-router-dom";
 
 const CustomerDetail = () => {
-  const customer = {
-    name: 'Nguyen Van A',
-    email: 'a@gmail.com',
-    password: '******',
-    status: true,
-    gender: 'Nam',
-    birthdate: '01/01/1990',
-    phone: '0945223553',
-    city: 'Hà Nội',
-  };
+  const location = useLocation();
+  const { id } = location.state || {};
+  const [customer, setCustomer] = useState(null);
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const response = await getCustomerById(id);
+        console.log(response);
+        setCustomer(response);
+      } catch (error) {
+        console.error("Error fetching Customer Detail: ", error);
+      }
+    };
+    fetchCustomer();
+  }, [id]);
 
   return (
     <div className="customer-detail">
@@ -29,7 +36,7 @@ const CustomerDetail = () => {
         </div>
         <div className="customer-status">
           <label>Trạng thái hoạt động</label>
-          <input type="checkbox" checked={customer.status} readOnly />
+          <input type="checkbox" checked={customer.status} />
         </div>
         <div className="customer-personal-info">
           <h4>Thông tin cá nhân</h4>
