@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HeaderAdmin from './admin/HeaderAdmin';
@@ -11,9 +10,7 @@ import RoomManagement from './admin/RoomManagement';
 import TicketPriceManagement from './admin/TicketPriceManagement';
 import ScheduleManagement from './admin/ScheduleManagement';
 import EmployeeManagement from './admin/EmployeeManagement';
-import AccessPermission from './admin/AccessPermission';
 import CustomerManagement from './admin/CustomerManagement';
-import CustomerDetail from './admin/CustomerDetail';
 import DiscountManagement from './admin/DiscountManagement';
 import AddRoom from './admin/AddRoom';
 import ViewRoom from './admin/ViewRoom';
@@ -21,28 +18,48 @@ import EditRoom from './admin/EditRoom';
 import CinemaTicket from './admin/CinemaTicket';
 import CinemaTicket_2 from './admin/CinemaTicket_2';
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
+import ManagerRole from "./admin/ManagerRole";
+import EmployeeInfor from "./admin/EmployeeInfor";
 import MovieDetailAdmin from "./admin/MovieDetail"
 
 import HeaderCustomer from "./customer/HeaderCustomer";
-import { TheaterProvider } from "./TheaterContext";
+import { TheaterProvider } from "./context/TheaterContext";
 import TheaterDetails from './customer/TheaterDetails';
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
+import GenreFavourite from "./customer/GenreFavourite";
 import Footer from "./customer/Footer";
 import CinemaSystem from "./customer/CinemaSystem";
 import SeatSelection from "./customer/SeatSelection";
 import MovieDetail from "./customer/MovieDetail";
 import UserInfor from "./customer/UserInfor";
 import ViewBooking from "./customer/ViewBooking";
-import AccountPage from "./customer/AccountPage";
+
+import Error403 from "./error/Error403";
+import { AuthContext } from './context/AuthContext';
+import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
+  const { user, loading } = useContext(AuthContext);
+  const [statusEmployee, setStatusEmployee] = useState(true);
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) {
+      setStatusEmployee(user.statusEmployee);
+    }
+  }, [user, loading]);
+
   return (
     <Router>
       <Routes>
         <Route path="/*" element={<CustomerLayout />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
+        <Route path="/admin/*" element={
+          <ProtectedRoute isAllowed={statusEmployee}>
+            <AdminLayout />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );
@@ -59,18 +76,19 @@ function CustomerLayout() {
             <Route path="home" element={<HomePage />} />
             <Route path="login-page" element={<LoginPage />} />
             <Route path="register-page" element={<RegisterPage />} />
-            <Route path="account-page" element={<AccountPage />} />
+            <Route path="genre-favourite" element={<GenreFavourite />} />
             <Route path="seat-selection" element={<SeatSelection />} />
             <Route path="view-booking" element={<ViewBooking />} />
             <Route path="movie-detail" element={<MovieDetail />} />
             <Route path="cinema-system" element={<CinemaSystem />} />
             <Route path="movie-detail" element={<MovieDetail />} />
-            <Route
-              path="cinema-system/theater-detail"
-              element={<TheaterDetails />}
-            />
-          <Route path="theater-detail" element={<TheaterDetails />} />
-          <Route path="user-infor" element={<UserInfor />} />
+            <Route path="cinema-system/theater-detail" element={<TheaterDetails />} />
+            <Route path="theater-detail" element={<TheaterDetails />} />
+            <Route path="user-infor" element={<UserInfor />} />
+
+
+            <Route path="/403" element={<Error403 />} />
+
           </Routes>
         </div>
         <Footer />
@@ -102,18 +120,11 @@ function AdminLayout() {
             <Route path="ticket-sales" element={<CinemaTicket />} />
             <Route path="ticket-sales/booking-seat" element={<CinemaTicket_2 />} />
             <Route path="view-ticket-admin" element={<ViewTicketAdmin />} />
+            <Route path="role" element={<ManagerRole />} />
             <Route path="staff" element={<EmployeeManagement />} />
-            <Route
-              path="staff/access-permission"
-              element={<AccessPermission />}
-            />
             <Route path="customers" element={<CustomerManagement />} />
-            <Route
-              path="customers/customer-detail"
-              element={<CustomerDetail />}
-            />
             <Route path="statistics" element={<div>Thống kê Content</div>} />
-            <Route path="account" element={<div>Thống kê Content</div>} />
+            <Route path="account" element={<EmployeeInfor />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>
         </div>

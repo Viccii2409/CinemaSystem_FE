@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./MovieDetail.css";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { TheaterContext } from "../TheaterContext";
+import { TheaterContext } from "../context/TheaterContext.js";
 import { getMovieById } from "../config/MovieConfig.js";
 
 const MovieDetail = () => {

@@ -1,0 +1,133 @@
+/* Toàn bộ container */
+.genre-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f6f9;
+}
+
+/* Form container */
+.genre-page .genre-form-container {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Tiêu đề */
+.genre-page .genre-form-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+
+
+/* Nhóm checkbox */
+.genre-page .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  /* Khoảng cách giữa các nút */
+}
+
+/* Checkbox dưới dạng nút */
+.genre-page .checkbox-button {
+  position: relative;
+  display: inline-flex;
+  /* Sử dụng inline-flex để căn giữa nội dung */
+  align-items: center;
+  /* Căn giữa nội dung theo chiều dọc */
+  justify-content: center;
+  /* Căn giữa nội dung theo chiều ngang */
+  font-size: 16px;
+  font-weight: bold;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  /* Đặt kích thước tối thiểu nhưng không cố định */
+  min-height: 40px;
+  /* Đặt chiều cao tối thiểu nhưng không cố định */
+  box-sizing: border-box;
+  /* Đảm bảo viền không làm thay đổi kích thước */
+}
+
+/* Ẩn checkbox mặc định */
+.genre-page .checkbox-button input[type="checkbox"] {
+  display: none;
+}
+
+/* Đảm bảo span bao phủ toàn bộ nút */
+.genre-page .checkbox-button span {
+  display: inline-flex;
+  /* Sử dụng inline-flex để căn giữa nội dung */
+  align-items: center;
+  /* Căn giữa nội dung theo chiều dọc */
+  justify-content: center;
+  /* Căn giữa nội dung theo chiều ngang */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+/* Hiệu ứng khi checkbox được chọn */
+.genre-page .checkbox-button input[type="checkbox"]:checked+span {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+/* Hiệu ứng hover */
+.genre-page .checkbox-button:hover {
+  background-color: #4caf50;
+  color: white;
+  transform: scale(1.05);
+  /* Phóng to nhẹ */
+}
+
+
+
+
+/* Nút bấm ở cuối form */
+.genre-page .button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.genre-page button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.genre-page .exit-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.genre-page .exit-btn:hover {
+  background-color: #e53935;
+}
+
+.genre-page .submit-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.genre-page .submit-btn:hover {
+  background-color: #388e3c;
+}

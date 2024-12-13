@@ -3,23 +3,23 @@ import "./HeaderCustomer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { getTheater } from "../config/TheaterConfig.js";
-import { TheaterContext } from "../TheaterContext";
+import { getAllNameTheater, getTheater } from "../config/TheaterConfig.js";
+import { TheaterContext } from "../context/TheaterContext.js";
+import { AuthContext } from '../context/AuthContext';
+
+
+
 const HeaderCustomer = () => {
+  const { user, handleLogout } = useContext(AuthContext);
   const [theaters, setTheaters] = useState([]);
   const { selectedTheater, setSelectedTheater } = useContext(TheaterContext);
-  const [cinemas, setCinemas] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null); // State lưu thông tin người dùng
 
   useEffect(() => {
     const fetchTheater = async () => {
       try {
-        const response = await getTheater();
-        if (response && response.data) {
-          setCinemas(response.data); // Lưu dữ liệu vào state cinemas
-        }
-        const theaterData = response.data.filter(theater => theater.status);
-        setTheaters(theaterData);
+        const response = await getAllNameTheater();
+        // console.log(response.data);
+        setTheaters(response.data);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách rạp:", error);
       }
@@ -32,22 +32,9 @@ const HeaderCustomer = () => {
     setSelectedTheater(theaterid);
   };
 
-  useEffect(() => {
-      const fetchUser = () => {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          setCurrentUser(JSON.parse(userData)); // Cập nhật thông tin người dùng
-        }
-      };
-
-      fetchUser();
-
-      // Lắng nghe sự thay đổi trong localStorage để cập nhật UI
-      const handleStorageChange = () => fetchUser();
-      window.addEventListener("storage", handleStorageChange);
-
-      return () => window.removeEventListener("storage", handleStorageChange);
-    }, []);
+  const handleLogoutData = () => {
+    handleLogout();
+  }
 
   return (
     <header className="homepage-header">
@@ -62,32 +49,46 @@ const HeaderCustomer = () => {
       </nav>
 
       <select name="id" className="location-selector" value={selectedTheater || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
-          <option value="" disabled>---Chọn rạp---</option>
-          {theaters.map((theater) => (
-            <option key={theater.id} value={theater.id}>
-              {theater.name}
-            </option>
-          ))}
-        </select>
+        <option value="" disabled>---Chọn rạp---</option>
+        {theaters.map((theater) => (
+          <option key={theater.id} value={theater.id}>
+            {theater.name}
+          </option>
+        ))}
+      </select>
 
       <div>
-        {currentUser ? (
+        {user ? (
           <div className="user">
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              className="customer-avatar"
-              style={{ fontSize: "22px", marginRight: "10px" }}
-            />
-            <Link to="/user-infor" className="user-infor">
-              {currentUser.name}
-            </Link>
+            {user.image ? (
+              // Nếu có hình ảnh, hiển thị ảnh
+              <img
+                src={user.image}
+                alt="User Avatar"
+                className="customer-avatar"
+                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+              />
+            ) : (
+              // Nếu không có hình ảnh, hiển thị biểu tượng mặc định
+              <FontAwesomeIcon
+                icon={faUserCircle}
+                className="customer-avatar"
+                style={{ fontSize: "22px", marginRight: "10px" }}
+              />
+            )}
+            {!user.statusEmployee ? (
+              <Link to="/user-infor" className="user-infor">
+                {user.name}
+              </Link>
+            ) : (
+              <Link to="/admin/account" className="user-infor">
+                {user.name}
+              </Link>
+            )}
             {/* Hiển thị tên người dùng */}
             <button
               className="logout-button"
-              onClick={() => {
-                localStorage.removeItem("user"); // Xóa thông tin người dùng khi logout
-                setCurrentUser(null); // Reset state user
-              }}
+              onClick={handleLogoutData}
             >
               / Thoát
             </button>

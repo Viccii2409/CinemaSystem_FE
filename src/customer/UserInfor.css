@@ -1,108 +1,449 @@
 .account-page {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fc;
   padding: 20px;
-  font-size: 20px;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .account-page .title {
   text-align: center;
-  font-size: 24px;
+  font-size: 28px;
   margin-bottom: 20px;
+  color: #333;
 }
+
 .account-page .account-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-}
-.account-page .account-form {
-  align-content: center;
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 20px;
+  background-color: white;
   border-radius: 8px;
-  width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }
+
+.account-page .account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
 
 .account-page .profile-info {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .account-page .avatar {
-  width: 80px;
-  height: 80px;
   border-radius: 50%;
+  width: 120px;
+  height: 120px;
 }
 
 .account-page .profile-details {
-  font-size: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .account-page .user-name {
+  font-size: 20px;
   font-weight: bold;
-  font-size: 18px;
+  color: #333;
 }
 
-.account-page .form-group {
-  margin-bottom: 15px;
+.account-page .user-stats {
+  font-size: 14px;
+  color: #555;
 }
+
+
+
+/* .account-page .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+} */
 
 .account-page label {
-  display: block;
-  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  /* padding: 10px; */
+  margin: 10px;
+}
+
+.account-page input, .account-page select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.account-page input:focus, .account-page select:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .account-page .btn {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: #007bff;
+  margin: 10px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
   border: none;
-  padding: 10px;
-  border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.account-page .btn:hover {
+  background-color: #0056b3;
+}
+
+.account-page .btn-change-password {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
 }
 
 .account-page .btn-update {
-  margin-top: 10px;
-  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.account-page .btn-logout {
-  margin-top: 10px;
-  width: 100%;
-  background: red;
+.account-page .btn-update:hover {
+  background-color: #218838;
 }
 
-.account-page .account-qr {
-  flex: 1;
-  background: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
+.account-page .btn-change {
+  background-color: #a72828;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.account-page .qr-details {
-  margin-bottom: 20px;
+.account-page .btn-change:hover {
+  background-color: #882121;
 }
+
 
 .account-page .transaction-history {
-  margin-top: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.account-page .transaction-table {
+.account-page .transaction-history h3 {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.account-page .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.account-page .transaction-table th,
-.transaction-table td {
+.account-page .table th,
+.account-page .table td {
+  text-align: left;
+  padding: 15px;
   border: 1px solid #ddd;
-  text-align: center;
-  padding: 8px;
 }
 
-.account-page .transaction-table th {
+.account-page .table th {
   background: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.account-page .table td {
+  color: #555;
+  font-size: 0.9em;
+}
+
+
+
+
+/* Căn chỉnh nút */
+.account-page .view-button,
+.account-page .genre-button,
+.account-page .payment-button {
+  padding: 8px 12px;
+  font-size: 0.9em;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.account-page .view-button {
+  background-color: #007bff;
+}
+
+.account-page .genre-button {
+  background-color: #00d9ff;
+  margin: 20px 10px 0 0;
+}
+
+.account-page .payment-button {
+  background-color: #28a745;
+}
+
+.account-page .view-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.account-page .payment-button:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+
+}
+
+.account-page .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50em;
+  max-height: 50em;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.account-page .modal-pass {
+  width: 35em;
+}
+
+.account-page .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+
+.account-page .modal-header {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.account-page .modal-input {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.account-page .input-long {
+  width: 98%;
+}
+
+.account-page .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.account-page .close-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.account-page .close-button:hover {
+  background-color: #5a6268;
+}
+
+.account-page .submit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.account-page .submit-button:hover {
+  background-color: #218838;
+}
+
+
+.account-page .form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.account-page .form-column {
+  flex: 1;
+}
+
+.account-page .modal-image {
+  width: 30em;
+  height: 30em;
+}
+
+.account-page .image-booking {
+  width: 100%;
+  height: 23em;
+}
+
+
+.account-page .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.account-page .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.account-page .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 15px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.account-page .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.account-page input:checked+.slider {
+  background-color: #4caf50;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.account-page input:checked+.slider:before {
+  transform: translateX(24px);
+}
+
+.account-page .slider.round {
+  border-radius: 34px;
+}
+
+.account-page .slider.round:before {
+  border-radius: 50%;
+}
+
+/* Nhóm checkbox */
+.account-page .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  /* Khoảng cách giữa các nút */
+}
+
+/* Checkbox dưới dạng nút */
+.account-page .checkbox-button {
+  position: relative;
+  display: inline-flex;
+  /* Sử dụng inline-flex để căn giữa nội dung */
+  align-items: center;
+  /* Căn giữa nội dung theo chiều dọc */
+  justify-content: center;
+  /* Căn giữa nội dung theo chiều ngang */
+  font-size: 16px;
+  font-weight: bold;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  /* Đặt kích thước tối thiểu nhưng không cố định */
+  min-height: 40px;
+  /* Đặt chiều cao tối thiểu nhưng không cố định */
+  box-sizing: border-box;
+  /* Đảm bảo viền không làm thay đổi kích thước */
+}
+
+/* Ẩn checkbox mặc định */
+.account-page .checkbox-button input[type="checkbox"] {
+  display: none;
+}
+
+/* Đảm bảo span bao phủ toàn bộ nút */
+.account-page .checkbox-button span {
+  display: inline-flex;
+  /* Sử dụng inline-flex để căn giữa nội dung */
+  align-items: center;
+  /* Căn giữa nội dung theo chiều dọc */
+  justify-content: center;
+  /* Căn giữa nội dung theo chiều ngang */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+/* Hiệu ứng khi checkbox được chọn */
+.account-page .checkbox-button input[type="checkbox"]:checked+span {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+/* Hiệu ứng hover */
+.account-page .checkbox-button:hover {
+  background-color: #4caf50;
+  color: white;
+  transform: scale(1.05);
+  /* Phóng to nhẹ */
 }

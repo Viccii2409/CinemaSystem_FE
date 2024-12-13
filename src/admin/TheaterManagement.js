@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'; // Thêm useEffect
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { getTheater, updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater } from '../config/TheaterConfig.js';
+import { updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater, getTheater } from '../config/TheaterConfig.js';
 
 
 const CinemaManagement = () => {
@@ -200,16 +200,6 @@ const CinemaManagement = () => {
     });
   };
 
-  // const validateFormData = (data) => {
-  //   for (let key in data) {
-  //     if (data[key] === '' || data[key] === null) {
-  //       alert('Vui lòng điền đầy đủ thông tin');
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // };
-
   const validateFormData = (data) => {
     let check = true;
 
@@ -390,9 +380,11 @@ const CinemaManagement = () => {
                   <button className="edit-button" onClick={() => handleEditCinema(theater.id)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
+                  {theater.quantityRoom === 0 && (
                   <button className="delete-button" onClick={() => handleDeleteCinema(theater.id)}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
+                  )}
                 </td>
               </tr>
             ))}

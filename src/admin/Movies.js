@@ -4,11 +4,7 @@ import './Movies.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
-import MovieService from './MovieService';
-import GenreService from './MovieCategoriesService';
-import { useNavigate } from 'react-router-dom';
-
-
+import { addMovie, deleteMovie, getAllGenres, getAllMovies } from '../config/MovieConfig';
 
 Modal.setAppElement('#root');
 
@@ -52,8 +48,8 @@ const Movies = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await MovieService.getAllMovies();
-            const normalizedMovies = response.data.map((movie) => ({
+            const response = await getAllMovies();
+            const normalizedMovies = response.map((movie) => ({
                 ...movie,
                 genre: Array.isArray(movie.genres) ? movie.genres : [], // Normalize genre
             }));
@@ -68,8 +64,8 @@ const Movies = () => {
 
     const fetchGenres = async () => {
         try {
-            const response = await GenreService.getAllGenres();
-            setGenres(response.data);
+            const response = await getAllGenres();
+            setGenres(response);
         } catch (error) {
             console.error("Error fetching genres:", error);
         }
@@ -78,8 +74,8 @@ const Movies = () => {
     // Thêm phim 
     const handleAddMovie = async () => {
         try {
-            const response = await MovieService.addMovie(newMovie);
-            setMovies([...movies, response.data]);
+            const response = await addMovie(newMovie);
+            setMovies([...movies, response]);
             setNewMovie({
                 title: '',
                 duration: '',
@@ -114,7 +110,7 @@ const Movies = () => {
     const updateStatusMovie = async (id) => {
         try {
             
-            await MovieService.updateStatusMovie(id);
+            await updateStatusMovie(id);
     
             // Tải lại danh sách phim sau khi thay đổi trạng thái
             fetchMovies();  
@@ -143,7 +139,7 @@ const Movies = () => {
     const handleDeleteMovie = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa phim này?')) {
             try {
-                await MovieService.deleteMovie(id);
+                await deleteMovie(id);
                 setMovies(movies.filter((m) => m.id !== id));
                 fetchMovies();
                 alert('Xóa phim thành công!');
@@ -353,5 +349,5 @@ const Movies = () => {
         </div>
     );
 };
- 
+
 export default Movies;

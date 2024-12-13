@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./RegisterPage.css";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -9,18 +11,29 @@ import {
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { check, register } from "../config/UserConfig";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { handleLogin, user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
     dob: "",
     phone: "",
-    gender: "",
+    gender: "other",
     address: "",
   });
+
+  
+  useEffect(() => {
+    if(user) {
+      navigate("/home");
+      return;
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,26 +50,30 @@ const RegisterPage = () => {
       alert("Passwords do not match!");
       return;
     }
-
-    const response = await fetch("http://localhost:8080/api/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      alert("Đăng ký thành công!");
-      console.log("Response:", result);
-      // Chuyển hướng người dùng hoặc cập nhật trạng thái UI
-    } else {
-      const errorData = await response.json();
-      alert("Lỗi đăng ký: " + errorData.message || "Unknown error");
-      console.error("Error response:", errorData);
+    console.log(formData);
+    const response_check = await check(formData.email);
+    console.log(response_check);
+    if(response_check){
+      alert("Email đã được sử dụng. Vui lòng nhập email khác!");
+      return;
+    }
+    else {
+      const response_register = await register(formData);
+      console.log(response_check);
+      if (response_register) {
+        alert("Bạn đã đăng kí thành công!");
+        await handleLogin(response_register); 
+        navigate("/genre-favourite");
+      } else {
+        alert("Lỗi không đăng kí được!");
+        return;
+      }
     }
   };
+  
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div className="register-page">
@@ -69,14 +86,14 @@ const RegisterPage = () => {
         </div>
         <form onSubmit={handleRegister}>
           <div className="form-group">
-            <label htmlFor="fullName">
+            <label htmlFor="name">
               <FontAwesomeIcon icon={faUser} /> Họ tên
             </label>
             <input
               type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
+              id="name"
+              name="name"
+              value={formData.name}
               onChange={handleInputChange}
               placeholder="Họ tên"
               required
@@ -97,55 +114,16 @@ const RegisterPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">
-              <FontAwesomeIcon icon={faLock} /> Mật khẩu
+            <label htmlFor="email">
+              <FontAwesomeIcon icon={faEnvelope} /> Giới tính 
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Mật khẩu"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirmPassword">
-              <FontAwesomeIcon icon={faLock} /> Xác nhận lại mật khẩu
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              placeholder="Xác nhận lại mật khẩu"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="dob">
-              <FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh
-            </label>
-            <input
-              type="date"
-              id="dateOfBirth"
-              name="dob"
-              value={formData.dob}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Giới tính</label>
             <div className="gender-options">
               <label>
                 <input
                   type="radio"
                   name="gender"
-                  value="Nam"
-                  checked={formData.gender === "Nam"}
+                  value="male"
+                  checked={formData.gender === "male"}
                   onChange={handleInputChange}
                 />{" "}
                 Nam
@@ -154,8 +132,8 @@ const RegisterPage = () => {
                 <input
                   type="radio"
                   name="gender"
-                  value="Nữ"
-                  checked={formData.gender === "Nữ"}
+                  value="female"
+                  checked={formData.gender === "female"}
                   onChange={handleInputChange}
                 />{" "}
                 Nữ
@@ -164,33 +142,80 @@ const RegisterPage = () => {
                 <input
                   type="radio"
                   name="gender"
-                  value="Khác"
-                  checked={formData.gender === "Khác"}
+                  value="other"
+                  checked={formData.gender === "other"}
                   onChange={handleInputChange}
                 />{" "}
                 Khác
               </label>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="phone">
-              <FontAwesomeIcon icon={faPhone} /> Số điện thoại
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              placeholder="Số điện thoại"
-              required
-            />
+          
+          <div className="form-row">
+            <div className="form-group">
+            <label htmlFor="password">
+                  <FontAwesomeIcon icon={faLock} /> Mật khẩu
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Mật khẩu"
+                  required
+                />
+            </div>
+            <div className="form-group">
+            <label htmlFor="confirmPassword">
+                  <FontAwesomeIcon icon={faLock} /> Xác nhận lại mật khẩu
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Xác nhận lại mật khẩu"
+                  required
+                />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="dob">
+                <FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh
+              </label>
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                value={formData.dob}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone">
+                <FontAwesomeIcon icon={faPhone} /> Số điện thoại
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="Số điện thoại"
+                required
+              />
+            </div>
           </div>
           <div className="form-group">
             <label htmlFor="address">Tỉnh/Thành phố</label>
             <input
               type="text"
-              id="city"
+              id="address"
               name="address"
               value={formData.address}
               onChange={handleInputChange}

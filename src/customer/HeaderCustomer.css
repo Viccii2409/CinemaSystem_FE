@@ -11,6 +11,7 @@
   top: 0;
   left: 0;
   width: 98%;
+  height: 2vw;
   z-index: 1000; /* Đặt header lên trên các phần tử khác */
 }
 
