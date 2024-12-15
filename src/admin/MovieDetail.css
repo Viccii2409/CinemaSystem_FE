@@ -26,7 +26,7 @@
   }
   
   .movie-detail .movie-description h1 {
-    color: #28a745;
+    color: #000000;
     font-size: 1.8em;
     margin-bottom: 15px;
   }
@@ -38,8 +38,7 @@
   }
   
   .movie-detail .highlight {
-    color: #28a745;
-    font-weight: bold;
+    color: #000000;
   }
   
   /* Trailer Section */
@@ -158,7 +157,7 @@
 }
 
 /* Phần bình luận */
-.feedback-section {
+.movie-detail .feedback-section {
   margin-top: 40px;
   background-color: #fff;
   border-radius: 8px;
@@ -166,7 +165,7 @@
   padding: 20px;
 }
 
-.feedback-section h2 {
+.movie-detail .feedback-section h2 {
   font-size: 24px;
   color: #333;
   border-bottom: 2px solid #ddd;
@@ -174,13 +173,13 @@
   margin-bottom: 20px;
 }
 
-.feedback-section p {
+.movie-detail .feedback-section p {
   font-size: 16px;
   line-height: 1.6;
   color: #555;
 }
 
-.feedback {
+.movie-detail .feedback {
   background-color: #f9f9f9;
   padding: 15px;
   margin-bottom: 20px;
@@ -188,51 +187,77 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.feedback p {
+.movie-detail .feedback p {
   margin: 8px 0;
 }
 
 /* Tên người dùng */
-.feedback strong {
+.movie-detail .feedback strong {
   font-weight: bold;
-  color: #0073e6;
+  color: #e66400;
 }
 
 /* Đánh giá */
-.feedback .rating {
+.movie-detail .feedback .rating {
   margin-top: 10px;
 }
 
-.feedback .rating span {
+.movie-detail .feedback .rating span {
   margin-right: 10px;
   font-weight: bold;
   color: #f39c12;
 }
 
 /* Ngày tháng */
-.feedback em {
+.movie-detail .feedback em {
   font-size: 14px;
   color: #777;
 }
 
 /* Thông báo khi chưa có bình luận */
-.feedback-section p {
+.movie-detail .feedback-section p {
   color: #0b0b0b;
 }
 
 /* Màu nền cho phần feedback khi có nhiều feedback */
-.feedback-section .feedback:nth-child(even) {
+.movie-detail .feedback-section .feedback:nth-child(even) {
   background-color: #fafafa;
 }
 
-.fa-star {
+.movie-detail .fa-star {
   color: #ffd700; /* Màu vàng cho sao đánh giá */
   margin-right: 5px; /* Khoảng cách giữa các sao */
   font-size: 18px; /* Kích thước sao */
 }
-.far.fa-star {
+.movie-detail .far.fa-star {
   color: #ccc; /* Màu xám cho sao chưa đánh giá */
 }
-.fas.fa-star {
+.movie-detail .fas.fa-star {
   color: #ffd700; /* Màu vàng cho sao đã đánh giá */
+}
+
+
+/* Định dạng cho dropdown chứa thể loại */
+.movie-detail form select[multiple] {
+    height: 150px; /* Cho phép hiển thị nhiều lựa chọn */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #555;
+    box-sizing: border-box;
+    resize: none; /* Tắt khả năng kéo dài */
+}
+
+/* Thêm hiệu ứng hover cho các options */
+.movie-detail form select[multiple] option:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Khi chọn nhiều thể loại, thay đổi giao diện */
+.movie-detail form select[multiple] option:checked {
+    background-color: #007bff;
+    color: white;
 }

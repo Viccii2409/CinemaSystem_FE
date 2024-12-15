@@ -368,7 +368,7 @@ function SeatSelection() {
 
     try {
       await addPayOnline(paymentOnlineData);
-      navigate('/home');
+      navigate('/user-infor');
       return;
       // alert("Thanh toán thành công!");
     } catch (error) {
