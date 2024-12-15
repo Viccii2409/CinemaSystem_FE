@@ -14,6 +14,15 @@ export const getMovieById = (id) => {
     });
 };
 
+export const getMovieDetails = (id) => {
+  return api.get(`/movie/moviedetails/${id}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Error get movie by id", error);
+      return null;
+    })
+};
+
 export const getAllGenres = () => {
   return api
     .get(`/movie/public/genre`)
@@ -104,24 +113,34 @@ export const searchMoviesByGenre = (genreName) => {
     });
 };
 
-export const addMovie = (movie) => {
-  return api
-    .post("/movie/add", movie)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error addMovie", error);
-      return null;
+export const addMovie = async (movie) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.post("/movie/add", movie, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const editMovie = (id, movie) => {
-  return api
-    .put(`/movie/${id}`, movie)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error editMovie", error);
-      return null;
+export const editMovie = async (movie) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.post("/movie/update", movie, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const updateStatusMovie = (id) => {
@@ -145,7 +164,7 @@ export const deleteMovie = (id) => {
 };
 export const getFeedback = (movieId) => {
   return api
-    .get(`/feedback/public/${movieId}`)
+    .get(`/movie/public/feedback/${movieId}`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error getAllFeedback", error);
@@ -155,9 +174,25 @@ export const getFeedback = (movieId) => {
 
 export const getAllGenreCustomer = () => {
   return api.get('/movie/public/genre')
-  .then(response => response.data)
-  .catch(error => {
-    console.error("Error getAllGenreCustomer", error);
-    return null;
-  })
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Error getAllGenreCustomer", error);
+      return null;
+    })
 };
+
+
+
+export const getAllLanguage = () => {
+  return api.get('/movie/getAllLanguage')
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Error getAllLanguage", error);
+      return null;
+    })
+};
+
+// export const getMovieById = (id) => {
+//   return
+// }
+

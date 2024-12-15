@@ -55,11 +55,12 @@ function App() {
     <Router>
       <Routes>
         <Route path="/*" element={<CustomerLayout />} />
-        <Route path="/admin/*" element={
+        <Route path="/admin/*" element={<AdminLayout />} />
+        {/* <Route path="/admin/*" element={
           <ProtectedRoute isAllowed={statusEmployee}>
             <AdminLayout />
           </ProtectedRoute>
-        } />
+        } /> */}
       </Routes>
     </Router>
   );

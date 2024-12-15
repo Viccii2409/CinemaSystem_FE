@@ -39,7 +39,7 @@ const AccountPage = () => {
         const response = await getUserById(user.id);
         console.log(response);
         setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-        console.log(response);
+        console.log(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'));
         if (response) {
           const revenue = response.bookings.reduce((total, entry) => {
             if (entry.statusPayment === "confirmed") {
@@ -196,7 +196,7 @@ const AccountPage = () => {
     }
     try {
       await addGenreFauvorite(genreData);
-      setCurrentUser({...currentUser, genres : genres.filter(genre => selectedGenres.includes(genre.id))});
+      setCurrentUser({ ...currentUser, genres: genres.filter(genre => selectedGenres.includes(genre.id)) });
       handleCloseModal();
     } catch (error) {
       console.error("Error addGenreFauvorite api", error);
@@ -208,41 +208,41 @@ const AccountPage = () => {
   const formattedDate = new Date(currentUser.startDate).toLocaleDateString();
 
   //FEEDBACK
-    const [text, setText] = useState("");
-    const [star, setStar] = useState(null);
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
-    const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-    const [selectedBooking, setSelectedBooking] = useState(null);
-    const handleFeedback = (bookingId) => {
-      setSelectedBooking({ bookingId });
-      setShowFeedbackForm(true);
-    };
+  const [text, setText] = useState("");
+  const [star, setStar] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const handleFeedback = (bookingId) => {
+    setSelectedBooking({ bookingId });
+    setShowFeedbackForm(true);
+  };
 
-    const handleFeedbackSubmit = async (bookingID) => {
-      setSuccess(false);
+  const handleFeedbackSubmit = async (bookingID) => {
+    setSuccess(false);
 
-      if (!text || !star) {
-        setError("Vui lòng nhập đầy đủ thông tin.");
-        return;
-      }
+    if (!text || !star) {
+      setError("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
 
-      const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
-      console.log(feedbackData);
-      try {
-        const response = await addFeedback(feedbackData);
+    const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
+    console.log(feedbackData);
+    try {
+      const response = await addFeedback(feedbackData);
 
-        setSuccess(true);
-        setText("");
-        setStar(null);
+      setSuccess(true);
+      setText("");
+      setStar(null);
 
-        alert("Feedback đã được gửi!");
-        handleCloseModal();
-        window.location.reload();
-      } catch (error) {
-        setError(error.message || "Có lỗi xảy ra.");
-      }
-    };
+      alert("Feedback đã được gửi!");
+      handleCloseModal();
+      window.location.reload();
+    } catch (error) {
+      setError(error.message || "Có lỗi xảy ra.");
+    }
+  };
 
   return (
     <div className="account-page">
@@ -443,31 +443,18 @@ const AccountPage = () => {
                     <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
                       <FontAwesomeIcon icon={faEye} /> Xem
                     </button>
-                    {booking.statusPayment === "pending" ? (
-                                            <button
-                                              className="payment-button"
-                                              onClick={() => handlePayment(booking.barcodePayment)}
-                                            >
-                                              <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
-                                            </button>
-                                          ) : booking.statusPayment === "confirmed"
-                                             && booking.feedback === null
-                                             && new Date(
-                                              new Date(
-                                                `${booking.dateShowtime}T${booking.endTime}`
-                                              ).getTime() +
-                                                10 * 60 * 1000
-                                            ) < new Date()
-                                            ? (
-                                            <button
-                                              className="feedback-button"
-                                              onClick={() => handleFeedback(booking.id)}
-                                            >
-                                              <FontAwesomeIcon icon={faComment} /> Feedback
-                                            </button>
-                                          ) : (
-                                            ""
-                                          )}
+
+                    {booking.statusPayment === "confirmed" && booking.feedback === null &&
+                      new Date(`${booking.dateShowtime}T${booking.endTime}`).getTime() < new Date().getTime() ? (
+                      <button
+                        className="feedback-button"
+                        onClick={() => handleFeedback(booking.id)}
+                      >
+                        <FontAwesomeIcon icon={faComment} /> Feedback
+                      </button>
+                    ) : null
+                    }
+
                   </td>
                 </tr>
               ))}
@@ -818,62 +805,62 @@ const AccountPage = () => {
       )}
 
       {showFeedbackForm && (
-              <div class="feedback-modal">
-                <div class="feedback-form">
-                  {error && <p className="error">{error}</p>}
-                  {success && (
-                    <p className="success">Feedback đã được gửi thành công!</p>
-                  )}
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleFeedbackSubmit();
-                    }}
-                  >
-                    <div>
-                      <label>
-                        Nhận xét:
-                        <textarea
-                          value={text}
-                          onChange={(e) => setText(e.target.value)}
-                          placeholder="Nhập nhận xét của bạn"
-                          required
-                        ></textarea>
-                      </label>
-                    </div>
-                    <div>
-                      <label>
-                        Đánh giá sao:
-                        <select
-                          value={star || ""}
-                          onChange={(e) => setStar(e.target.value)}
-                          required
-                        >
-                          <option value="" disabled>
-                            Chọn số sao
-                          </option>
-                          <option value="1">1 Sao</option>
-                          <option value="2">2 Sao</option>
-                          <option value="3">3 Sao</option>
-                          <option value="4">4 Sao</option>
-                          <option value="5">5 Sao</option>
-                        </select>
-                      </label>
-                    </div>
-                    <button type="submit" className="submit-btn">
-                      Gửi Feedback
-                    </button>
-                    <button
-                      type="button"
-                      className="cancel-btn"
-                      onClick={() => setShowFeedbackForm(false)}
-                    >
-                      Hủy
-                    </button>
-                  </form>
-                </div>
-              </div>
+        <div class="feedback-modal">
+          <div class="feedback-form">
+            {error && <p className="error">{error}</p>}
+            {success && (
+              <p className="success">Feedback đã được gửi thành công!</p>
             )}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleFeedbackSubmit();
+              }}
+            >
+              <div>
+                <label>
+                  Nhận xét:
+                  <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Nhập nhận xét của bạn"
+                    required
+                  ></textarea>
+                </label>
+              </div>
+              <div>
+                <label>
+                  Đánh giá sao:
+                  <select
+                    value={star || ""}
+                    onChange={(e) => setStar(e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>
+                      Chọn số sao
+                    </option>
+                    <option value="1">1 Sao</option>
+                    <option value="2">2 Sao</option>
+                    <option value="3">3 Sao</option>
+                    <option value="4">4 Sao</option>
+                    <option value="5">5 Sao</option>
+                  </select>
+                </label>
+              </div>
+              <button type="submit" className="submit-btn">
+                Gửi Feedback
+              </button>
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => setShowFeedbackForm(false)}
+              >
+                Hủy
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

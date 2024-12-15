@@ -103,7 +103,7 @@ const MovieDetail = () => {
       <main className="movie-detail-main">
         <section className="movie-info" key={movie.id}>
           <div className="movie-poster">
-            <img src={image} alt={movie.title} />
+            <img src={movie.image} alt={movie.title} />
           </div>
           <div className="movie-description">
             <h1>{movie.title}</h1>
@@ -136,20 +136,6 @@ const MovieDetail = () => {
             ></iframe>
           </div>
         </section>
-        <section class="feedback-section">
-          {feedbacks.map((feedback) => (
-            <div>
-              <img src={feedback.booking?.imageCustomer} />
-              <h3>{feedback.booking.nameCustomer}</h3>
-              <p>{feedback.date}</p>
-              <p>{feedback.text}</p>
-              <p>
-                {feedback.star}
-                <FontAwesomeIcon icon={faStar} />
-              </p>
-            </div>
-          ))}
-        </section>
         <section className="showtime-section">
           <h2>LỊCH CHIẾU</h2>
           {Object.keys(showtime).length > 0 ? (
@@ -177,6 +163,35 @@ const MovieDetail = () => {
             </div>
           ) : (
             <p>Không có lịch chiếu cho phim này.</p>
+          )}
+        </section>
+        
+        {/* Feedback Section */}
+        <section className="feedback-section">
+          <h2>Bình luận</h2>
+          {feedbacks.length > 0 ? (
+            feedbacks.map((feedback) => (
+              <div key={feedback.id} className="feedback">
+                <p>
+                  <strong>{feedback.booking.nameCustomer}</strong>
+                </p>
+                <p className="feedback-text">{feedback.text}</p>
+                <p>
+                  <span>Đánh giá: </span>
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <i
+                      key={index}
+                      className={`fa-star ${feedback.star > index ? 'fas' : 'far'}`}
+                    ></i>
+                  ))}
+                </p>
+                <p>
+                  <em>{new Date(feedback.date).toLocaleDateString()}</em>
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>Chưa có bình luận.</p>
           )}
         </section>
       </main>

@@ -1,4 +1,4 @@
-/* Styles for Movies Management Component */
+Styles for Movies Management Component
 .movies-management {
   background-color: #f4f4f4;
   padding: 20px;
@@ -392,12 +392,242 @@
   border: none;
   cursor: pointer;
 }
-.fa-star, .fa-star-half-alt {
+.movies-management .fa-star, .fa-star-half-alt {
   color: #ffd700; /* Màu vàng cho sao đầy và nửa sao */
   margin-right: 5px; /* Khoảng cách giữa các sao */
   font-size: 18px; /* Kích thước sao */
 }
 
-.far.fa-star {
+.movies-management .far.fa-star {
   color: #ccc; /* Màu xám cho sao chưa đánh giá */
+}
+
+
+/* thêm  */
+/* Modal container */
+.movies-management .ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay background */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+/* Modal content */
+.movies-management .ReactModal__Content {
+  background-color: #fff;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px; /* Điều chỉnh chiều rộng tối đa */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow-y: auto;
+  max-height: 80vh; /* Đảm bảo modal không vượt quá 80% chiều cao màn hình */
+}
+
+/* Modal title */
+.movies-management .ReactModal__Content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form sections */
+.movies-management .ReactModal__Content div {
+  margin-bottom: 15px;
+}
+
+/* Labels */
+.movies-management .ReactModal__Content label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Input fields */
+.movies-management .ReactModal__Content input,
+.movies-management .ReactModal__Content select,
+.movies-management .ReactModal__Content textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #555;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+
+
+
+
+
+
+/* Input file */
+.movies-management .ReactModal__Content input[type="file"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Textarea */
+.movies-management .ReactModal__Content textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Buttons */
+.movies-management .ReactModal__Content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for buttons */
+.movies-management .ReactModal__Content button:hover {
+  background-color: #45a049;
+}
+
+/* Cancel button */
+.movies-management .ReactModal__Content button[type="button"] {
+  background-color: #f44336;
+  margin-left: 10px;
+}
+
+.movies-management .ReactModal__Content button[type="button"]:hover {
+  background-color: #e53935;
+}
+
+/* Close button (X) */
+.movies-management .ReactModal__Content .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+/* Close button hover */
+.movies-management .ReactModal__Content .close:hover {
+  color: #333;
+}
+/* Modal container (overlay) */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ khi mở modal */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+/* Modal content */
+.ReactModal__Content {
+  background-color: #fff;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px; /* Đảm bảo modal không rộng quá */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow-y: auto;
+  max-height: 80vh; /* Giới hạn chiều cao tối đa */
+  margin: 0 auto; /* Căn giữa modal theo chiều ngang */
+}
+
+/* Đảm bảo không có margin, padding ở body hoặc container cha */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Các yếu tố bên trong modal */
+.ReactModal__Content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Input fields */
+.ReactModal__Content input,
+.ReactModal__Content select,
+.ReactModal__Content textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #555;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+/* Các nút trong modal */
+.ReactModal__Content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.ReactModal__Content button:hover {
+  background-color: #45a049;
+}
+
+.ReactModal__Content button[type="button"] {
+  background-color: #28a745;
+  margin-left: 10px;
+}
+
+.ReactModal__Content button[type="button"]:hover {
+  background-color: #28a745;
+}
+
+
+.modal-buttons-container {
+  display: flex;
+  justify-content: center; /* Căn giữa các button theo chiều ngang */
+  gap: 10px; /* Khoảng cách giữa các button */
+  width: 100%; /* Căn chỉnh button ra toàn bộ chiều rộng container */
+}
+
+/* Input focus effect */
+.movies-management input:focus,
+.movies-management textarea:focus,
+.movies-management select:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Error message for missing fields */
+.movies-management input:invalid,
+.movies-management textarea:invalid,
+.movies-management select:invalid {
+  border-color: red;
 }

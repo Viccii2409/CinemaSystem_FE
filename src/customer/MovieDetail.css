@@ -204,3 +204,110 @@
   font-size: 0.9em;
   color: #555;
 }
+
+
+/* Phần bình luận */
+.feedback-section {
+  margin-top: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.feedback-section h2 {
+  font-size: 24px;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.feedback-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.feedback {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feedback p {
+  margin: 8px 0;
+}
+
+/* Tên người dùng */
+.feedback strong {
+  font-weight: bold;
+  color: #e66400;
+}
+
+/* Đánh giá */
+.feedback .rating {
+  margin-top: 10px;
+}
+
+.feedback .rating span {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #f39c12;
+}
+
+/* Ngày tháng */
+.feedback em {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Thông báo khi chưa có bình luận */
+.feedback-section p {
+  color: #0b0b0b;
+}
+
+/* Màu nền cho phần feedback khi có nhiều feedback */
+.feedback-section .feedback:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.fa-star {
+  color: #ffd700; /* Màu vàng cho sao đánh giá */
+  margin-right: 5px; /* Khoảng cách giữa các sao */
+  font-size: 18px; /* Kích thước sao */
+}
+.far.fa-star {
+  color: #ccc; /* Màu xám cho sao chưa đánh giá */
+}
+.fas.fa-star {
+  color: #ffd700; /* Màu vàng cho sao đã đánh giá */
+}
+
+
+/* Định dạng cho dropdown chứa thể loại */
+form select[multiple] {
+    height: 150px; /* Cho phép hiển thị nhiều lựa chọn */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #555;
+    box-sizing: border-box;
+    resize: none; /* Tắt khả năng kéo dài */
+}
+
+/* Thêm hiệu ứng hover cho các options */
+form select[multiple] option:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Khi chọn nhiều thể loại, thay đổi giao diện */
+form select[multiple] option:checked {
+    background-color: #007bff;
+    color: white;
+}
