@@ -128,14 +128,19 @@ export const addMovie = async (movie) => {
   }
 };
 
-export const editMovie = (id, movie) => {
-  return api
-    .put(`/movie/${id}`, movie)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error editMovie", error);
-      return null;
+export const editMovie = async (movie) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.post("/movie/update", movie, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const updateStatusMovie = (id) => {
@@ -159,7 +164,7 @@ export const deleteMovie = (id) => {
 };
 export const getFeedback = (movieId) => {
   return api
-    .get(`/feedback/public/${movieId}`)
+    .get(`/movie/public/feedback/${movieId}`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error getAllFeedback", error);
