@@ -33,6 +33,16 @@ export const getAllGenres = () => {
     });
 };
 
+export const getAllGenre = () => {
+  return api
+    .get(`/movie/genre`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error getAllGenres", error);
+      return null;
+    });
+};
+
 export const searchGenres = (name) => {
   return api
     .get(`/movie/genre/search?name=${name}`)
@@ -195,4 +205,168 @@ export const getAllLanguage = () => {
 // export const getMovieById = (id) => {
 //   return
 // }
+// Lấy danh sách tất cả các rạp và lọc các rạp có status = 1 (hoạt động)
+export const fetchActiveTheaters = () => {
+  return api.get('http://localhost:8080/api/theater/all')  // Lấy tất cả các rạp
+      .then(response => {
+          // Lọc các rạp có status = 1 (hoạt động)
+          const activeTheaters = response.data.filter(theater => theater.status === true);
+          return activeTheaters;  // Trả về danh sách các rạp hoạt động
+      })
+      .catch(error => {
+          console.error("Lỗi khi tải danh sách rạp:", error);
+          throw error;  // Xử lý lỗi nếu không tải được dữ liệu
+      })
+};
+
+// Lấy lịch chiếu từ backend
+export const fetchShowtimes = (date, theaterId) => {
+// Kiểm tra ngày và rạp trước khi gửi request
+if (!date || !theaterId) {
+console.error("Ngày và rạp cần được chọn.");
+throw new Error("Ngày và rạp cần được chọn.");
+}
+
+// Đảm bảo định dạng ngày hợp lệ (yyyy-MM-dd)
+const formattedDate = new Date(date).toISOString().split('T')[0];  // Định dạng ngày theo chuẩn yyyy-MM-dd
+
+return api.get(`/movie/showtimes?date=${formattedDate}&theaterId=${theaterId}`)
+.then(response => {
+  if (response.data) {
+    return response.data;  // Trả về dữ liệu nếu có
+  } else {
+    throw new Error("Không có dữ liệu lịch chiếu.");
+  }
+})
+.catch(error => {
+  console.error("Lỗi khi tải lịch chiếu:", error);
+  throw error;  // Xử lý lỗi
+});
+}
+
+
+// Cập nhật trạng thái của lịch chiếu
+export const toggleShowtimeStatus = (showtimeId) => {
+  const token = localStorage.getItem("token"); // Lấy token từ localStorage
+
+  return api.put(
+    `/movie/${showtimeId}/toggle-status`, 
+    {}, // Body của request (trống vì đây là toggle trạng thái)
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token vào header Authorization
+      },
+    }
+  )
+  .then(response => response.data)
+  .catch(error => {
+    console.error("Lỗi khi thay đổi trạng thái lịch chiếu:", error);
+    throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+  });
+};
+
+
+// Lấy token từ localStorage
+const token = localStorage.getItem("token");
+
+// Thêm lịch chiếu mới
+export const addShowtime = (showtimeData) => {
+  return api.post(
+    `/movie/schedule`,
+    showtimeData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token trực tiếp
+      },
+    }
+  )
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Lỗi khi thêm lịch chiếu:", error);
+      throw error;
+    });
+};
+
+// Cập nhật trạng thái tự động cho lịch chiếu
+export const updateShowtimeStatus = () => {
+  return api.put(
+    `/movie/status/update`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token trực tiếp
+      },
+    }
+  )
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Lỗi khi cập nhật trạng thái lịch chiếu:", error);
+      throw error;
+    });
+};
+
+// Cập nhật thông tin lịch chiếu
+export const updateShowtime = (showtimeId, showtimeData) => {
+  return api.put(
+    `/movie/showtime/update/${showtimeId}`,
+    showtimeData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token trực tiếp
+      },
+    }
+  )
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Lỗi khi cập nhật lịch chiếu:", error);
+      throw error;
+    });
+};
+
+// Hàm lấy thông tin chi tiết lịch chiếu theo ID
+export const fetchShowtimeById = (showtimeId) => {
+  if (!showtimeId) {
+    console.error("ID lịch chiếu không hợp lệ");
+    throw new Error("ID lịch chiếu không hợp lệ");
+  }
+
+  return api.get(
+    `/movie/showtime/${showtimeId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token trực tiếp
+      },
+    }
+  )
+    .then(response => {
+      console.log("Dữ liệu trả về từ API:", response); // Kiểm tra toàn bộ phản hồi
+      if (response.data) {
+        return response.data;  // Trả về dữ liệu lịch chiếu
+      } else {
+        throw new Error("Không tìm thấy lịch chiếu với ID: " + showtimeId);
+      }
+    })
+    .catch(error => {
+      console.error("Lỗi khi tải thông tin lịch chiếu:", error);
+      console.error(error.response ? error.response.data : error.message);
+      throw new Error(error.response ? error.response.data.message : "Lỗi không xác định");
+    });
+};
+
+// Xóa lịch chiếu theo ID
+export const deleteShowtime = (showtimeId) => {
+  return api.delete(
+    `/movie/showtime/${showtimeId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Thêm token trực tiếp
+      },
+    }
+  )
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Lỗi khi xóa lịch chiếu:", error);
+      throw error;
+    });
+};
 

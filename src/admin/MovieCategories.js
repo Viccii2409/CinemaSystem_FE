@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './MovieCategories.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faChevronLeft, faChevronRight, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { addGenre, deleteGenre, getAllGenres, hideGenre, updateGenre } from '../config/MovieConfig';
+import { addGenre, deleteGenre, getAllGenre, hideGenre, updateGenre } from '../config/MovieConfig';
 
 const MovieCategories = () => {
     const [genres, setGenres] = useState([]);
@@ -32,7 +32,7 @@ const MovieCategories = () => {
 
     const loadGenres = async () => {
         try {
-            const response = await getAllGenres();
+            const response = await getAllGenre();
             setGenres(response);
             setFilteredGenres(response); // Thiết lập danh sách ban đầu
         } catch (error) {
@@ -51,6 +51,7 @@ const MovieCategories = () => {
             await loadGenres();
             setShowAddModal(false);
             setNewGenre({ name: '', description: '' });
+            alert('Thêm thể loại thành công!');
         } catch (error) {
             console.error('Error adding genre:', error);
         }
@@ -68,15 +69,14 @@ const MovieCategories = () => {
         }
     };
 
-    const handleHideGenre = async (id) => {
-        try {
-            await hideGenre(id);
-            await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
-            alert("Chuyển trạng thái thành công!")
-        } catch (error) {
-            console.error('Error hiding genre:', error);
-        }
-    };
+    // const handleHideGenre = async (id) => {
+    //     try {
+    //         await hideGenre(id);
+    //         await loadGenres(); // Tải lại danh sách thể loại nhưng không thay đổi trang hiện tại
+    //     } catch (error) {
+    //         console.error('Error hiding genre:', error);
+    //     }
+    // };
 
     const handleViewGenre = (genre) => {
         setSelectedGenre(genre);
@@ -137,7 +137,7 @@ const MovieCategories = () => {
                         <th>STT</th>
                         <th>Tên thể loại</th>
                         <th>Mô tả</th>
-                        <th>Trạng thái</th>
+                        {/* <th>Trạng thái</th> */}
                         <th>Thao tác</th>
                     </tr>
                 </thead>
@@ -147,7 +147,7 @@ const MovieCategories = () => {
                             <td>{(currentPage - 1) * recordsPerPage + index + 1}</td>
                             <td>{genre.name}</td>
                             <td>{genre.description}</td>
-                            <td>
+                            {/* <td>
                                 <label className="switch">
                                     <input
                                         type="checkbox"
@@ -156,7 +156,7 @@ const MovieCategories = () => {
                                     />
                                     <span className="slider round"></span>
                                 </label>
-                            </td>
+                            </td> */}
                             <td>
                                 <button className="view-button" onClick={() => handleViewGenre(genre)}>
                                     <FontAwesomeIcon icon={faEye} />
