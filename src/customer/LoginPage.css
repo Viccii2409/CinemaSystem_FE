@@ -137,3 +137,23 @@
 .login-page .social-login-button:hover {
   opacity: 0.8;
 }
+
+
+/* Quên mật khẩu */
+.forgot-password-link {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #007bff; /* Xanh dương cho liên kết */
+  margin-top: 15px;
+  text-decoration: none;
+}
+
+.forgot-password-link:hover {
+  color: #0056b3; /* Xanh đậm hơn khi hover */
+  text-decoration: underline;
+}
+
+.forgot-password-link:active {
+  color: #003366; /* Xanh đậm khi nhấn */
+}

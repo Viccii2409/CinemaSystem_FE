@@ -49,6 +49,15 @@ export const getAllDiscount = async () => {
     })
 }
 
+export const getAllDiscountActive = async () => {
+    return api.get('/ticket/public/discount/active')
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error getAllDiscount", error);
+        return null;
+    })
+}
+
 export const getBasePrice = async () => {
     return api.get('/movie/baseprice')
         .then(response => response.data)
@@ -106,6 +115,24 @@ export const getBookingById = async (id) => {
     .then(response => response.data)
     .catch(error => {
         console.error("Error getBookingById", error);
+        return null;
+    })
+}
+
+export const searchBooking = async (barcode) => {
+    return api.get(`/ticket/booking/search/${barcode}`)
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error searchBooking", error);
+        return null;
+    })
+}
+
+export const exportBooking = async (id) => {
+    return api.get(`/ticket/booking/export/${id}`)
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error exportBooking", error);
         return null;
     })
 }

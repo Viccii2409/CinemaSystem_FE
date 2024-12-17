@@ -2,20 +2,50 @@
 .cinema-ticket-container {
   margin: auto;
   padding: 20px;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .cinema-ticket-container .theater-selection {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.cinema-ticket-container .theater-selection select {
+.cinema-ticket-container .theater-selection .input-search {
   padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
+  margin-right: 10px;
   border: 1px solid #ccc;
-  cursor: pointer;
+  border-radius: 4px;
+  width: 20em;
 }
+
+.cinema-ticket-container .theater-selection select {
+  width: 20%;
+}
+
+.cinema-ticket-container .theater-selection .search-button {
+  color: white;
+  border-radius: 10px;
+  width: 8em;
+  height: 2.5em;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 10px 20px 10px 0;
+  background-color: rgb(63, 93, 190);
+}
+
+.cinema-ticket-container .theater-selection .search-button:hover {
+  background-color: rgb(38, 54, 141);
+}
+
+
+
+
+
 
 .cinema-ticket-container .days-list-container {
   display: flex;
@@ -147,8 +177,14 @@
   background-color: #45a049;
 }
 
+
+
+
+
+
+
 /* Responsive */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .cinema-ticket-container .movies-list {
     flex-direction: column;
     align-items: center;
@@ -162,4 +198,4 @@
     flex-wrap: wrap;
     gap: 5px;
   }
-}
+} */

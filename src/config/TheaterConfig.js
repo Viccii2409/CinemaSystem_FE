@@ -3,12 +3,12 @@ import api from "../Api.js";
 
 
 export const getAllNameTheater = () => {
-  try {
-    return api.get('/theater/public/all');
-  } catch (error) {
+  return api.get('/theater/public/all')
+  .then(response => response.data)
+  .catch(error => {
     console.error("Error getAllNameTheater", error);
     return null;
-  }
+  })
 };
 
 export const deleteRoom = (id, roomid) => {
@@ -27,15 +27,24 @@ export const deleteTheater = (id) => {
   }
 };
 
-export const getTheater = () => api.get("/theater/all");
+export const getAllTheater = async () => {
+  return api.get("/theater/all")
+  .then(response => response.data)
+  .catch(error => {
+    console.error("Error getAllTheater", error);
+    return null;
+  })
+}
 
-export const getTheaterById = (id) => {
-  try {
-    return api.get(`/theater/public/${id}`);
-  } catch (error) {
+export const getTheaterById = async (id) => {
+  return api.get(`/theater/public/${id}`)
+  .then(response => response.data)
+  .catch(error => {
     console.error("Error get theater by id", error);
-  }
+    return null;
+  })
 };
+
 export const getTheaterExcept = (id) => {
   try {
     return api.get(`/theater/except/${id}`);
@@ -43,29 +52,24 @@ export const getTheaterExcept = (id) => {
     console.error("Error get theater by id", error);
   }
 };
-// export const getTheaterRoomDto = async () => {
-//     try {
-//         const response = await api.get('/theater/room');
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error get theaterroomdto", error);
-//         return null;  // Có thể trả về null hoặc xử lý khác nếu cần
-//     }
+
+// export const getTheaterRoomDto = () => {
+//   return api
+//     .get("/theater/room")
+//     .then((response) => response.data)
+//     .catch((error) => {
+//       console.error("Error get theaterroomdto", error);
+//       return null; // Có thể trả về null hoặc xử lý khác nếu cần
+//     });
 // };
 
-// Không cần async/await trong getTheaterById vì hàm chỉ trả về một Promise từ api.get().
-// Xử lý Promise: Khi gọi getTheaterById, bạn có thể xử lý kết quả với .then() và .catch(),
-// hoặc sử dụng await trong một hàm async.
-
-// Nếu bạn muốn sử dụng await, hãy chắc chắn rằng hàm của bạn là async
-
-export const getTheaterRoomDto = () => {
+export const getRoomByTheaterID = (id) => {
   return api
-    .get("/theater/room")
+    .get(`/theater/${id}/room`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error("Error get theaterroomdto", error);
-      return null; // Có thể trả về null hoặc xử lý khác nếu cần
+      console.error("Error getRoomByTheaterID", error);
+      return null;
     });
 };
 

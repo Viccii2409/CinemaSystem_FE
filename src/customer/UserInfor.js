@@ -3,7 +3,7 @@ import "./UserInfor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faCreditCard, faUserCircle, faEdit, faComment } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from 'react-router-dom';
-import { addGenreFauvorite, changePassword, getCustomerById, getUserById, updateImage, updateUser, addFeedback } from "../config/UserConfig";
+import { addGenreFauvorite, changePassword, getUserById, updateImage, updateUser, addFeedback } from "../config/UserConfig";
 import { creatPayOnline, getBookingById } from "../config/TicketConfig";
 import { AuthContext } from '../context/AuthContext';
 import BarcodeGenerator from "../BarcodeGenerator";
@@ -38,8 +38,7 @@ const AccountPage = () => {
       try {
         const response = await getUserById(user.id);
         console.log(response);
-        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-        console.log(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'));
+        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE').reverse());
         if (response) {
           const revenue = response.bookings.reduce((total, entry) => {
             if (entry.statusPayment === "confirmed") {
@@ -61,10 +60,6 @@ const AccountPage = () => {
 
     fetchUserInfor();
   }, [user, navigate]);
-
-  useEffect(() => {
-    console.log(selectedGenres);
-  }, [selectedGenres]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -214,6 +209,7 @@ const AccountPage = () => {
   const [success, setSuccess] = useState(false);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  
   const handleFeedback = (bookingId) => {
     setSelectedBooking({ bookingId });
     setShowFeedbackForm(true);
@@ -242,6 +238,32 @@ const AccountPage = () => {
     } catch (error) {
       setError(error.message || "Có lỗi xảy ra.");
     }
+  };
+
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+  const totalPages = Math.ceil(bookingCustomer.length / postsPerPage); //  Tính toán số lượng trang
+  // Cắt mảng nhân viên theo trang
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentBookingCustomer = bookingCustomer.slice(indexOfFirstPost, indexOfLastPost);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -337,10 +359,10 @@ const AccountPage = () => {
                 <input type="email"
                   value={currentUser.email}
                   className="modal-input"
-                  onChange={(e) =>
-                    setCurrentUser({ ...currentUser, email: e.target.value })
-                  }
-                  required />
+                  // onChange={(e) =>
+                  //   setCurrentUser({ ...currentUser, email: e.target.value })
+                  // }
+                  readOnly />
               </div>
 
               <div className="form-group">
@@ -414,7 +436,7 @@ const AccountPage = () => {
         <p>Chưa đăng nhập. Vui lòng đăng nhập để xem thông tin.</p>
       )}
 
-      {bookingCustomer && bookingCustomer.length > 0 && (
+      {currentBookingCustomer && currentBookingCustomer.length > 0 && (
         <div className="transaction-history">
           <h3>Lịch sử giao dịch</h3>
           <table className="table">
@@ -424,17 +446,19 @@ const AccountPage = () => {
                 <th>Ngày giao dịch</th>
                 <th>Phim</th>
                 <th>Số tiền</th>
-                <th>Trạng thái</th>
+                <th>Trạng thái vé </th>
+                <th>Trạng thái thanh toán</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              {bookingCustomer?.map((booking, index) => (
+              {currentBookingCustomer?.map((booking, index) => (
                 <tr key={booking.id}>
                   <td>{index + 1}</td>
                   <td>{booking.dateBooking}</td>
                   <td>{booking.nameMovie}</td>
                   <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                  <td>{booking.statusBooking ? ("Còn hiệu lực") : ("Đã hết hạn")}</td>
                   <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
                     (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
                       (booking.statusPayment === "expired" ? "Đã hủy" : "")
@@ -443,6 +467,13 @@ const AccountPage = () => {
                     <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
                       <FontAwesomeIcon icon={faEye} /> Xem
                     </button>
+
+                    {booking.statusPayment === "pending" && (
+                      <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
+                        <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
+                      </button>
+
+                    )}
 
                     {booking.statusPayment === "confirmed" && booking.feedback === null &&
                       new Date(`${booking.dateShowtime}T${booking.endTime}`).getTime() < new Date().getTime() ? (
@@ -460,6 +491,36 @@ const AccountPage = () => {
               ))}
             </tbody>
           </table>
+
+
+
+          <div className="pagination">
+            <button onClick={prevPage} disabled={currentPage === 1}>
+              Prev
+            </button>
+            {[...Array(totalPages)].map((_, index) => {
+              const startPage = Math.max(currentPage - 2, 0); 
+              const endPage = Math.min(currentPage + 2, totalPages-1); 
+
+              if (index >= startPage && index <= endPage) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => goToPage(index + 1)}
+                    className={currentPage === index + 1 ? 'active' : ''}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              }
+              return null;
+            })}
+
+            <button onClick={nextPage} disabled={currentPage === totalPages}>
+              Next
+            </button>
+          </div>
+
         </div>
       )}
 
@@ -520,7 +581,6 @@ const AccountPage = () => {
               </div>
             </form>
           </div>
-
         </>
       )}
 

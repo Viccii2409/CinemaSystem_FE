@@ -1,78 +1,172 @@
-import React, { useState } from 'react';
-import './PasswordRecovery.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext,  useEffect,  useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './PasswordRecovery.css'; // Đảm bảo bạn đã thêm CSS tùy chỉnh
+import { changePasswordCustomer, forgotPassword } from '../config/UserConfig';
+import { AuthContext } from '../context/AuthContext';
 
 const PasswordRecovery = ({ onClose }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [captcha, setCaptcha] = useState('53860'); // Example captcha
-  const [captchaInput, setCaptchaInput] = useState('');
+  const [code, setCode] = useState('');
+  const [verifyCode, setVerifyCode] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
+  const [customer, setCustomer] = useState([]);
+    const { handleLogin } = useContext(AuthContext);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleCaptchaInputChange = (e) => {
-    setCaptchaInput(e.target.value);
-  };
-
-  const handleRefreshCaptcha = () => {
-    // Generate a new captcha (for simplicity, using a fixed value here)
-    setCaptcha(Math.floor(10000 + Math.random() * 90000).toString());
-  };
-
-  const handleSubmit = (e) => {
+  // Hàm xử lý khi submit form
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle password recovery logic here
-    console.log('Email:', email);
-    console.log('Captcha Input:', captchaInput);
+    // Kiểm tra email hợp lệ
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError('Email không hợp lệ');
+      return;
+    }
+    const response_check = await forgotPassword(email);
+    if (response_check) {
+      setCode(response_check);
+      setSuccess(true);
+      setError('');
+      // setTimeout(() => {
+      //   setSuccess(true);
+      //   setError('');
+      // }, 1000);
+    }
+    else {
+      setError("Lỗi gửi email phục hồi mật khẩu!");
+      return;
+    }
   };
+
+  const handleCodeSubmit = (e) => {
+    e.preventDefault();
+    if (code !== parseInt(verifyCode)) {
+      alert("Mã xác minh không trùng khớp!");
+      return;
+    }
+    setCustomer({username : email, password : "", password_2: ""});
+    setChangePassword(true);
+    setError('');
+  }
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    if(customer.password !== customer.password_2) {
+      alert("Mật khẩu không trùng khớp!");
+      return;
+    }
+    const token = await changePasswordCustomer(customer);
+    if(token) {
+      alert("Thay đổi mật khẩu thành công!");
+      const response = await handleLogin(token);
+      if (response.statusEmployee) {
+        navigate("/admin/account");
+      }
+      else {
+        if (response.countGenre != null && response.countGenre === 0) {
+          navigate("/genre-favourite");
+        }
+        else {
+          navigate("/home");
+        }
+      }
+    }
+  }
 
   return (
-    <div className="password-recovery-overlay">
-      <div className="password-recovery-modal">
-        <button className="close-button" onClick={onClose}>&times;</button>
-        <h2>Lấy lại mật khẩu</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">
-              <FontAwesomeIcon icon={faEnvelope} /> Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div className="form-group captcha-group">
-            <input
-              type="text"
-              className="captcha-display"
-              value={captcha}
-              readOnly
-            />
-            <button type="button" className="refresh-captcha" onClick={handleRefreshCaptcha}>
-              <FontAwesomeIcon icon={faSyncAlt} />
-            </button>
-            <input
-              type="text"
-              className="captcha-input"
-              value={captchaInput}
-              onChange={handleCaptchaInputChange}
-              placeholder="Mã xác thực"
-              required
-            />
-          </div>
-          <button type="submit" className="confirm-button">Xác nhận</button>
-        </form>
+    <div className="password-recovery-container">
+      <div className="password-recovery-form">
+
+        {success ? (
+          !changePassword ? (
+            <div className="success-message">
+              <h2>Xác minh tài khoản</h2>
+              <p>Chúng tôi đã gửi email phục hồi mật khẩu của bạn. Vui lòng kiểm tra hộp thư đến.</p>
+              <form onSubmit={handleCodeSubmit}>
+                <div className="form-group">
+                  <label htmlFor="verifyCode">Mã xác minh</label>
+                  <input
+                    type="text"
+                    id="verifyCode"
+                    value={verifyCode}
+                    onChange={(e) => setVerifyCode(e.target.value)}
+                    placeholder="Nhập mã xác minh"
+                    required
+                  />
+                </div>
+
+                {error && <p className="error-message">{error}</p>}
+
+                <button type="submit" className="submit-button">Gửi xác nhận</button>
+
+                <div className="go-back">
+                  <button type="button" onClick={onClose}>Quay lại trang đăng nhập</button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <div className="change-password">
+              <h2>Thay đổi mật khẩu</h2>
+              <form onSubmit={handlePasswordChange}>
+                <div className="form-group">
+                  <label htmlFor="newPassword">Mật khẩu mới</label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    value={customer.password}
+                    onChange={(e) => setCustomer({...customer, password: e.target.value})}
+                    placeholder="Nhập mật khẩu mới"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    value={customer.password_2}
+                    onChange={(e) => setCustomer({...customer, password_2: e.target.value})}
+                    placeholder="Xác nhận mật khẩu mới"
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="submit-button">Thay đổi mật khẩu</button>
+              </form>
+            </div>
+          )
+        ) : (
+          <>
+            <h2>Quên Mật Khẩu</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Nhập email của bạn"
+                  required
+                />
+              </div>
+
+              {error && <p className="error-message">{error}</p>}
+
+              <button type="submit" className="submit-button">Gửi yêu cầu phục hồi</button>
+
+              <div className="go-back">
+                <button type="button" onClick={onClose}>Quay lại trang đăng nhập</button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
 };
-
 
 export default PasswordRecovery;

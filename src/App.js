@@ -28,6 +28,7 @@ import TheaterDetails from "./customer/TheaterDetails";
 import HomePage from "./customer/HomePage";
 import LoginPage from "./customer/LoginPage";
 import RegisterPage from "./customer/RegisterPage";
+import VerificationSuccess from "./customer/VerificationSuccess";
 import GenreFavourite from "./customer/GenreFavourite";
 import Footer from "./customer/Footer";
 import CinemaSystem from "./customer/CinemaSystem";
@@ -77,6 +78,7 @@ function CustomerLayout() {
             <Route path="home" element={<HomePage />} />
             <Route path="login-page" element={<LoginPage />} />
             <Route path="register-page" element={<RegisterPage />} />
+            <Route path="verifyaccount" element={<VerificationSuccess />} />
             <Route path="genre-favourite" element={<GenreFavourite />} />
             <Route path="seat-selection" element={<SeatSelection />} />
             <Route path="view-booking" element={<ViewBooking />} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import '../admin/CinemaTicket_2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TheaterContext } from "../context/TheaterContext";
-import { addPayOnline, addSelectedSeat, getAllDiscount, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
+import { addPayOnline, addSelectedSeat, getAllDiscount, getAllDiscountActive, getSelectedSeatByShowtime, getShowtimeByID, getTypeCustomer, updateSelectedSeat } from '../config/TicketConfig';
 import moment from 'moment-timezone';
 // import { getCustomerById } from '../config/UserConfig';
 import { AuthContext } from '../context/AuthContext';
@@ -32,6 +32,7 @@ function SeatSelection() {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [paymentOnlineData, setPaymentOnlineData] = useState(null);
+  const [customerInfor, setCustomerInfor] = useState() ;
 
 
 
@@ -54,13 +55,14 @@ function SeatSelection() {
         navigate('/login-page');
         return;
       }
+      setCustomerInfor({name : user.name, email: user.email, phone:user.phone});
       try {
         setSelectedTheater(theaterid);
 
-        const response_discount = await getAllDiscount();
-        const discountActive = response_discount.filter(entry => entry.status);
+        const response_discount = await getAllDiscountActive();
+        // const discountActive = response_discount.filter(entry => entry.status);
         const customerDiscountIds = user.discounts.map(discount => discount.id);
-        const discountNotInCustomer = discountActive.filter(
+        const discountNotInCustomer = response_discount.filter(
           discount => !customerDiscountIds.includes(discount.id)
         );
         setDiscounts(discountNotInCustomer);
@@ -342,10 +344,33 @@ function SeatSelection() {
       if (seatGroups['double-seat'].length > 0) {
         initialData[5][3] = seatGroups['double-seat'].length;
       }
+      
+      const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+    
+      // Hàm kiểm tra định dạng số điện thoại
+      const validatePhoneNumber = (phone) => {
+        const phoneRegex = /^[0-9]{9,11}$/; // Số điện thoại có từ 9 đến 11 chữ số
+        return phoneRegex.test(phone);
+      };
+
+      if(customerInfor.name.trim() === "" && customerInfor.email.trim() === "" && customerInfor.phone.trim() === "") {
+        alert("Bạn chưa nhập thông tin cá nhân");
+        return;
+      }
+      if(!validateEmail(customerInfor.email.trim()) && !validatePhoneNumber(customerInfor.phone.trim())) {
+        alert("Điền không đúng định dạng!");
+        return;
+      }
 
       const paymentOnline = {
         showtimeid: showtime.id,
         userid: user.id,
+        nameCustomer : customerInfor.name,
+        emailCustomer : customerInfor.email,
+        phoneCustomer : customerInfor.phone,
         discountid: discount.id,
         totalPrice: totalPrice,
         discountPrice: discountPrice,
@@ -495,8 +520,9 @@ function SeatSelection() {
                     type="text"
                     name="reducedValue"
                     className="modal-input"
-                    value={user.name}
-                    readOnly
+                    value={customerInfor.name}
+                    onChange={(e) => setCustomerInfor({...customerInfor, name: e.target.value})}
+                    required
                   />
                   <br />
                 </label>
@@ -505,11 +531,12 @@ function SeatSelection() {
                 <label>
                   <strong>Email:</strong>
                   <input
-                    type="text"
+                    type="email"
                     name="discountCode"
                     className="modal-input"
-                    value={user.email}
-                    readOnly
+                    value={customerInfor.email}
+                    onChange={(e) => setCustomerInfor({...customerInfor, email: e.target.value})}
+                    required
                   />
                   <br />
                 </label>
@@ -521,8 +548,9 @@ function SeatSelection() {
                     type="text"
                     name="discountCode"
                     className="modal-input"
-                    value={user.phone}
-                    readOnly
+                    value={customerInfor.phone}
+                    onChange={(e) => setCustomerInfor({...customerInfor, phone: e.target.value})}
+                    required
                   />
                   <br />
                 </label>

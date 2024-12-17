@@ -1,33 +1,37 @@
 
-import React, { useState, useEffect } from 'react'; // Thêm useEffect
+import React, { useState, useEffect } from 'react'; 
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater, getTheater } from '../config/TheaterConfig.js';
+import { updateStatusTheater, addTheater, getTheaterById, editTheater, deleteTheater, getTheater, getAllTheater } from '../config/TheaterConfig.js';
 
 
 const CinemaManagement = () => {
-  const [theaters, setTheaters] = useState([]); // Khởi tạo state cinemas để lưu dữ liệu từ API
+  const [theaters, setTheaters] = useState([]); 
+  const [formDataState, setFormDataState] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
-  // Hàm gọi API lấy danh sách rạp
   useEffect(() => {
     const fetchTheater = async () => {
-      try {
-        const response = await getTheater();
-        setTheaters(response.data); // Lưu dữ liệu vào state cinemas
-      } catch (error) {
-        console.error("Lỗi khi lấy danh sách rạp:", error);
+      const response = await getAllTheater();
+      if(response) {
+        setTheaters(response);
+      }
+      else {
+        console.error("Lỗi khi lấy danh sách rạp:");
+        return;
       }
     };
 
-    fetchTheater(); // Gọi hàm fetchTheater khi component được render lần đầu
-  }, []); // Đóng ngoặc vuông để hoàn tất dependency array và gọi chỉ khi component render lần đầu
+    fetchTheater(); 
+  }, []); 
 
   const handleStatusChange = async (id, currentStatus) => {
     try {
-      const updatedStatus = !currentStatus; // Đảo ngược trạng thái hiện tại
-      await updateStatusTheater(id); // Gọi API PUT để cập nhật trạng thái
-      // Cập nhật lại danh sách theaters sau khi trạng thái đã thay đổi thành công
+      const updatedStatus = !currentStatus; 
+      await updateStatusTheater(id); 
       setTheaters(
         theaters.map((theater) =>
           theater.id === id ? { ...theater, status: updatedStatus } : theater
@@ -38,306 +42,82 @@ const CinemaManagement = () => {
     }
   };
 
-  const [formDataState, setFormDataState] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    ward: "",
-    district: "",
-    city: "",
-    description: "",
-    image: null,
-    quantityRoom: "",
-    status: "",
-    id: "",
-  });
-
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
 
   const handleAddCinema = () => {
     setShowAddModal(true);
   };
 
   const handleViewCinema = async (id) => {
-    if (!id) {
-      console.error("ID không hợp lệ:", id);
-      return;
-    }
-
-    try {
-      const response = await getTheaterById(id);
-      const theaterData = response.data;
-
-      if (theaterData) {
-        // Kiểm tra và trích xuất các giá trị, đảm bảo các giá trị lồng không bị null hoặc undefined
-        console.log(theaterData);
-        setFormDataState({
-          name: theaterData.name || "",
-          phone: theaterData.phone || "",
-          email: theaterData.email || "",
-          address: theaterData.address?.addressDetail || "",
-          ward: theaterData.address?.ward?.name || "", // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
-          district: theaterData.address?.district?.name || "",
-          city: theaterData.address?.city?.name || "",
-          description: theaterData.description || "",
-          image: theaterData.image || "",
-          quantityRoom: theaterData.quantityRoom || "",
-          status: theaterData.status || "",
-          id: theaterData.id || "",
-        });
-
-        setShowViewModal(true);
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Lỗi từ server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Không nhận được phản hồi từ server:", error.request);
-      } else {
-        console.error("Lỗi khi thiết lập yêu cầu:", error.message);
-      }
+    const response = await getTheaterById(id);
+    if (response) {
+      setFormDataState(response);
+      setShowViewModal(true);
     }
   };
 
   const handleEditCinema = async (id) => {
-    if (!id) {
-      console.error("ID không hợp lệ:", id);
-      return;
-    }
-
-    try {
-      const response = await getTheaterById(id);
-      const theaterData = response.data;
-
-      if (theaterData) {
-        // Kiểm tra và trích xuất các giá trị, đảm bảo các giá trị lồng không bị null hoặc undefined
-        console.log(theaterData);
-        console.log(theaterData.addressDetail);
-        setFormDataState({
-          name: theaterData.name || "",
-          phone: theaterData.phone || "",
-          email: theaterData.email || "",
-          address: theaterData.address?.addressDetail || "",
-          ward: theaterData.address?.ward?.name || "", // Sử dụng optional chaining để tránh lỗi khi address hoặc ward là null/undefined
-          district: theaterData.address?.district?.name || "",
-          city: theaterData.address?.city?.name || "",
-          description: theaterData.description || "",
-          image: theaterData.image || "",
-          quantityRoom: theaterData.quantityRoom || "",
-          status: theaterData.status || "",
-          id: theaterData.id || "",
-        });
-
-        setShowEditModal(true);
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Lỗi từ server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Không nhận được phản hồi từ server:", error.request);
-      } else {
-        console.error("Lỗi khi thiết lập yêu cầu:", error.message);
-      }
+    const response = await getTheaterById(id);
+    if (response) {
+      setFormDataState(response);
+      setShowEditModal(true);
     }
   };
 
   const handleDeleteCinema = async (id) => {
     const confirmed = window.confirm("Bạn có chắc muốn xóa phòng không?");
     if (confirmed) {
-      await deleteTheater(id);
-      setTheaters(prevTheaters => prevTheaters.filter(theater => theater.id !== parseInt(id)));
-      alert("Phòng đã được xóa thành công.");
+      const response = await deleteTheater(id);
+      if(response) {
+        setTheaters(prevTheaters => prevTheaters.filter(theater => theater.id !== parseInt(id)));
+        alert("Phòng đã được xóa thành công.");
+        return;
+      }
+      else {
+        alert("Xóa phòng thất bại.");
+        return;
+      }
     } else {
       alert("Hủy xóa phòng.");
     }
   }
 
-
-
   const handleCloseModal = () => {
-    setFormDataState({
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
-      commune: "",
-      district: "",
-      city: "",
-      description: "",
-      image: null,
-      quantityRoom: "",
-      status: "",
-      id: "",
-    });
+    setFormDataState([]);
     setShowAddModal(false);
     setShowViewModal(false);
     setShowEditModal(false);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormDataState({
-      ...formDataState,
-      [name]: value,
-    });
-  };
-
-  const handleFileChange = (e) => {
-    setFormDataState({
-      ...formDataState,
-      image: e.target.files[0],
-    });
-  };
-
-  const validateFormData = (data) => {
-    let check = true;
-
-    // Kiểm tra tên rạp (name)
-    if (!data.name || data.name.trim() === "") {
-      check = false;
-    }
-
-    // Kiểm tra số điện thoại (phone)
-    if (!data.phone || data.phone.trim() === "") {
-      check = false;
-    } else if (!validatePhoneNumber(data.phone)) {
-      alert("Số điện thoại không hợp lệ. Vui lòng nhập từ 9 đến 11 chữ số.");
-      return false;
-    }
-
-    // Kiểm tra email (email)
-    if (!data.email || data.email.trim() === "") {
-      check = false;
-    } else if (!validateEmail(data.email)) {
-      alert("Email không hợp lệ. Vui lòng nhập đúng định dạng email.");
-      return false;
-    }
-
-    // Kiểm tra địa chỉ chi tiết (address)
-    if (!data.address || data.address.trim() === "") {
-      check = false;
-    }
-
-    // Kiểm tra xã (ward)
-    if (!data.ward || data.ward.trim() === "") {
-      check = false;
-    }
-
-    // Kiểm tra huyện (district)
-    if (!data.district || data.district.trim() === "") {
-      check = false;
-    }
-
-    // Kiểm tra thành phố (city)
-    if (!data.city || data.city.trim() === "") {
-      check = false;
-    }
-
-    if (!data.image) {
-      check = false;
-    }
-
-    if (!check) {
-      alert("Vui lòng điền đầy đủ thông tin.");
-      return false;
-    }
-    return true;
-  };
-
-  // Hàm kiểm tra định dạng email
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  // Hàm kiểm tra định dạng số điện thoại
-  const validatePhoneNumber = (phone) => {
-    const phoneRegex = /^[0-9]{9,11}$/; // Số điện thoại có từ 9 đến 11 chữ số
-    return phoneRegex.test(phone);
-  };
-
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (!validateFormData(formDataState)) {
+    const newTheater = await addTheater(formDataState);
+      if(newTheater) {
+        setTheaters((prevList) => [...prevList, newTheater]);
+        handleCloseModal();
+        alert("Thêm rạp thành công!");
+      }
+      else {
+        alert("Thêm rạp thất bạibại!");
         return;
       }
-      const newTheater = await addTheater(formDataState);
-
-      // Sau khi thêm thành công có thể thêm hành động khác (đóng modal, thông báo)
-      setTheaters((prevList) => [...prevList, newTheater]);
-
-      // Xóa form sau khi thành công (reset lại state của form)
-      setFormDataState({
-        name: "",
-        phone: "",
-        email: "",
-        address: "",
-        commune: "",
-        district: "",
-        city: "",
-        description: "",
-        image: null,
-        quantityRoom: "",
-        status: "",
-        id: "",
-      });
-
-      handleCloseModal();
-      alert("Thêm rạp thành công!");
-    } catch (error) {
-      console.error("Lỗi khi thêm rạp:", error);
-      // Xử lý lỗi tại đây (hiển thị thông báo lỗi cho người dùng)
-    }
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (!validateFormData(formDataState)) {
+    const updatedTheater = await editTheater(formDataState);
+      if(updatedTheater) {
+        setTheaters((prevList) =>
+          prevList.map((theater) =>
+            theater.id === updatedTheater.id ? updatedTheater : theater
+          )
+        );
+        handleCloseModal();
+        alert("Sửa rạp thành công!");
+      }
+      else {
+        alert("Sửa rạp thất bại!");
         return;
       }
-      const updatedTheater = await editTheater(formDataState);
-
-      setTheaters((prevList) =>
-        prevList.map((theater) =>
-          theater.id === updatedTheater.id ? updatedTheater : theater
-        )
-      );
-
-      // Xóa form sau khi thành công (reset lại state của form)
-      setFormDataState({
-        name: "",
-        phone: "",
-        email: "",
-        address: "",
-        commune: "",
-        district: "",
-        city: "",
-        description: "",
-        image: null,
-        quantityRoom: "",
-        status: "",
-        id: "",
-      });
-
-      handleCloseModal();
-      alert("Sửa rạp thành công!");
-    } catch (error) {
-      console.error("Lỗi khi sửa rạp:", error);
-      // Xử lý lỗi tại đây (hiển thị thông báo lỗi cho người dùng)
-    }
   };
 
   return (
@@ -381,9 +161,9 @@ const CinemaManagement = () => {
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
                   {theater.quantityRoom === 0 && (
-                  <button className="delete-button" onClick={() => handleDeleteCinema(theater.id)}>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
+                    <button className="delete-button" onClick={() => handleDeleteCinema(theater.id)}>
+                      <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
                   )}
                 </td>
               </tr>
@@ -413,7 +193,8 @@ const CinemaManagement = () => {
                         name="name"
                         className="modal-input"
                         value={formDataState.name}
-                        onChange={handleChange}
+                        onChange={(e) => setFormDataState({ ...formDataState, name: e.target.value.toUpperCase() })}
+                        required
                       />
                       <br />
                     </label>
@@ -422,11 +203,12 @@ const CinemaManagement = () => {
                     <label>
                       <strong>Số điện thoại:</strong>
                       <input
-                        type="text"
+                        type="phone"
                         name="phone"
                         className="modal-input"
                         value={formDataState.phone}
-                        onChange={handleChange}
+                        onChange={(e) => setFormDataState({ ...formDataState, phone: e.target.value })}
+                        required
                       />
                       <br />
                     </label>
@@ -439,11 +221,12 @@ const CinemaManagement = () => {
                   <label>
                     <strong>Email:</strong>
                     <input
-                      type="text"
+                      type="email"
                       name="email"
                       className="modal-input"
                       value={formDataState.email}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, email: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -455,7 +238,8 @@ const CinemaManagement = () => {
                       type="file"
                       name="image"
                       className="modal-input"
-                      onChange={handleFileChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, image: e.target.files[0] })}
+                      required
                     />
                     <br />
                   </label>
@@ -471,7 +255,8 @@ const CinemaManagement = () => {
                       name="address"
                       className="modal-input"
                       value={formDataState.address}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, address: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -484,7 +269,8 @@ const CinemaManagement = () => {
                       name="ward"
                       className="modal-input"
                       value={formDataState.ward}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, ward: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -500,7 +286,8 @@ const CinemaManagement = () => {
                       name="district"
                       className="modal-input"
                       value={formDataState.district}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, district: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -513,7 +300,8 @@ const CinemaManagement = () => {
                       name="city"
                       className="modal-input"
                       value={formDataState.city}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, city: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -528,7 +316,7 @@ const CinemaManagement = () => {
                     className="modal-input"
                     rows="10"
                     value={formDataState.description}
-                    onChange={handleChange}
+                    onChange={(e) => setFormDataState({ ...formDataState, description: e.target.value })}
                   ></textarea>
                   <br />
                 </label>
@@ -741,7 +529,8 @@ const CinemaManagement = () => {
                         name="name"
                         className="modal-input"
                         value={formDataState.name}
-                        onChange={handleChange}
+                        onChange={(e) => setFormDataState({ ...formDataState, name: e.target.value.toUpperCase() })}
+                        required
                       />
                       <br />
                     </label>
@@ -754,7 +543,8 @@ const CinemaManagement = () => {
                         name="phone"
                         className="modal-input"
                         value={formDataState.phone}
-                        onChange={handleChange}
+                        onChange={(e) => setFormDataState({ ...formDataState, phone: e.target.value })}
+                        required
                       />
                       <br />
                     </label>
@@ -771,7 +561,8 @@ const CinemaManagement = () => {
                       name="email"
                       className="modal-input"
                       value={formDataState.email}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({ ...formDataState, email: e.target.value })}
+                      required
                     />
                     <br />
                   </label>
@@ -781,7 +572,12 @@ const CinemaManagement = () => {
                     <strong>Hình ảnh:</strong><br />
 
                     <img src={formDataState.image} alt="Theater" className="modal-image_2" />
-                    <input type="file" name="image" className='fileImage' onChange={handleFileChange} /><br />
+                    <input
+                      type="file"
+                      name="image"
+                      className='fileImage'
+                      onChange={(e) => setFormDataState({ ...formDataState, image: e.target.files[0] })}
+                    /><br />
                   </label>
                 </div>
               </div>
@@ -795,7 +591,8 @@ const CinemaManagement = () => {
                       name="address"
                       className="modal-input"
                       value={formDataState.address}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({...formDataState, address : e.target.value})}
+                      required
                     />
                     <br />
                   </label>
@@ -808,7 +605,8 @@ const CinemaManagement = () => {
                       name="ward"
                       className="modal-input"
                       value={formDataState.ward}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({...formDataState, ward : e.target.value})}
+                      required
                     />
                     <br />
                   </label>
@@ -824,7 +622,8 @@ const CinemaManagement = () => {
                       name="district"
                       className="modal-input"
                       value={formDataState.district}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({...formDataState, district : e.target.value})}
+                      required
                     />
                     <br />
                   </label>
@@ -837,7 +636,8 @@ const CinemaManagement = () => {
                       name="city"
                       className="modal-input"
                       value={formDataState.city}
-                      onChange={handleChange}
+                      onChange={(e) => setFormDataState({...formDataState, city : e.target.value})}
+                      required
                     />
                     <br />
                   </label>
@@ -852,7 +652,7 @@ const CinemaManagement = () => {
                     className="modal-input"
                     rows="10"
                     value={formDataState.description}
-                    onChange={handleChange}
+                    onChange={(e) => setFormDataState({...formDataState, description : e.target.value})}
                   ></textarea>
                   <br />
                 </label>
