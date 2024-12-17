@@ -18,6 +18,7 @@ import {
     getAllLanguage,
     getAllMovies,
     getMovieById,
+    updateStatusMovie,
     getMovieDetails
 } from "../config/MovieConfig";
 import axios from 'axios';
@@ -80,20 +81,26 @@ const Movies = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await getAllMovies();
-            // const normalizedMovies = response.map((movie) => ({
-            //     ...movie,
-            //     genre: Array.isArray(movie.genre) ? movie.genre : [], // Normalize genre
-            // }));
-            setMovies(response);
-            console.log(response);
-            setFilteredMovies(response);
-            setLoading(false);
+            setLoading(true); // Bật trạng thái loading trước khi fetch
+            const response = await getAllMovies(); // Gọi API lấy danh sách phim
+            if (Array.isArray(response)) { 
+                // Kiểm tra nếu response là mảng
+                setMovies(response);
+                setFilteredMovies(response);
+            } else {
+                console.error("Response không phải là mảng:", response);
+            }
         } catch (error) {
             console.error("Error fetching movies:", error);
-            setLoading(false);
+        } finally {
+            setLoading(false); // Tắt trạng thái loading dù thành công hay lỗi
         }
     };
+
+    // useEffect để gọi fetchMovies khi component được mount
+    useEffect(() => {
+        fetchMovies();
+    }, []);
 
     const fetchGenres = async () => {
         try {
@@ -254,18 +261,13 @@ const Movies = () => {
 
         }
     };
-
     useEffect(() => {
         console.log(movies);
     }, [movies]);
 
-
-
-
     // Đổi trạng thái phim
-    const updateStatusMovie = async (id) => {
+    const updateStatusOfMovie = async (id) => {
         try {
-
             await updateStatusMovie(id);
             fetchMovies();
         } catch (error) {
@@ -274,18 +276,6 @@ const Movies = () => {
         }
     };
 
-
-    // Sửa phim
-    // Mở modal chỉnh sửa
-    // const handleOpenEditModal = (movieId) => {
-    //     const movieToEdit = movies.find((movie) => movie.id === movieId);
-    //     if (movieToEdit) {
-    //         setSelectedMovie(movieToEdit);
-    //         setIsEditModalOpen(true);
-    //     } else {
-    //         handleEditMovie(movieId);
-    //     }
-    // };
 
     // Lấy thông tin chi tiết phim
     const handleEditMovie = async (movieId) => {
@@ -665,7 +655,7 @@ const Movies = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={movie.status}
-                                                onChange={() => updateStatusMovie(movie.id)}
+                                                onChange={() => updateStatusOfMovie(movie.id)}
                                             />
                                             <span className="slider round"></span>
                                         </label>

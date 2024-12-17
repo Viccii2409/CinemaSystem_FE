@@ -2,34 +2,32 @@ import React, { useEffect, useState } from "react";
 import "./MovieDetail.css";
 import { useLocation } from "react-router-dom";
 import { getMovieDetails } from "../config/MovieConfig.js";
-import "@fortawesome/fontawesome-free/css/all.min.css"; // Import FontAwesome CSS
+import "@fortawesome/fontawesome-free/css/all.min.css"; 
 
 const MovieDetail = () => {
   const location = useLocation();
-  const { id } = location.state || {}; // Lấy id từ params (trường hợp không có, mặc định là undefined)
+  const { id } = location.state || {}; 
   const [movie, setMovie] = useState(null);
-  const [image, setImage] = useState(""); // Trạng thái lưu ảnh
-  const [feedbacks, setFeedbacks] = useState([]); // Feedbacks
+  const [image, setImage] = useState(""); 
+  const [feedbacks, setFeedbacks] = useState([]); 
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await getMovieDetails(id);
-        console.log("Dữ liệu trả về từ API: ", response); // Kiểm tra toàn bộ response
+        console.log("Dữ liệu trả về từ API: ", response); 
     
-        // Trực tiếp sử dụng response mà không cần truy cập data
         if (response) {
-          // Kiểm tra trường 'image'
           if (response.image && Array.isArray(response.image)) {
             const image_true = response.image.find((img) => img.type === true);
-            setImage(image_true ? image_true.link : ""); // Set ảnh nếu có
+            setImage(image_true ? image_true.link : ""); 
           } else {
             console.log("Không có trường 'image' hoặc 'image' không phải là mảng.");
-            setImage(""); // Nếu không có ảnh, set link rỗng
+            setImage(""); 
           }
     
-          setMovie(response); // Lưu toàn bộ dữ liệu vào state
-          setFeedbacks(response.feedback || []); // Lưu feedbacks từ response
+          setMovie(response); 
+          setFeedbacks(response.feedback || []); 
         } else {
           console.error("Dữ liệu trả về từ API không hợp lệ.");
         }
@@ -39,9 +37,9 @@ const MovieDetail = () => {
     };
 
     fetchMovie();
-  }, [id]); // Chạy lại useEffect khi id thay đổi
+  }, [id]); 
 
-  if (!movie) return <p>Đang tải thông tin phim...</p>; // Nếu dữ liệu chưa được tải, hiển thị loading
+  if (!movie) return <p>Đang tải thông tin phim...</p>; 
 
   return (
     <div className="movie-detail">
@@ -76,11 +74,11 @@ const MovieDetail = () => {
                   {Array.from({ length: 5 }, (_, index) => {
                     const ratingThreshold = index + 1;
                     if (movie.rating >= ratingThreshold) {
-                      return <i key={index} className="fas fa-star"></i>; // Sao đầy
+                      return <i key={index} className="fas fa-star"></i>; 
                     } else if (movie.rating >= ratingThreshold - 0.5) {
-                      return <i key={index} className="fas fa-star-half-alt"></i>; // Nửa sao
+                      return <i key={index} className="fas fa-star-half-alt"></i>; 
                     } else {
-                      return <i key={index} className="far fa-star"></i>; // Sao rỗng
+                      return <i key={index} className="far fa-star"></i>; 
                     }
                   })}
                 </>

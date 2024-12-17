@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-// import ScheduleManagementService from './ScheduleManagementService';
 import {getAllMovies,fetchActiveTheaters,fetchShowtimes,fetchShowtimeById, toggleShowtimeStatus, addShowtime, updateShowtime, deleteShowtime } from '../config/MovieConfig';
 import './ScheduleManagement.css';
 
 function ScheduleManagement() {
-  const [movies, setMovies] = useState([]); // State lưu danh sách phim
-  const [loadingMovies, setLoadingMovies] = useState(false); // Trạng thái tải phim
+  const [movies, setMovies] = useState([]); 
+  const [loadingMovies, setLoadingMovies] = useState(false); 
 
   const [theater, setTheater] = useState('');
   const [date, setDate] = useState('');
   const [rooms, setRooms] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
   const [theaters, setTheaters] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(''); // Thêm state để lưu lỗi
+  const [errorMessage, setErrorMessage] = useState(''); 
   const [loading, setLoading] = useState(false);
-  const [modalVisibleAdd, setModalVisibleAdd] = useState(false); // Hiển thị modal
+  const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
   const [modalVisible, setModalVisible] = useState(false); 
-  const [showtimeToEdit, setShowtimeToEdit] = useState(null);  // Add this line
+  const [showtimeToEdit, setShowtimeToEdit] = useState(null);  
 
   const [newShowtime, setNewShowtime] = useState({
     movieId: null,
     startTime: null,
-    date: '',  // Thêm trường cho ngày
-    theaterId: '',  // Thêm trường cho theaterId
+    date: '', 
+    theaterId: '', 
     roomId: '',
-  }); // Lưu thông tin lịch chiếu mới
+  });
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -160,7 +159,7 @@ function ScheduleManagement() {
   const handleAddShowtime = async () => {
     if (!newShowtime.movieId || !newShowtime.startTime || !newShowtime.roomId || !theater || !date) {
       setErrorMessage('Vui lòng điền đầy đủ thông tin!');
-      console.log("Thông tin chưa đầy đủ:", newShowtime); // Kiểm tra thông tin
+      console.log("Thông tin chưa đầy đủ:", newShowtime); 
       return;
     }
   
@@ -197,10 +196,10 @@ function ScheduleManagement() {
   const openModalForRoom = (roomId) => {
     setNewShowtime(prevState => {
       const updatedState = { ...prevState, roomId: roomId };
-      console.log("newShowtime khi mở modal: ", updatedState);  // Kiểm tra giá trị của newShowtime
+      console.log("newShowtime khi mở modal: ", updatedState); 
       return updatedState;
     });
-    setModalVisibleAdd(true); // Hiển thị modal
+    setModalVisibleAdd(true); 
   };
   
   const handleEditShowtime = async () => {
@@ -208,7 +207,7 @@ function ScheduleManagement() {
   
     const updatedShowtime = {
       ...newShowtime,
-      startTime: appendSecondsToTime(newShowtime.startTime), // Thêm giây vào thời gian
+      startTime: appendSecondsToTime(newShowtime.startTime), 
     };
   
     try {
@@ -217,7 +216,7 @@ function ScheduleManagement() {
       reloadShowtimes();
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.message); // Lỗi từ backend (nếu có)
+        alert(error.response.data.message); // Lỗi từ backend 
       } else {
         alert('Lỗi khi sửa lịch chiếu. Vui lòng thử lại.');
       }
@@ -245,7 +244,6 @@ function ScheduleManagement() {
   
         setShowtimeToEdit(showtimeData);
   
-        // Định dạng dữ liệu cho modal
         setNewShowtime({
           movieId: showtimeData.movieId,
           startTime: formatTimeForInput(showtimeData.startTime),
@@ -289,11 +287,11 @@ function ScheduleManagement() {
   
       // Nếu thời gian có 2 phần (giờ và phút), thêm giây vào
       if (timeParts.length === 2) {
-        time = `${timeParts[0]}:${timeParts[1]}:00`;  // Thêm giây "00"
+        time = `${timeParts[0]}:${timeParts[1]}:00`;  
       }
     }
   
-    return time; // Trả về thời gian đã hoàn chỉnh
+    return time; 
   };
   
 

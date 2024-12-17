@@ -8,7 +8,7 @@
     color: #333;
   }
   
-  /* Movie Info Section */
+  /* Movie Info  */
   .movie-detail .movie-info {
     display: flex;
     gap: 20px;
@@ -41,7 +41,7 @@
     color: #000000;
   }
   
-  /* Trailer Section */
+  /* Trailer  */
   .movie-detail .trailer-section {
     background-color: #e6f4ea;
     padding: 20px;
@@ -53,7 +53,7 @@
   
   .movie-detail .trailer-placeholder {
     width: 100%;
-    max-width: 560px; /* Độ rộng tối đa cho video */
+    max-width: 560px; 
     margin: 0 auto;
     padding: 20px;
     background-color: #e6f4ea;
@@ -61,7 +61,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   
-  /* Comments Section */
+  /* Comments  */
   .movie-detail .comments-section {
     margin-bottom: 40px;
   }
@@ -81,7 +81,7 @@
     margin-bottom: 10px;
   }
   
-  /* Showtime Section */
+  /* Showtime  */
   .movie-detail .showtime-section {
     display: flex;
     flex-direction: column;
@@ -132,7 +132,7 @@
     background-color: #218838;
   }
   
-  /* Calendar Section */
+  /* Calendar */
   .movie-detail .calendar {
     flex: 1;
     background-color: #f8f9fa;
@@ -225,21 +225,21 @@
 }
 
 .movie-detail .fa-star {
-  color: #ffd700; /* Màu vàng cho sao đánh giá */
-  margin-right: 5px; /* Khoảng cách giữa các sao */
-  font-size: 18px; /* Kích thước sao */
+  color: #ffd700; 
+  margin-right: 5px; 
+  font-size: 18px; 
 }
 .movie-detail .far.fa-star {
-  color: #ccc; /* Màu xám cho sao chưa đánh giá */
+  color: #ccc; 
 }
 .movie-detail .fas.fa-star {
-  color: #ffd700; /* Màu vàng cho sao đã đánh giá */
+  color: #ffd700; 
 }
 
 
 /* Định dạng cho dropdown chứa thể loại */
 .movie-detail form select[multiple] {
-    height: 150px; /* Cho phép hiển thị nhiều lựa chọn */
+    height: 150px; 
     background-color: #f9f9f9;
     padding: 10px;
     border: 1px solid #ccc;
@@ -247,7 +247,7 @@
     font-size: 14px;
     color: #555;
     box-sizing: border-box;
-    resize: none; /* Tắt khả năng kéo dài */
+    resize: none; 
 }
 
 /* Thêm hiệu ứng hover cho các options */
