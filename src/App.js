@@ -20,7 +20,8 @@ import CinemaTicket_2 from './admin/CinemaTicket_2';
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 import ManagerRole from "./admin/ManagerRole";
 import EmployeeInfor from "./admin/EmployeeInfor";
-import MovieDetailAdmin from "./admin/MovieDetail"
+import MovieDetailAdmin from "./admin/MovieDetail";
+import Revenue from "./admin/Revenue";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./context/TheaterContext";
@@ -124,7 +125,7 @@ function AdminLayout() {
             <Route path="role" element={<ManagerRole />} />
             <Route path="staff" element={<EmployeeManagement />} />
             <Route path="customers" element={<CustomerManagement />} />
-            <Route path="statistics" element={<div>Thống kê Content</div>} />
+            <Route path="statistics" element={<Revenue />} />
             <Route path="account" element={<EmployeeInfor />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>
