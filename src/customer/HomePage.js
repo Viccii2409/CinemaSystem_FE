@@ -15,7 +15,8 @@ import {
   getMovieNow,
   getMovieSoon,
   getSlideshow,
-  getAllGenres,
+  getAllGenres, 
+  getTopMovies,
 } from "../config/MovieConfig.js";
 import { getAllNameTheater } from "../config/TheaterConfig.js";
 import { getRecommendMovie } from "../config/UserConfig.js";
@@ -97,6 +98,24 @@ const HomePage = () => {
       }
     };
     fetchMovieSoon(); // Gọi hàm fetchTheater khi component được render lần đầu
+  }, []);
+
+  // top movies
+  const [topmovies, setTopMovies] = useState([]);
+  useEffect(() => {
+    const fetchTopMovies = async () => {
+      try {
+        const response = await getTopMovies();
+        console.log("response" , response);
+        setTopMovies(response); 
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách Phim:", error);
+      }
+    };
+    fetchTopMovies(); 
+    console.log("out", fetchTopMovies);
+    console.log("out2", topmovies);
+
   }, []);
 
   const [discounts, setDiscounts] = useState([]);
@@ -371,8 +390,44 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      </section>
 
+        <div className="section-title">
+        <h2>PHIM HOT</h2>
+      </div>
+      <div className="movie-list">
+        {Array.isArray(topmovies) && topmovies.length > 0 ? (
+          // Đặt console.log bên ngoài JSX để tránh lỗi cú pháp
+          (() => {
+            console.log("topmovies", topmovies);
+            return topmovies.map((topmovie, index) => (
+              <div className="movie-item" key={topmovie.movieId}>
+                <div className="image-container">
+                  <Link to="/movie-detail" state={{ id: topmovie.movieId, theaterid: selectedTheater }}>
+                    <img
+                      src={topmovie.movieImage}
+                      alt="movie"
+                      className="movie-thumbnail"
+                    />
+                  </Link>
+                  <button className="iconPause">
+                    <FontAwesomeIcon
+                      icon={faCirclePlay}
+                      className="control-icon"
+                    />
+                  </button>
+                </div>
+
+                <h3 className="movietitle">
+                  <Link to="/movie-detail" state={{ id: topmovie.movieId, theaterid: selectedTheater }}>
+                    {topmovie.movieTitle}
+                  </Link>
+                </h3>
+              </div>
+            ));
+          })()
+        ) : null}  
+      </div>
+      </section>
       <section id="discount-section" className="promotions-section">
         <div className="category">
           <h2>ƯU ĐÃI</h2>
