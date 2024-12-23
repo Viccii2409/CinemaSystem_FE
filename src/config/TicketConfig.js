@@ -450,14 +450,25 @@ export const fetchRevenueData = (filterType, { movieId, theaterId, startDate, en
     }
 
     return api.get(url, { params })
-        .then(response => {
-            // Xử lý dữ liệu: sắp xếp theo totalRevenue giảm dần
-            const sortedData = response.data.sort((a, b) => b.totalRevenue - a.totalRevenue);
+    .then(response => {
+        const data = response.data;
 
+        if (Array.isArray(data)) {
+            const sortedData = data.sort((a, b) => b.totalRevenue - a.totalRevenue);
             return sortedData;
-        })
-        .catch(error => {
-            console.error(`Error fetching ${filterType} data:`, error);
-            throw error;
-        });
+        } else if (data && data.details && Array.isArray(data.details)) {
+            const sortedData = data.details.sort((a, b) => b.totalRevenue - a.totalRevenue);
+            return sortedData;
+        } else {
+            console.error('Dữ liệu trả về không có mảng hoặc thuộc tính details:', data);
+            return [];
+        }
+    })
+    .catch(error => {
+        console.error(`Error fetching ${filterType} data:`, error);
+        throw error;
+    });
+
+
+
 };

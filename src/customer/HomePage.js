@@ -113,8 +113,6 @@ const HomePage = () => {
       }
     };
     fetchTopMovies(); 
-    console.log("out", fetchTopMovies);
-    console.log("out2", topmovies);
 
   }, []);
 
@@ -396,9 +394,7 @@ const HomePage = () => {
       </div>
       <div className="movie-list">
         {Array.isArray(topmovies) && topmovies.length > 0 ? (
-          // Đặt console.log bên ngoài JSX để tránh lỗi cú pháp
           (() => {
-            console.log("topmovies", topmovies);
             return topmovies.map((topmovie, index) => (
               <div className="movie-item" key={topmovie.movieId}>
                 <div className="image-container">
