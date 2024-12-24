@@ -220,7 +220,7 @@ function AddRoom() {
   return (
     <div className="room-manager">
       <h2 className="title">
-        <Link to="/admin/rooms-and-seats">
+        <Link to="/admin/rooms-and-seats" state={{id}}>
           Quản lý phòng - ghế
         </Link>
         <span> &raquo; </span>

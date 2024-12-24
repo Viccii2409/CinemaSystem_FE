@@ -14,6 +14,9 @@ function RoomManagement() {
     const { id } = location.state || '';
 
     useEffect(() => {
+        if (id > 0) {
+            handleListRoom(id);
+        }
         const fetchTheater = async () => {
             const response_theater = await getAllNameTheater();
             if (response_theater) {
@@ -78,7 +81,7 @@ function RoomManagement() {
         <div className="cinema-management-system">
             <h2>Quản lý phòng - ghế</h2>
             <div className='search-theater'>
-                <select name="id" className='input-search' value={setTheaterID} onChange={(e) => handleListRoom(e.target.value)}>
+                <select name="id" className='input-search' value={theaterID} onChange={(e) => handleListRoom(e.target.value)}>
                     <option value="" disabled>---Chọn rạp---</option>
                     {theaters.map(theater => (
                         <option key={theater.id} value={theater.id}>{theater.name}</option>
