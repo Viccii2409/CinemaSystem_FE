@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import "../customer/UserInfor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCreditCard, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faCreditCard, faUserCircle, faComment } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from 'react-router-dom';
-import { changePassword, getUserById, updateImage, updateStatusEmployee, updateUser } from "../config/UserConfig";
+import { addFeedback, changePassword, getUserById, updateImage, updateStatusEmployee, updateUser } from "../config/UserConfig";
 import { creatPayOnline, getBookingById } from "../config/TicketConfig";
 import { AuthContext } from '../context/AuthContext';
 import BarcodeGenerator from "../BarcodeGenerator";
@@ -40,8 +40,8 @@ const EmployeeInfor = () => {
         console.log(response);
         if (response) {
           setCurrentUser(response);
-          setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-          setBookingAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE'))
+          setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE').reverse())
+          setBookingAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE').reverse())
         }
       } catch (error) {
         console.error("Error api getCustomerInforById:", error);
@@ -176,14 +176,156 @@ const EmployeeInfor = () => {
       // console.log(response);
       if (response) {
         setAgent(response);
-        setBookingCustomerAgent(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-        setBookingAgentAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE'))
+        setBookingCustomerAgent(response.bookings.filter(booking => booking.typeBooking === 'ONLINE').reverse())
+        setBookingAgentAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE').reverse())
       }
     } catch (error) {
       console.error("Error api getUserById:", error);
     }
     setShowViewModal(true);
   }
+
+  const [text, setText] = useState("");
+  const [star, setStar] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+
+  const handleFeedback = (bookingId) => {
+    setSelectedBooking({ bookingId });
+    setShowFeedbackForm(true);
+  };
+
+
+  const handleFeedbackSubmit = async (bookingID) => {
+    setSuccess(false);
+
+    if (!text || !star) {
+      setError("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
+    const feedbackData = { text, star, bookingId: selectedBooking.bookingId };
+    console.log(feedbackData);
+    try {
+      const response = await addFeedback(feedbackData);
+
+      setSuccess(true);
+      setText("");
+      setStar(null);
+
+      alert("Feedback đã được gửi!");
+      handleCloseModal();
+      window.location.reload();
+    } catch (error) {
+      setError(error.message || "Có lỗi xảy ra.");
+    }
+  };
+
+
+  const [currentPage_1, setCurrentPage_1] = useState(1);
+  const [postsPerPage_1] = useState(5);
+  const totalPages_1 = Math.ceil(bookingCustomer.length / postsPerPage_1);
+  const indexOfLastPost_1 = currentPage_1 * postsPerPage_1;
+  const indexOfFirstPost_1 = indexOfLastPost_1 - postsPerPage_1;
+  const currentBookingCustomer = bookingCustomer.slice(indexOfFirstPost_1, indexOfLastPost_1);
+
+  const nextPage_1 = () => {
+    if (currentPage_1 < totalPages_1) {
+      setCurrentPage_1(currentPage_1 + 1);
+    }
+  };
+
+  const prevPage_1 = () => {
+    if (currentPage_1 > 1) {
+      setCurrentPage_1(currentPage_1 - 1);
+    }
+  };
+
+  const goToPage_1 = (pageNumber) => {
+    setCurrentPage_1(pageNumber);
+  };
+
+
+  const [currentPage_2, setCurrentPage_2] = useState(1);
+  const [postsPerPage_2] = useState(5);
+  const totalPages_2 = Math.ceil(bookingAgent.length / postsPerPage_2);
+  const indexOfLastPost_2 = currentPage_2 * postsPerPage_2;
+  const indexOfFirstPost_2 = indexOfLastPost_1 - postsPerPage_2;
+  const currentBookingAgent = bookingAgent.slice(indexOfFirstPost_2, indexOfLastPost_2);
+
+  const nextPage_2 = () => {
+    if (currentPage_2 < totalPages_2) {
+      setCurrentPage_2(currentPage_2 + 1);
+    }
+  };
+
+  const prevPage_2 = () => {
+    if (currentPage_2 > 1) {
+      setCurrentPage_2(currentPage_2 - 1);
+    }
+  };
+
+  const goToPage_2 = (pageNumber) => {
+    setCurrentPage_2(pageNumber);
+  };
+
+
+  const [currentPage_3, setCurrentPage_3] = useState(1);
+  const [postsPerPage_3] = useState(5);
+  const totalPages_3 = Math.ceil(bookingCustomerAgent.length / postsPerPage_3);
+  const indexOfLastPost_3 = currentPage_3 * postsPerPage_3;
+  const indexOfFirstPost_3 = indexOfLastPost_3 - postsPerPage_3;
+  const currentBookingCustomerAgent = bookingCustomerAgent.slice(indexOfFirstPost_3, indexOfLastPost_3);
+
+  const nextPage_3 = () => {
+    if (currentPage_3 < totalPages_3) {
+      setCurrentPage_3(currentPage_3 + 1);
+    }
+  };
+
+  const prevPage_3 = () => {
+    if (currentPage_3 > 1) {
+      setCurrentPage_3(currentPage_3 - 1);
+    }
+  };
+
+  const goToPage_3 = (pageNumber) => {
+    setCurrentPage_3(pageNumber);
+  };
+
+
+  const [currentPage_4, setCurrentPage_4] = useState(1);
+  const [postsPerPage_4] = useState(5);
+  const totalPages_4 = Math.ceil(bookingAgentAgent.length / postsPerPage_4); // Tính toán số lượng trang
+
+  // Cắt mảng nhân viên theo trang
+  const indexOfLastPost_4 = currentPage_4 * postsPerPage_4;
+  const indexOfFirstPost_4 = indexOfLastPost_4 - postsPerPage_4;
+  const currentBookingAgentAgent = bookingAgentAgent.slice(indexOfFirstPost_4, indexOfLastPost_4);
+
+  const nextPage_4 = () => {
+    if (currentPage_4 < totalPages_4) {
+      setCurrentPage_4(currentPage_4 + 1);
+    }
+  };
+
+  const prevPage_4 = () => {
+    if (currentPage_4 > 1) {
+      setCurrentPage_4(currentPage_4 - 1);
+    }
+  };
+
+  const goToPage_4 = (pageNumber) => {
+    setCurrentPage_4(pageNumber);
+  };
+
+
+
+
+
+
   return (
     <div className="account-page">
       <h2 className="title">Thông tin tài khoản</h2>
@@ -368,9 +510,9 @@ const EmployeeInfor = () => {
         </div>
       )}
 
-      {bookingCustomer && bookingCustomer.length > 0 && (
+      {currentBookingCustomer && currentBookingCustomer.length > 0 && (
         <div className="transaction-history">
-          <h3>Lịch sử mua vé </h3>
+          <h3>Lịch sử giao dịch</h3>
           <table className="table">
             <thead>
               <tr>
@@ -378,17 +520,19 @@ const EmployeeInfor = () => {
                 <th>Ngày giao dịch</th>
                 <th>Phim</th>
                 <th>Số tiền</th>
-                <th>Trạng thái</th>
+                <th>Trạng thái vé </th>
+                <th>Trạng thái thanh toán</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              {bookingCustomer.map((booking, index) => (
+              {currentBookingCustomer?.map((booking, index) => (
                 <tr key={booking.id}>
                   <td>{index + 1}</td>
                   <td>{booking.dateBooking}</td>
                   <td>{booking.nameMovie}</td>
                   <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                  <td>{booking.statusBooking ? ("Còn hiệu lực") : ("Đã hết hạn")}</td>
                   <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
                     (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
                       (booking.statusPayment === "expired" ? "Đã hủy" : "")
@@ -397,21 +541,65 @@ const EmployeeInfor = () => {
                     <button className="view-button" onClick={() => handleViewBooking(booking.id)}>
                       <FontAwesomeIcon icon={faEye} /> Xem
                     </button>
-                    {booking.statusPayment === "pending" ? (
+
+                    {booking.statusPayment === "pending" && (
                       <button className="payment-button" onClick={() => handlePayment(booking.barcodePayment)}>
                         <FontAwesomeIcon icon={faCreditCard} /> Thanh toán
                       </button>
 
-                    ) : ""}
+                    )}
+
+                    {booking.statusPayment === "confirmed" && booking.feedback === null &&
+                      new Date(`${booking.dateShowtime}T${booking.endTime}`).getTime() < new Date().getTime() ? (
+                      <button
+                        className="feedback-button"
+                        onClick={() => handleFeedback(booking.id)}
+                      >
+                        <FontAwesomeIcon icon={faComment} /> Feedback
+                      </button>
+                    ) : null
+                    }
+
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+
+
+          <div className="pagination">
+            <button onClick={prevPage_1} disabled={currentPage_1 === 1}>
+              Prev
+            </button>
+            {[...Array(totalPages_1)].map((_, index) => {
+              const startPage = Math.max(currentPage_1 - 2, 0);
+              const endPage = Math.min(currentPage_1 + 2, totalPages_1 - 1);
+
+              if (index >= startPage && index <= endPage) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => goToPage_1(index + 1)}
+                    className={currentPage_1 === index + 1 ? 'active' : ''}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              }
+              return null;
+            })}
+            <button onClick={nextPage_1} disabled={currentPage_1 === totalPages_1}>
+              Next
+            </button>
+          </div>
+
+
+
         </div>
       )}
 
-      {bookingAgent && bookingAgent.length > 0 && (
+      {currentBookingAgent && currentBookingAgent.length > 0 && (
         <div className="transaction-history">
           <h3>Lịch sử bán vé </h3>
           <table className="table">
@@ -426,7 +614,7 @@ const EmployeeInfor = () => {
               </tr>
             </thead>
             <tbody>
-              {bookingAgent.map((booking, index) => (
+              {currentBookingAgent.map((booking, index) => (
                 <tr key={booking.id}>
                   <td>{index + 1}</td>
                   <td>{booking.dateBooking}</td>
@@ -451,6 +639,35 @@ const EmployeeInfor = () => {
               ))}
             </tbody>
           </table>
+
+
+          <div className="pagination">
+            <button onClick={prevPage_2} disabled={currentPage_2 === 1}>
+              Prev
+            </button>
+            {[...Array(totalPages_2)].map((_, index) => {
+              const startPage = Math.max(currentPage_2 - 2, 0);
+              const endPage = Math.min(currentPage_2 + 2, totalPages_2 - 1);
+
+              if (index >= startPage && index <= endPage) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => goToPage_2(index + 1)}
+                    className={currentPage_2 === index + 1 ? 'active' : ''}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              }
+              return null;
+            })}
+
+            <button onClick={nextPage_2} disabled={currentPage_2 === totalPages_2}>
+              Next
+            </button>
+          </div>
+
         </div>
       )}
 
@@ -688,7 +905,7 @@ const EmployeeInfor = () => {
               </div>
             </form>
 
-            {bookingCustomerAgent && bookingCustomerAgent.length > 0 && (
+            {currentBookingCustomerAgent && currentBookingCustomerAgent.length > 0 && (
               <div className="transaction-history">
                 <h3>Lịch sử mua vé </h3>
                 <table className="table">
@@ -702,7 +919,7 @@ const EmployeeInfor = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {bookingCustomerAgent.map((booking, index) => (
+                    {currentBookingCustomerAgent.map((booking, index) => (
                       <tr key={booking.id}>
                         <td>{index + 1}</td>
                         <td>{booking.dateBooking}</td>
@@ -716,10 +933,40 @@ const EmployeeInfor = () => {
                     ))}
                   </tbody>
                 </table>
+
+                <div className="pagination">
+                  <button onClick={prevPage_3} disabled={currentPage_3 === 1}>
+                    Prev
+                  </button>
+                  {[...Array(totalPages_3)].map((_, index) => {
+                    const startPage = Math.max(currentPage_3 - 2, 0);
+                    const endPage = Math.min(currentPage_3 + 2, totalPages_3 - 1);
+
+                    if (index >= startPage && index <= endPage) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => goToPage_3(index + 1)}
+                          className={currentPage_3 === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+
+                  <button onClick={nextPage_3} disabled={currentPage_3 === totalPages_3}>
+                    Next
+                  </button>
+                </div>
+
+
+
               </div>
             )}
 
-            {bookingAgentAgent && bookingAgentAgent.length > 0 && (
+            {currentBookingAgentAgent && currentBookingAgentAgent.length > 0 && (
               <div className="transaction-history">
                 <h3>Lịch sử bán vé </h3>
                 <table className="table">
@@ -733,7 +980,7 @@ const EmployeeInfor = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {bookingAgentAgent.map((booking, index) => (
+                    {currentBookingAgentAgent.map((booking, index) => (
                       <tr key={booking.id}>
                         <td>{index + 1}</td>
                         <td>{booking.dateBooking}</td>
@@ -747,6 +994,35 @@ const EmployeeInfor = () => {
                     ))}
                   </tbody>
                 </table>
+
+                <div className="pagination">
+                  <button onClick={prevPage_4} disabled={currentPage_4 === 1}>
+                    Prev
+                  </button>
+                  {[...Array(totalPages_4)].map((_, index) => {
+                    const startPage = Math.max(currentPage_4 - 2, 0);
+                    const endPage = Math.min(currentPage_4 + 2, totalPages_4 - 1);
+
+                    if (index >= startPage && index <= endPage) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => goToPage_4(index + 1)}
+                          className={currentPage_4 === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+
+                  <button onClick={nextPage_4} disabled={currentPage_4 === totalPages_4}>
+                    Next
+                  </button>
+                </div>
+
+
               </div>
             )}
           </div>
@@ -810,7 +1086,7 @@ const EmployeeInfor = () => {
                         type="text"
                         className="modal-input"
                         value={
-                          bookingDetail.dateShowtime 
+                          bookingDetail.dateShowtime
                             ? `${new Date(bookingDetail.dateShowtime).toLocaleDateString()} ${bookingDetail.startTime} - ${bookingDetail.endTime}`
                             : "N/A"
                         }
@@ -896,7 +1172,7 @@ const EmployeeInfor = () => {
                     </label>
                   </div>
                 </div>
-                
+
                 <div className="form-group  form-row">
                   <div className="form-column">
                     <label>

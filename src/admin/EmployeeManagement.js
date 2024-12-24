@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'; // Thêm useEffect
 import './TheaterManagement.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { addEmployee, checkEmployee, getAllEmployee, getAllRole, getUserById, updateStatusEmployee } from '../config/UserConfig';
+import { faEye, faUserCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { addEmployee, checkEmployee, getAllEmployee, getAllRole, getEmployeeById, getUserById, updateEmployee, updateStatusEmployee } from '../config/UserConfig';
 import { getAllNameTheater } from '../config/TheaterConfig';
 
 function EmployeeManagement() {
@@ -36,9 +36,7 @@ function EmployeeManagement() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddInputModal, setShowAddInputModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);  // Số lượng nhân viên hiển thị mỗi trang
+  const [showEditModal, setShowEditModal] = useState(false);
 
 
   useEffect(() => {
@@ -70,6 +68,9 @@ function EmployeeManagement() {
     }
   }, [roleID]);
 
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
   const totalPages = Math.ceil(employeeFilter.length / postsPerPage); //  Tính toán số lượng trang
   // Cắt mảng nhân viên theo trang
   const indexOfLastPost = currentPage * postsPerPage;
@@ -98,8 +99,8 @@ function EmployeeManagement() {
       // console.log(response);
       if (response) {
         setCurrentUser(response);
-        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
-        setBookingAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE'))
+        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE').reverse())
+        setBookingAgent(response.bookings.filter(booking => booking.typeBooking === 'OFFLINE').reverse())
       }
     } catch (error) {
       console.error("Error api getCustomerInforById:", error);
@@ -129,6 +130,7 @@ function EmployeeManagement() {
     setShowAddModal(false);
     setShowViewModal(false);
     setShowAddInputModal(false);
+    setShowEditModal(false);
   }
 
   const handleSearch = async () => {
@@ -201,6 +203,95 @@ function EmployeeManagement() {
     setEmployeeFilter(listEmployee);
   }
 
+  const handleEditModal = async (id) => {
+    const employee = await getEmployeeById(id);
+    console.log(employee);
+    setEmployeeData({
+      id: employee.id,
+      name: employee.name,
+      roleid_old: employee.role.id || '',
+      roleid: employee.role.id || '',
+      username: employee.username,
+      position: employee.position || '',
+      accessLevel: employee.accessLevel || '',
+      theaterid: employee.theaterid > 0 ? employee.theaterid : '',
+      managerid: employee.managerid > 0 ? employee.managerid : '',
+      managerid_new: null
+    });
+    setShowEditModal(true);
+  }
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const response = await updateEmployee(employeeData);
+    if (response) {
+      console.log(response);
+      setEmployees(employees => employees.map(empl => empl.id === response.id ? response : empl));
+      alert("Sửa nhân viên thành công!");
+      setSearch('');
+      setRoleID(response.role?.id);
+      handleCloseModal();
+      return;
+    }
+    else {
+      alert("Lỗi khi sửa nhân viên!");
+      return;
+    }
+  }
+
+  const [currentPage_1, setCurrentPage_1] = useState(1);
+  const [postsPerPage_1] = useState(5);
+  const totalPages_1 = Math.ceil(bookingCustomer.length / postsPerPage_1);
+  const indexOfLastPost_1 = currentPage_1 * postsPerPage_1;
+  const indexOfFirstPost_1 = indexOfLastPost_1 - postsPerPage_1;
+  const currentBookingCustomer = bookingCustomer.slice(indexOfFirstPost_1, indexOfLastPost_1);
+
+  const nextPage_1 = () => {
+    if (currentPage_1 < totalPages_1) {
+      setCurrentPage_1(currentPage_1 + 1);
+    }
+  };
+
+  const prevPage_1 = () => {
+    if (currentPage_1 > 1) {
+      setCurrentPage_1(currentPage_1 - 1);
+    }
+  };
+
+  const goToPage_1 = (pageNumber) => {
+    setCurrentPage_1(pageNumber);
+  };
+
+
+  const [currentPage_2, setCurrentPage_2] = useState(1);
+  const [postsPerPage_2] = useState(5);
+  const totalPages_2 = Math.ceil(bookingAgent.length / postsPerPage_2);
+  const indexOfLastPost_2 = currentPage_2 * postsPerPage_2;
+  const indexOfFirstPost_2 = indexOfLastPost_1 - postsPerPage_2;
+  const currentBookingAgent = bookingAgent.slice(indexOfFirstPost_2, indexOfLastPost_2);
+
+  const nextPage_2 = () => {
+    if (currentPage_2 < totalPages_2) {
+      setCurrentPage_2(currentPage_2 + 1);
+    }
+  };
+
+  const prevPage_2 = () => {
+    if (currentPage_2 > 1) {
+      setCurrentPage_2(currentPage_2 - 1);
+    }
+  };
+
+  const goToPage_2 = (pageNumber) => {
+    setCurrentPage_2(pageNumber);
+  };
+
+
+
+  useEffect(() => {
+    console.log(employeeData);
+  }, [employeeData])
+
   return (
     <div className="cinema-management-system">
       <h2>Quản lý nhân viên </h2>
@@ -262,6 +353,11 @@ function EmployeeManagement() {
                     onClick={() => handleViewModal(employee.id)}
                   >
                     <FontAwesomeIcon icon={faEye} />
+                  </button>
+                  <button className="edit-button"
+                    onClick={() => handleEditModal(employee.id)}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
                   </button>
                 </td>
               </tr>
@@ -667,97 +763,307 @@ function EmployeeManagement() {
               </div>
             </form>
 
-            
 
-      {currentUser && currentUser.agents && currentUser.agents.length > 0 && (
-        <div className="transaction-history">
-          <h3>Nhân viên</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>Tên tài khoản </th>
-                <th>Họ và tên </th>
-                <th>Vai trò </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentUser.agents.map((employee, index) => (
-                <tr key={employee.id}>
-                  <td>{index + 1}</td>
-                  <td>{employee.username}</td>
-                  <td>{employee.name}</td>
-                  <td>{employee.role?.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
 
-      {bookingCustomer && bookingCustomer.length > 0 && (
-        <div className="transaction-history">
-          <h3>Lịch sử mua vé </h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>Ngày giao dịch</th>
-                <th>Phim</th>
-                <th>Số tiền</th>
-                <th>Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookingCustomer.map((booking, index) => (
-                <tr key={booking.id}>
-                  <td>{index + 1}</td>
-                  <td>{booking.dateBooking}</td>
-                  <td>{booking.nameMovie}</td>
-                  <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
-                  <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
-                    (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
-                      (booking.statusPayment === "expired" ? "Đã hủy" : "")
-                    )}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            {currentUser && currentUser.agents && currentUser.agents.length > 0 && (
+              <div className="transaction-history">
+                <h3>Nhân viên</h3>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Tên tài khoản </th>
+                      <th>Họ và tên </th>
+                      <th>Vai trò </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentUser.agents.map((employee, index) => (
+                      <tr key={employee.id}>
+                        <td>{index + 1}</td>
+                        <td>{employee.username}</td>
+                        <td>{employee.name}</td>
+                        <td>{employee.role?.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-      {bookingAgent && bookingAgent.length > 0 && (
-        <div className="transaction-history">
-          <h3>Lịch sử bán vé </h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>Ngày giao dịch</th>
-                <th>Phim</th>
-                <th>Số tiền</th>
-                <th>Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookingAgent.map((booking, index) => (
-                <tr key={booking.id}>
-                  <td>{index + 1}</td>
-                  <td>{booking.dateBooking}</td>
-                  <td>{booking.nameMovie}</td>
-                  <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
-                  <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
-                    (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
-                      (booking.statusPayment === "expired" ? "Đã hủy" : "")
-                    )}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            {currentBookingCustomer && currentBookingCustomer.length > 0 && (
+              <div className="transaction-history">
+                <h3>Lịch sử mua vé </h3>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Ngày giao dịch</th>
+                      <th>Phim</th>
+                      <th>Số tiền</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentBookingCustomer.map((booking, index) => (
+                      <tr key={booking.id}>
+                        <td>{index + 1}</td>
+                        <td>{booking.dateBooking}</td>
+                        <td>{booking.nameMovie}</td>
+                        <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                        <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                          (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                            (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                          )}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div className="pagination">
+                  <button onClick={prevPage_1} disabled={currentPage_1 === 1}>
+                    Prev
+                  </button>
+                  {[...Array(totalPages_1)].map((_, index) => {
+                    const startPage = Math.max(currentPage_1 - 2, 0);
+                    const endPage = Math.min(currentPage_1 + 2, totalPages_1 - 1);
+
+                    if (index >= startPage && index <= endPage) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => goToPage_1(index + 1)}
+                          className={currentPage_1 === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+                  <button onClick={nextPage_1} disabled={currentPage_1 === totalPages_1}>
+                    Next
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {currentBookingAgent && currentBookingAgent.length > 0 && (
+              <div className="transaction-history">
+                <h3>Lịch sử bán vé </h3>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Ngày giao dịch</th>
+                      <th>Phim</th>
+                      <th>Số tiền</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentBookingAgent.map((booking, index) => (
+                      <tr key={booking.id}>
+                        <td>{index + 1}</td>
+                        <td>{booking.dateBooking}</td>
+                        <td>{booking.nameMovie}</td>
+                        <td>{booking.amount.toLocaleString('vi-VN')} VND</td>
+                        <td>{booking.statusPayment === "pending" ? "Chưa thanh toán" :
+                          (booking.statusPayment === "confirmed" ? "Đã thanh toán" :
+                            (booking.statusPayment === "expired" ? "Đã hủy" : "")
+                          )}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div className="pagination">
+                  <button onClick={prevPage_2} disabled={currentPage_2 === 1}>
+                    Prev
+                  </button>
+                  {[...Array(totalPages_2)].map((_, index) => {
+                    const startPage = Math.max(currentPage_2 - 2, 0);
+                    const endPage = Math.min(currentPage_2 + 2, totalPages_2 - 1);
+
+                    if (index >= startPage && index <= endPage) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => goToPage_2(index + 1)}
+                          className={currentPage_2 === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+
+                  <button onClick={nextPage_2} disabled={currentPage_2 === totalPages_2}>
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
+        </>
+      )}
+
+      {showEditModal && (
+        <>
+          <div className="modal-overlay" onClick={handleCloseModal}></div>
+          <div className="modal">
+            <div className="modal-header">Chỉnh sửa vai trò của nhân viên</div>
+            <form
+              className='modal-info'
+              onSubmit={handleEditSubmit}
+            >
+              <div className="form-group form-row">
+
+                <div className="form-column">
+                  <label>
+                    <strong>Họ và tên:</strong>
+                    <input
+                      type="text"
+                      name="name"
+                      className="modal-input"
+                      value={employeeData.name}
+                      onChange={(e) => setEmployeeData({ ...employeeData, name: e.target.value })}
+                      required
+                    />
+                  </label>
+                </div>
+
+                <div className="form-column">
+                  <label>
+                    <strong>Vai trò:</strong>
+                    <select
+                      className='modal-input'
+                      value={employeeData.roleid}
+                      onChange={(e) => setEmployeeData({ ...employeeData, roleid: e.target.value })}
+                    >
+                      <option value="" disabled>---Chọn vai trò---</option>
+                      {roles.map(role => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div className="form-group form-row">
+                <div className="form-column">
+                  <label>
+                    <strong>Chức vụ:</strong>
+                    <input
+                      type="text"
+                      name="position"
+                      className="modal-input"
+                      value={employeeData.position}
+                      onChange={(e) => setEmployeeData({ ...employeeData, position: e.target.value })}
+                      required
+                    />
+                  </label>
+                </div>
+
+                {parseInt(employeeData.roleid) === 1 && (
+                  <div className="form-column">
+                    <label>
+                      <strong>Mức độ truy cập:</strong>
+                      <input
+                        type="text"
+                        name="accessLevel"
+                        className="modal-input"
+                        value={employeeData.accessLevel}
+                        onChange={(e) => setEmployeeData({ ...employeeData, accessLevel: e.target.value })}
+                        required
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {parseInt(employeeData.roleid) === 2 && (
+                  <div className="form-column">
+                    <label>
+                      <strong>Rạp:</strong>
+                      <select
+                        className='modal-input'
+                        name='theaterid'
+                        value={employeeData.theaterid}
+                        onChange={(e) => setEmployeeData({ ...employeeData, theaterid: e.target.value })}
+                      >
+                        <option value="" disabled>---Chọn rạp---</option>
+                        {theaters.map(theater => (
+                          <option key={theater.id} value={theater.id}>
+                            {theater.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                )}
+
+                {parseInt(employeeData.roleid) === 3 && (
+                  <div className="form-column">
+                    <label>
+                      <strong>Người quản lý:</strong>
+                      <select
+                        className='modal-input'
+                        name='managerid'
+                        value={employeeData.managerid}
+                        onChange={(e) => setEmployeeData({ ...employeeData, managerid: e.target.value })}
+                      >
+                        <option value="" disabled>---Chọn quản lý---</option>
+                        {employees.filter(empl => empl.role?.name === "MANAGER" && empl.id !== employeeData.id)
+                          .map(empl => (
+                            <option key={empl.id} value={empl.id}>
+                              {empl.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              <div className="form-group">
+                {parseInt(employeeData.roleid_old) === 2 && parseInt(employeeData.roleid) !== 2 && (
+                  <div className="form-column">
+                    <label>
+                      <strong>Chuyển nhân viên cho quản lý:</strong>
+                      <select
+                        className='modal-input input-long'
+                        name='managerid_new'
+                        value={employeeData.managerid_new || ''}
+                        onChange={(e) => setEmployeeData({ ...employeeData, managerid_new: e.target.value })}
+                      >
+                        <option value="" disabled>---Chọn quản lý---</option>
+                        {employees.filter(empl => empl.role?.name === "MANAGER" && empl.id !== employeeData.id)
+                          .map(empl => (
+                            <option key={empl.id} value={empl.id}>
+                              {empl.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              <div className="modal-buttons">
+                <button type='button' className="close-button" onClick={handleCloseModal}>
+                  Hủy
+                </button>
+                <button className="save-button" type="submit">
+                  Lưu
+                </button>
+              </div>
+            </form>
+          </div>
         </>
       )}
     </div>

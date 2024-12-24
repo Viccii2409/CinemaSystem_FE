@@ -2,7 +2,7 @@
   font-family: Arial, sans-serif;
   background-color: #f4f7fc;
   padding: 20px;
-  max-width: 1000px;
+  max-width: 70%;
   margin: auto;
 }
 
@@ -553,3 +553,40 @@
     padding: 20px;
   }
 }
+
+
+
+.account-page .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.account-page .pagination button {
+  background-color: #e7f7e7; 
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.account-page .pagination button:hover {
+  background-color: #d0f0d0; /* Màu nền khi hover vào nút */
+}
+
+.account-page .pagination button:disabled {
+  background-color: #f0f0f0; /* Nút vô hiệu hóa có màu nền nhạt hơn */
+  cursor: not-allowed;
+}
+
+.account-page .pagination .active {
+  background-color: #4CAF50; /* Nút hiện tại có màu nền xanh lá */
+  color: white;
+  border: 1px solid #4CAF50; /* Viền nút hiện tại cũng là màu xanh lá */
+}
+
+
+

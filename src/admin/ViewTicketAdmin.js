@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '../customer/ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getBookingById } from '../config/TicketConfig';
 import BarcodeGenerator from "../BarcodeGenerator";
-import { getBookingByBarcode, updatePayOnline } from '../config/TicketConfig';
+import { exportBooking, getBookingByBarcode, getBookingById, updatePayOnline } from '../config/TicketConfig';
 
 const ViewTicketAdmin = () => {
     const navigate = useNavigate();
@@ -13,46 +12,57 @@ const ViewTicketAdmin = () => {
     const orderId = queryParams.get("orderId");
     const resultCode = queryParams.get("resultCode");
     const [bookingDto, setBookingDto] = useState({});
+    const hasApiBeenCalled = useRef(false);
 
     useEffect(() => {
         const getBookingInfor = async () => {
-            console.log(id);
-            if(id) {
-                try {
-                    const response_ticket = await getBookingById(id);
-                    setBookingDto(response_ticket);
-                    console.log(response_ticket);
-                    console.log(id);
-                } catch (error) {
-                    console.error("Error api", error);
-                    setBookingDto({});
-                }
+            // Kiểm tra nếu đã gọi API hoặc chưa có đủ thông tin để gọi API
+            if (!hasApiBeenCalled.current && (orderId && resultCode || id)) {
+                hasApiBeenCalled.current = true; // Đánh dấu là API đã gọi
 
-            }
-            if(orderId && resultCode) {
                 try {
-                    await updatePayOnline(orderId, resultCode);
-                    const response_ticket = await getBookingByBarcode(orderId);
-                    setBookingDto(response_ticket);
-                    console.log(response_ticket);
+                    if (orderId && resultCode) {
+                        await updatePayOnline(orderId, resultCode); // Gọi API cập nhật thanh toán
+                        const response_ticket = await getBookingByBarcode(orderId); // Gọi API lấy thông tin vé
+                        setBookingDto(response_ticket);
+                        console.log(response_ticket);
+                    }
+                    if (id) {
+                        const response_ticket = await getBookingById(id); // Gọi API lấy thông tin vé theo id
+                        setBookingDto(response_ticket);
+                    }
                 } catch (error) {
                     console.error("Error api", error);
                     setBookingDto({});
                 }
             }
-        }
+        };
+
         getBookingInfor();
-    }, [id]);
+    }, [orderId, resultCode, id]);
 
     const handleBackToHome = () => {
         navigate('/admin/ticket-sales');
         return;
     }
+    
+      const handleExport = async () => {
+        const response = await exportBooking(bookingDto.id);
+        if(response) {
+          alert("Bạn đã xuất vé thành công!");
+        }
+        else {
+          alert("Xuất vé thất bại!");
+          return;
+        }
+      }
+
+    
 
     return (
         <div className="ticket-info-section">
-            {id && (<h2 className="ticket-info-title">Thông Tin Vé Của Bạn</h2>)}
-            {orderId && (<h2 className="ticket-info-title">{Number(resultCode) === 0 ? "Thanh toán thành công" : "Thanh toán thất bại"}</h2>)}
+            {orderId && resultCode && (<h2 className="ticket-info-title">{Number(resultCode) === 0 ? "Thanh toán thành công" : "Thanh toán thất bại"}</h2>)}
+            {id && <h2 className="ticket-info-title">Thông tin vé của bạn</h2>}
             <div className="ticket-main">
                 {/* Hình ảnh bên trái */}
                 <div className="ticket-image-container">
@@ -117,9 +127,9 @@ const ViewTicketAdmin = () => {
                     <BarcodeGenerator code={bookingDto.barcode || "N/A"} />
                 </div>
                 <div className="ticket-actions">
-                    <button className="btn-secondary" 
-                    onClick={handleBackToHome}
-                    >Quay Về Trang Bán vé</button>
+                    <button className="btn-secondary"
+                        onClick={handleExport}
+                    >Xuất vé</button>
                 </div>
             </div>
         </div>

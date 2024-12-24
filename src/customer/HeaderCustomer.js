@@ -3,7 +3,7 @@ import "./HeaderCustomer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { getAllNameTheater, getTheater } from "../config/TheaterConfig.js";
+import { getAllNameTheater } from "../config/TheaterConfig.js";
 import { TheaterContext } from "../context/TheaterContext.js";
 import { AuthContext } from '../context/AuthContext';
 
@@ -19,7 +19,7 @@ const HeaderCustomer = () => {
       try {
         const response = await getAllNameTheater();
         // console.log(response.data);
-        setTheaters(response.data);
+        setTheaters(response);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách rạp:", error);
       }

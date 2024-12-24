@@ -50,7 +50,7 @@ const RegisterPage = () => {
       alert("Passwords do not match!");
       return;
     }
-    console.log(formData);
+    // console.log(formData);
     const response_check = await check(formData.email);
     console.log(response_check);
     if(response_check){
@@ -61,9 +61,10 @@ const RegisterPage = () => {
       const response_register = await register(formData);
       console.log(response_check);
       if (response_register) {
-        alert("Bạn đã đăng kí thành công!");
-        await handleLogin(response_register); 
-        navigate("/genre-favourite");
+        alert("Bạn đã đăng kí thành công! Vui lòng kiểm tra lại email để kích hoạt tài khoản.");
+        navigate("/home");
+        // await handleLogin(response_register); 
+        // navigate("/genre-favourite");
       } else {
         alert("Lỗi không đăng kí được!");
         return;
@@ -235,13 +236,13 @@ const RegisterPage = () => {
             Đăng ký
           </button>
         </form>
-        <div className="social-login">
+        {/* <div className="social-login">
           <p>Đăng ký bằng</p>
           <div className="social-login-buttons">
             <button className="social-login-button facebook">F</button>
             <button className="social-login-button google">G</button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

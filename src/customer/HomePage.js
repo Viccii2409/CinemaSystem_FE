@@ -53,7 +53,7 @@ const HomePage = () => {
           }))
         );
         const response_theater = await getAllNameTheater();
-        setTheaters(response_theater.data);
+        setTheaters(response_theater);
 
         const selectedTheaterData = response_theater.data.find(
           entry => entry.id === Number(selectedTheater)

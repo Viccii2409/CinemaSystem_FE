@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './AddRoom.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getTypeRoom, addRoom, addSeat } from '../config/TheaterConfig';
+import { getTypeRoom, addRoom, addSeat, getAllNameTheater } from '../config/TheaterConfig';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 function AddRoom() {
   const location = useLocation();
-  const { id, theaterName } = location.state || {};
+  const { id } = location.state || {};
+  const [theater, setTheater] = useState([]);
   const [typeRooms, setTypeRooms] = useState([]);
 
   const [roomName, setRoomName] = useState(''); // Lưu tên phòng
@@ -20,11 +23,16 @@ function AddRoom() {
   useEffect(() => {
     // Lấy thông tin rạp nếu id tồn tại
     const getTheaterInfor = async () => {
-      if (!id || !theaterName) {
+      if (!id) {
         console.warn("ID của rạp không tồn tại.");
         return;
       }
-      console.log(id + " " + theaterName);
+      const response_theater = await getAllNameTheater();
+      if (response_theater) {
+        const theaterData = response_theater.find(x => x.id === parseInt(id));
+        setTheater(theaterData);
+      }
+
     };
 
     // Lấy danh sách loại phòng
@@ -38,7 +46,7 @@ function AddRoom() {
     };
     getTheaterInfor();
     fetchTypeRooms();
-  }, [id, theaterName]);
+  }, [id]);
 
 
   // Tạo mô hình ghê 
@@ -212,12 +220,11 @@ function AddRoom() {
   return (
     <div className="room-manager">
       <h2 className="title">
-        <span>
-          <Link to="/admin/rooms-and-seats" state={{ id: id }}>
-            PHÒNG VÀ GHẾ
-          </Link>
-        </span>
-        <span> / </span> {theaterName} - THÊM PHÒNG</h2>
+        <Link to="/admin/rooms-and-seats" state={{id}}>
+          Quản lý phòng - ghế
+        </Link>
+        <span> &raquo; </span>
+        Thêm phòng - {theater.name}</h2>
       <div className="input-group-container" >
         <div className="input-group">
           <label className="label">Tên phòng:</label>

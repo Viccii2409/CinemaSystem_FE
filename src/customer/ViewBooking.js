@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './ViewBooking.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getBookingByBarcode, updatePayOnline, getBookingById } from '../config/TicketConfig';
@@ -13,36 +13,34 @@ const ViewBooking = () => {
     const resultCode = queryParams.get("resultCode");
     // const { id, theaterid } = location.state || '';
     const [bookingDto, setBookingDto] = useState({});
+    const hasApiBeenCalled = useRef(false);
 
     useEffect(() => {
         const getBookingInfor = async () => {
-            if(orderId && resultCode) {
+            // Kiểm tra nếu đã gọi API hoặc chưa có đủ thông tin để gọi API
+            if (!hasApiBeenCalled.current && (orderId && resultCode || id)) {
+                hasApiBeenCalled.current = true; // Đánh dấu là API đã gọi
+
                 try {
-                    await updatePayOnline(orderId, resultCode);
-                    const response_ticket = await getBookingByBarcode(orderId);
-                    setBookingDto(response_ticket);
-                    console.log(response_ticket);
+                    if (orderId && resultCode) {
+                        await updatePayOnline(orderId, resultCode); // Gọi API cập nhật thanh toán
+                        const response_ticket = await getBookingByBarcode(orderId); // Gọi API lấy thông tin vé
+                        setBookingDto(response_ticket);
+                        console.log(response_ticket);
+                    }
+                    if (id) {
+                        const response_ticket = await getBookingById(id); // Gọi API lấy thông tin vé theo id
+                        setBookingDto(response_ticket);
+                    }
                 } catch (error) {
                     console.error("Error api", error);
                     setBookingDto({});
                 }
-
             }
-            if(id) {
-                try {
-                    const response_ticket = await getBookingById(id);
-                    setBookingDto(response_ticket);
-                    // console.log(response_ticket);
-                    // console.log(id);
-                } catch (error) {
-                    console.error("Error api", error);
-                    setBookingDto({});
-                }
+        };
 
-            }
-        }
         getBookingInfor();
-    }, [orderId, resultCode]);
+    }, [orderId, resultCode, id]);
 
     return (
         <div className="ticket-info-section">

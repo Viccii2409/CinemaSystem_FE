@@ -36,7 +36,7 @@ const AuthProvider = ({children}) => {
                 localStorage.setItem('token', token);
                 setUser(response_user);
                 setLoading(false);
-                return response_user.statusEmployee;
+                return response_user;
             }
         }
         

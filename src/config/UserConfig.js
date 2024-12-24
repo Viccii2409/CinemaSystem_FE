@@ -33,6 +33,15 @@ export const register = async (registerData) => {
   })
 };
 
+export const verifyaccount = async (account) => {
+  return api.post('/user/public/verifyaccount', account)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error verifyaccount: ", error);
+    return null;
+  })
+};
+
 export const check = async (email) => {
   return api.post('/user/public/check', { username: email })
   .then(response => response.data)
@@ -41,6 +50,26 @@ export const check = async (email) => {
     return null;
   })
 };
+
+export const forgotPassword = async (email) => {
+  return api.get(`/user/public/forgotpassword/${email}`)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error forgotPassword: ", error);
+    return null;
+  })
+};
+
+export const changePasswordCustomer = async (data) => {
+  return api.put('/user/public/changepassword', data)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error changePasswordCustomer: ", error);
+    return null;
+  })
+};
+
+
 
 export const getUserById = async (id) => {
   return api.get(`/user/${id}`)
@@ -166,6 +195,15 @@ export const addEmployee = async (employee) => {
   .then(response => response.data)
   .catch(error => {
     console.log("Error addEmployee: ", error);
+    return null;
+  })
+};
+
+export const updateEmployee = async (employee) => {
+  return api.put('/user/employee/update', employee)
+  .then(response => response.data)
+  .catch(error => {
+    console.log("Error updateEmployee: ", error);
     return null;
   })
 };

@@ -42,7 +42,7 @@ const GenreFavourite = () => {
         }
         console.log(JSON.stringify(genreData));
         await addGenreFauvorite(genreData);
-        navigate('/home');
+        navigate('/user-infor');
     }
 
     return (

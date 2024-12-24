@@ -33,6 +33,17 @@ const CustomerManagement = () => {
     setCustomerFilter(customers.filter((user) => user.username.toLowerCase().includes(search.toLowerCase())));
   }, [search]);
 
+  const handleStatusChange = async (id) => {
+    const response_status = await updateStatusUser(id);
+    const listcustomer = customers.map(user => user.id === id ? { ...user, status: response_status } : user);
+    setCustomers(listcustomer);
+    setCustomerFilter(listcustomer);
+  }
+
+  const handleCloseModal = () => {
+    setShowViewModal(false);
+  }
+
   const totalPages = Math.ceil(customerFilter.length / postsPerPage); //  Tính toán số lượng trang
   // Cắt mảng nhân viên theo trang
   const indexOfLastPost = currentPage * postsPerPage;
@@ -55,16 +66,31 @@ const CustomerManagement = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleStatusChange = async (id) => {
-    const response_status = await updateStatusUser(id);
-    const listcustomer = customers.map(user => user.id === id ? { ...user, status: response_status } : user);
-    setCustomers(listcustomer);
-    setCustomerFilter(listcustomer);
-  }
 
-  const handleCloseModal = () => {
-    setShowViewModal(false);
-  }
+  const [currentPage_2, setCurrentPage_2] = useState(1);
+  const [postsPerPage_2] = useState(5);
+  const totalPages_2 = Math.ceil(bookingCustomer.length / postsPerPage_2); // Tính toán số lượng trang
+
+  // Cắt mảng nhân viên theo trang
+  const indexOfLastPost_2 = currentPage_2 * postsPerPage_2;
+  const indexOfFirstPost_2 = indexOfLastPost_2 - postsPerPage_2;
+  const currentBookingCustomer = bookingCustomer.slice(indexOfFirstPost_2, indexOfLastPost_2);
+
+  const nextPage_2 = () => {
+    if (currentPage_2 < totalPages_2) {
+      setCurrentPage_2(currentPage_2 + 1);
+    }
+  };
+
+  const prevPage_2 = () => {
+    if (currentPage_2 > 1) {
+      setCurrentPage_2(currentPage_2 - 1);
+    }
+  };
+
+  const goToPage_2 = (pageNumber) => {
+    setCurrentPage_2(pageNumber);
+  };
 
   const handleViewModal = async (id) => {
     try {
@@ -79,7 +105,7 @@ const CustomerManagement = () => {
         }, 0);
 
         setCurrentUser({ ...response, revenue });
-        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE'))
+        setBookingCustomer(response.bookings.filter(booking => booking.typeBooking === 'ONLINE').reverse())
       }
     } catch (error) {
       console.error("Error api getCustomerInforById:", error);
@@ -298,7 +324,7 @@ const CustomerManagement = () => {
               </div>
             </form>
 
-            {bookingCustomer && bookingCustomer.length > 0 && (
+            {currentBookingCustomer && currentBookingCustomer.length > 0 && (
               <div className="transaction-history">
                 <h3>Lịch sử mua vé </h3>
                 <table className="table">
@@ -312,7 +338,7 @@ const CustomerManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {bookingCustomer.map((booking, index) => (
+                    {currentBookingCustomer.map((booking, index) => (
                       <tr key={booking.id}>
                         <td>{index + 1}</td>
                         <td>{booking.dateBooking}</td>
@@ -326,6 +352,34 @@ const CustomerManagement = () => {
                     ))}
                   </tbody>
                 </table>
+
+                <div className="pagination">
+                  <button onClick={prevPage_2} disabled={currentPage_2 === 1}>
+                    Prev
+                  </button>
+                  {[...Array(totalPages_2)].map((_, index) => {
+                    const startPage = Math.max(currentPage_2 - 2, 0);
+                    const endPage = Math.min(currentPage_2 + 2, totalPages_2 - 1);
+
+                    if (index >= startPage && index <= endPage) {
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => goToPage_2(index + 1)}
+                          className={currentPage_2 === index + 1 ? 'active' : ''}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+
+                  <button onClick={nextPage_2} disabled={currentPage_2 === totalPages_2}>
+                    Next
+                  </button>
+                </div>
+
               </div>
             )}
           </div>
