@@ -378,3 +378,12 @@ export const deleteShowtime = (showtimeId) => {
     });
 };
 
+
+export const getTopMovies = () => {
+  return api.get('/movie/public/topMovies')
+    .then(response => response.data)
+    .catch(error => {
+      console.error("Error get top 3 movies!", error);
+      return null;
+    })
+};
