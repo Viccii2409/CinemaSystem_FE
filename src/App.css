@@ -18,7 +18,7 @@ a {
 
 .admin-layout{
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Sidebar */
@@ -26,7 +26,7 @@ a {
   position: fixed; /* Cố định sidebar */
   top: 0;
   left: 0;
-  width: 12%; /* Đặt chiều rộng cho sidebar */
+  width: 14%; /* Đặt chiều rộng cho sidebar */
   height: 100%; /* Chiều cao đầy đủ của màn hình */
   background-color: #f4f4f4;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -47,6 +47,7 @@ a {
   margin-top: 20px;
   background-color: #f4f4f4;
   padding: 20px;
+  height: 100%;
   padding-bottom: 100px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;

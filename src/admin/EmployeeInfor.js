@@ -194,6 +194,7 @@ const EmployeeInfor = () => {
 
   const handleFeedback = (bookingId) => {
     setSelectedBooking({ bookingId });
+    console.log(bookingId);
     setShowFeedbackForm(true);
   };
 
@@ -1226,6 +1227,66 @@ const EmployeeInfor = () => {
             </form>
           </div>
         </>
+      )}
+
+
+
+      {showFeedbackForm && (
+        <div class="feedback-modal">
+          <div class="feedback-form">
+            {error && <p className="error">{error}</p>}
+            {success && (
+              <p className="success">Feedback đã được gửi thành công!</p>
+            )}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleFeedbackSubmit();
+              }}
+            >
+              <div>
+                <label>
+                  Nhận xét:
+                  <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Nhập nhận xét của bạn"
+                    required
+                  ></textarea>
+                </label>
+              </div>
+              <div>
+                <label>
+                  Đánh giá sao:
+                  <select
+                    value={star || ""}
+                    onChange={(e) => setStar(e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>
+                      Chọn số sao
+                    </option>
+                    <option value="1">1 Sao</option>
+                    <option value="2">2 Sao</option>
+                    <option value="3">3 Sao</option>
+                    <option value="4">4 Sao</option>
+                    <option value="5">5 Sao</option>
+                  </select>
+                </label>
+              </div>
+              <button type="submit" className="submit-btn">
+                Gửi Feedback
+              </button>
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => setShowFeedbackForm(false)}
+              >
+                Hủy
+              </button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

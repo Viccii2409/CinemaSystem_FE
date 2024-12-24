@@ -14,7 +14,7 @@ import {
     addMovie,
     deleteMovie,
     editMovie,
-    getAllGenres,
+    getAllGenre,
     getAllLanguage,
     getAllMovies,
     getMovieById,
@@ -104,7 +104,7 @@ const Movies = () => {
 
     const fetchGenres = async () => {
         try {
-            const response = await getAllGenres();
+            const response = await getAllGenre();
             setGenres(response);
         } catch (error) {
             console.error("Error fetching genres:", error);

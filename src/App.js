@@ -43,26 +43,21 @@ import { AuthContext } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
-  const { user, loading } = useContext(AuthContext);
-  const [statusEmployee, setStatusEmployee] = useState(true);
-
-  useEffect(() => {
-    if (loading) return;
-    if (user) {
-      setStatusEmployee(user.statusEmployee);
-    }
-  }, [user, loading]);
+  const { user } = useContext(AuthContext);
 
   return (
     <Router>
       <Routes>
         <Route path="/*" element={<CustomerLayout />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
-        {/* <Route path="/admin/*" element={
-          <ProtectedRoute isAllowed={statusEmployee}>
+        {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
+        {user && (
+        <Route path="/admin/*" element={
+          <ProtectedRoute isAllowed={user?.statusEmployee}>
             <AdminLayout />
           </ProtectedRoute>
-        } /> */}
+        } />
+
+        )}
       </Routes>
     </Router>
   );

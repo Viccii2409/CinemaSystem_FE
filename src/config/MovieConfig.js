@@ -23,7 +23,7 @@ export const getMovieDetails = (id) => {
     })
 };
 
-export const getAllGenres = () => {
+export const getAllGenre = () => {
   return api
     .get(`/movie/public/genre`)
     .then((response) => response.data)
@@ -33,15 +33,15 @@ export const getAllGenres = () => {
     });
 };
 
-export const getAllGenre = () => {
-  return api
-    .get(`/movie/genre`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error getAllGenres", error);
-      return null;
-    });
-};
+// export const getAllGenre = () => {
+//   return api
+//     .get(`/movie/genre`)
+//     .then((response) => response.data)
+//     .catch((error) => {
+//       console.error("Error getAllGenres", error);
+//       return null;
+//     });
+// };
 
 export const searchGenres = (name) => {
   return api

@@ -4,7 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 import 'antd/dist/antd.css';
 import { getAllMovies } from "../config/MovieConfig"; 
-import { getTheater } from "../config/TheaterConfig"; 
+import { getAllNameTheater } from "../config/TheaterConfig"; 
 import { fetchRevenueData } from '../config/TicketConfig';
 import "./Revenue.css";
 const { RangePicker } = DatePicker;
@@ -35,7 +35,7 @@ const Revenue = () => {
 
     const fetchTheaters = async () => {
       try {
-        const response = await getTheater();
+        const response = await getAllNameTheater();
         console.log('Dữ liệu rạp:', response); 
         console.log(response.data);
         setTheaters(response.data); 
@@ -156,7 +156,7 @@ const handleFilterChange = (value) => {
     
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className='revenue' style={{ padding: '20px' }}>
       <h2>Thống kê doanh thu</h2>
       <div style={{ marginBottom: '20px' }}>
         {/* Bộ lọc */}

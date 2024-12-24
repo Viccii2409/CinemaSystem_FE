@@ -33,7 +33,7 @@ const VerificationSuccess = () => {
         </Link>
         </>
       ) : (
-        <h1 style={styles.title}>Xác Thực Thất BạiBại!</h1>
+        <h1 style={styles.title}>Xác Thực Thất Bại!</h1>
       )}
     </div>
   );

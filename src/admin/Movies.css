@@ -548,11 +548,11 @@
   margin: 0 auto; 
 }
 
-body, html {
+/* body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-}
+} */
 
 /* Các yếu tố bên trong modal */
 .ReactModal__Content h2 {

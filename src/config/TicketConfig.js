@@ -51,6 +51,15 @@ export const getAllDiscount = async () => {
     })
 }
 
+export const getDiscountHomepage = async () => {
+    return api.get('/ticket/public/discount/homepage')
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error getAllDiscount", error);
+        return null;
+    })
+}
+
 export const getAllDiscountActive = async () => {
     return api.get('/ticket/public/discount/active')
     .then(response => response.data)
