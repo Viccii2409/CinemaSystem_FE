@@ -15,6 +15,7 @@
     "antd": "^4.24.16",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
+    "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "giaodien": "file:",
     "jsbarcode": "^3.11.6",
@@ -29,7 +30,8 @@
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "sockjs-client": "^1.6.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
