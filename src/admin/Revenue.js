@@ -40,7 +40,7 @@ const Revenue = () => {
         const response = await getAllNameTheater();
         console.log('Dữ liệu rạp:', response); 
         console.log(response.data);
-        setTheaters(response.data); 
+        setTheaters(response); 
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu rạp:", error);
       }
