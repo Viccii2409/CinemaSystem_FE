@@ -88,7 +88,7 @@ const Revenue = () => {
       
         // Tính tổng doanh thu từ tất cả các mục trong response, loại trừ mục 'Total'
         const totalRevenue = response
-          .filter(item => item.date !== 'Total' && item.movieTitle !== 'Total' && item.theaterName !== 'Total') // Loại bỏ mục 'Total'
+          .filter(item => item.date !== 'Total' && item.movieTitle !== 'Total' && item.theaterName !== 'Total') 
           .reduce((acc, item) => acc + (item.totalRevenue || 0), 0);
       
         setData(filteredData);
