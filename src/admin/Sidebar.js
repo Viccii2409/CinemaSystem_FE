@@ -66,7 +66,7 @@ const Sidebar = () => {
         {permission.some(entry => entry.name === "MANAGER_REVENUE") && (
           <li><Link to="/admin/statistics" className={isActive('/admin/statistics')}><FontAwesomeIcon icon={faChartBar} /> Thống kê</Link></li>)}
         <li><Link to="/admin/account" className={isActive('/admin/account')}><FontAwesomeIcon icon={faUser} /> Tài khoản</Link></li>
-        <li><Link to="" onClick={handleLogout} className="logout"><FontAwesomeIcon icon={faSignOutAlt} /> Thoát</Link></li>
+        <li><Link to="/home" onClick={handleLogout} className="logout"><FontAwesomeIcon icon={faSignOutAlt} /> Thoát</Link></li>
       </ul>
     </aside>
   );

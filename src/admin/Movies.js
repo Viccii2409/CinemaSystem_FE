@@ -14,10 +14,11 @@ import {
     addMovie,
     deleteMovie,
     editMovie,
-    getAllGenres,
+    getAllGenre,
     getAllLanguage,
     getAllMovies,
     getMovieById,
+    updateStatusMovie,
     getMovieDetails
 } from "../config/MovieConfig";
 import axios from 'axios';
@@ -80,24 +81,30 @@ const Movies = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await getAllMovies();
-            // const normalizedMovies = response.map((movie) => ({
-            //     ...movie,
-            //     genre: Array.isArray(movie.genre) ? movie.genre : [], // Normalize genre
-            // }));
-            setMovies(response);
-            console.log(response);
-            setFilteredMovies(response);
-            setLoading(false);
+            setLoading(true); // Bật trạng thái loading trước khi fetch
+            const response = await getAllMovies(); // Gọi API lấy danh sách phim
+            if (Array.isArray(response)) { 
+                // Kiểm tra nếu response là mảng
+                setMovies(response);
+                setFilteredMovies(response);
+            } else {
+                console.error("Response không phải là mảng:", response);
+            }
         } catch (error) {
             console.error("Error fetching movies:", error);
-            setLoading(false);
+        } finally {
+            setLoading(false); // Tắt trạng thái loading dù thành công hay lỗi
         }
     };
 
+    // useEffect để gọi fetchMovies khi component được mount
+    useEffect(() => {
+        fetchMovies();
+    }, []);
+
     const fetchGenres = async () => {
         try {
-            const response = await getAllGenres();
+            const response = await getAllGenre();
             setGenres(response);
         } catch (error) {
             console.error("Error fetching genres:", error);
@@ -131,13 +138,13 @@ const Movies = () => {
 
         // Kiểm tra tất cả các điều kiện
         if (
-            !movie.title ||                   // Tiêu đề không được để trống
-            !movie.releaseDate ||             // Ngày phát hành không được để trống
-            !movie.genre.length ||            // Phải có ít nhất một thể loại
-            !movie.description ||             // Mô tả không được để trống
-            !movie.duration ||                // Duration không được để trống
-            isNaN(Number(movie.duration)) ||  // Kiểm tra nếu duration không phải là số
-            Number(movie.duration) <= 0       // Kiểm tra nếu duration nhỏ hơn hoặc bằng 0
+            !movie.title ||                   
+            !movie.releaseDate ||             
+            !movie.genre.length ||            
+            !movie.description ||             
+            !movie.duration ||                
+            isNaN(Number(movie.duration)) ||  
+            Number(movie.duration) <= 0       
         ) {
             return false;
         }
@@ -180,7 +187,6 @@ const Movies = () => {
         // Gửi đối tượng movie dưới dạng chuỗi JSON
         // formData.append('movie', JSON.stringify(newMovie));
 
-        // Gửi các trường khác
         const genreid = newMovie.genre.map(genre => genre.id);
         formData.append('title', newMovie.title);
         formData.append('duration', newMovie.duration);
@@ -200,7 +206,7 @@ const Movies = () => {
                 alert("Hình ảnh phải có định dạng JPG hoặc PNG.");
                 return;
             }
-            formData.append('image', image);  // For image file
+            formData.append('image', image);  
         } else {
             alert("Vui lòng chọn hình ảnh cho phim.");
             return;
@@ -214,20 +220,13 @@ const Movies = () => {
                 alert("Trailer phải có định dạng video hợp lệ (mp4, webm, ogg).");
                 return;
             }
-            formData.append('trailer', trailer);  // For trailer file
+            formData.append('trailer', trailer);
         }
         else {
             alert("Vui lòng chọn trailer cho phim.");
             return;
         }
-        // in form data
-        // formData.forEach((value, key) => {
-        //     if (value instanceof File) {
-        //         console.log(key, value.name, value.type, value.size);  // In ra tên, loại, và kích thước tệp
-        //     } else {
-        //         console.log(key, value);
-        //     }
-        // });
+      
 
         const response = await addMovie(formData);
         if (response) {
@@ -262,42 +261,21 @@ const Movies = () => {
 
         }
     };
-
     useEffect(() => {
         console.log(movies);
     }, [movies]);
 
-
-
-
     // Đổi trạng thái phim
-    const updateStatusMovie = async (id) => {
+    const updateStatusOfMovie = async (id) => {
         try {
-
             await updateStatusMovie(id);
-
-            // Tải lại danh sách phim sau khi thay đổi trạng thái
             fetchMovies();
-
-            alert("Chuyển trạng thái thành công!");
         } catch (error) {
             console.error('Error updating status:', error);
             alert("Cập nhật trạng thái thất bại!");
         }
     };
 
-
-    // Sửa phim
-    // Mở modal chỉnh sửa
-    // const handleOpenEditModal = (movieId) => {
-    //     const movieToEdit = movies.find((movie) => movie.id === movieId);
-    //     if (movieToEdit) {
-    //         setSelectedMovie(movieToEdit);
-    //         setIsEditModalOpen(true);
-    //     } else {
-    //         handleEditMovie(movieId);
-    //     }
-    // };
 
     // Lấy thông tin chi tiết phim
     const handleEditMovie = async (movieId) => {
@@ -677,7 +655,7 @@ const Movies = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={movie.status}
-                                                onChange={() => updateStatusMovie(movie.id)}
+                                                onChange={() => updateStatusOfMovie(movie.id)}
                                             />
                                             <span className="slider round"></span>
                                         </label>

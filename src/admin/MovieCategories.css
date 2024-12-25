@@ -1,4 +1,4 @@
-/* Styles for Movie Categories Management Component */
+/* Styles for Movie Categories Management*/
 .movie-categories-management {
   background-color: #f4f4f4;
   padding: 20px;
@@ -137,7 +137,7 @@
 
 
 .movie-categories-management .view-button i {
-  color: #17a2b8; /* Màu xanh cho nút xem */
+  color: #17a2b8;
 }
 
 
@@ -152,7 +152,7 @@
 
 
 .movie-categories-management .view-button:hover i {
-  color: #138496; /* Thay đổi màu khi hover */
+  color: #138496; 
 }
 
 
@@ -245,14 +245,14 @@
 
 
 .movie-categories-management .search-bar {
-  display: flex; /* Sử dụng flexbox để căn chỉnh */
-  gap: 10px; /* Khoảng cách giữa các phần tử bên trong .search-bar */
+  display: flex; 
+  gap: 10px; 
 }
 
 
 .movie-categories-management .search-bar input {
-  width: 20%; /* Chiều rộng của ô tìm kiếm */
-  padding: 10px; /* Padding cho ô tìm kiếm */
+  width: 20%; 
+  padding: 10px; 
   border: 1px solid #ddd;
   border-radius: 5px;
 
@@ -261,14 +261,14 @@
 
 
 .movie-categories-management .search-button {
-  padding: 0 20px; /* Padding bên trái và bên phải cho nút tìm kiếm */
+  padding: 0 20px; 
   background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  height: 40px; /* Đặt chiều cao cho nút tìm kiếm bằng với chiều cao ô tìm kiếm */
+  height: 40px; 
 }
 
 
@@ -278,109 +278,109 @@
 
 
 .movie-categories-management .modal {
-  position: fixed; /* Đặt vị trí modal cố định */
-  top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
-  left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
-  transform: translate(-50%, -50%); /* Căn giữa modal */
-  width: 400px; /* Chiều rộng của modal */
-  padding: 20px; /* Khoảng cách bên trong modal */
-  background-color: white; /* Màu nền của modal */
-  border-radius: 8px; /* Bo góc cho modal */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
-  z-index: 1000; /* Đảm bảo modal hiển thị trên các phần tử khác */
+  position: fixed;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  width: 400px; 
+  padding: 20px; 
+  background-color: white; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; 
 }
 
 
 .movie-categories-management .modal h2 {
-  margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
-  font-size: 24px; /* Kích thước chữ cho tiêu đề */
-  color: #333; /* Màu chữ cho tiêu đề */
+  margin: 0 0 15px; 
+  font-size: 24px;
+  color: #333; 
 }
 
 
 .movie-categories-management .modal input {
-  width: 100%; /* Chiều rộng của ô input */
-  padding: 10px; /* Khoảng cách bên trong ô input */
-  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
-  border: 1px solid #ddd; /* Đường viền cho ô input */
-  border-radius: 5px; /* Bo góc cho ô input */
-  font-size: 16px; /* Kích thước chữ cho ô input */
+  width: 100%; 
+  padding: 10px; 
+  margin-bottom: 15px; 
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  font-size: 16px; 
 }
 /* thêm thể loại*/
 .movie-categories-management .modal {
-  position: fixed; /* Đặt vị trí modal cố định */
-  top: 50%; /* Đưa modal vào giữa màn hình theo chiều dọc */
-  left: 50%; /* Đưa modal vào giữa màn hình theo chiều ngang */
-  transform: translate(-50%, -50%); /* Căn giữa modal */
-  width: 400px; /* Chiều rộng của modal */
-  padding: 20px; /* Khoảng cách bên trong modal */
-  background-color: white; /* Màu nền của modal */
-  border-radius: 8px; /* Bo góc cho modal */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
-  z-index: 1000; /* Đảm bảo modal hiển thị trên các phần tử khác */
-  overflow: hidden; /* Ẩn nội dung tràn */
+  position: fixed;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  width: 400px; 
+  padding: 20px; 
+  background-color: white; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  z-index: 1000; 
+  overflow: hidden; 
 }
 
 
 .movie-categories-management .modal h2 {
-  margin: 0 0 15px; /* Khoảng cách cho tiêu đề */
-  font-size: 24px; /* Kích thước chữ cho tiêu đề */
-  color: #333; /* Màu chữ cho tiêu đề */
+  margin: 0 0 15px; 
+  font-size: 24px; 
+  color: #333; 
 }
 
 
 .movie-categories-management .modal input[type="text"] {
-  width: 100%; /* Chiều rộng của ô input */
-  padding: 10px; /* Khoảng cách bên trong ô input */
-  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô input */
-  border: 1px solid #ddd; /* Đường viền cho ô input */
-  border-radius: 5px; /* Bo góc cho ô input */
-  font-size: 16px; /* Kích thước chữ cho ô input */
-  box-sizing: border-box; /* Bao gồm padding và border trong tính toán chiều rộng */
+  width: 100%; 
+  padding: 10px; 
+  margin-bottom: 15px; 
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  font-size: 16px; 
+  box-sizing: border-box; 
 }
 
 
 .movie-categories-management .modal input[type="text"]:focus {
-  outline: none; /* Bỏ viền khi ô input được chọn */
-  border-color: #4caf50; /* Đổi màu viền khi chọn */
+  outline: none; 
+  border-color: #4caf50; 
 }
 
 
 .movie-categories-management .modal textarea {
-  width: 100%; /* Chiều rộng của ô textarea */
-  padding: 10px; /* Khoảng cách bên trong ô textarea */
-  margin-bottom: 15px; /* Khoảng cách dưới mỗi ô textarea */
-  border: 1px solid #ddd; /* Đường viền cho ô textarea */
-  border-radius: 5px; /* Bo góc cho ô textarea */
-  font-size: 16px; /* Kích thước chữ cho ô textarea */
-  box-sizing: border-box; /* Bao gồm padding và border trong tính toán chiều rộng */
-  resize: vertical; /* Cho phép người dùng thay đổi kích thước chiều dọc */
+  width: 100%; 
+  padding: 10px; 
+  margin-bottom: 15px; 
+  border: 1px solid #ddd;
+  border-radius: 5px; 
+  font-size: 16px; 
+  box-sizing: border-box; 
+  resize: vertical; 
 }
 
 
 .movie-categories-management .modal button {
-  padding: 10px 15px; /* Khoảng cách bên trong nút */
-  border: none; /* Không có đường viền */
-  border-radius: 5px; /* Bo góc cho nút */
-  cursor: pointer; /* Hiển thị con trỏ tay khi di chuột qua nút */
-  transition: background-color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+  padding: 10px 15px;
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
 }
 
 
 .movie-categories-management .modal button:hover {
-  background-color: #4caf50; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: #4caf50; 
+  color: white; 
 }
 
 
 .movie-categories-management .modal button:last-child {
-  background-color: #f44336; /* Màu nền cho nút "Đóng" */
-  margin-left: 10px; /* Khoảng cách giữa hai nút */
+  background-color: #f44336; 
+  margin-left: 10px; 
 }
 
 
 .movie-categories-management .modal button:last-child:hover {
-  background-color: #d32f2f; /* Màu nền khi hover cho nút "Đóng" */
+  background-color: #d32f2f; 
 }
 
 
@@ -395,7 +395,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Đảm bảo popup nằm trên các thành phần khác */
+  z-index: 1000; 
 }
 
 
@@ -411,7 +411,7 @@
 .movie-categories-management .cinema-table th,
 .movie-categories-managementt .cinema-table td {
     text-align: center;
-    vertical-align: middle; /* Căn giữa theo chiều dọc */
+    vertical-align: middle; 
 } 
 
 /*PHÂN TRANG*/
@@ -428,37 +428,36 @@
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
-  background-color: #4caf50; /* Màu nền */
-  color: white; /* Màu chữ */
+  background-color: #4caf50;
+  color: white; 
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 
 .movie-categories-management .pagination button:hover {
-  background-color: #4caf50; /* Màu nền khi hover */
+  background-color: #4caf50; 
 }
 
 
 .movie-categories-management .pagination button:disabled {
-  background-color: #cccccc; /* Màu nền khi vô hiệu hóa */
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
 
 .movie-categories-management .pagination .active {
-  background-color: #4caf50; /* Màu nền cho trang hiện tại */
+  background-color: #4caf50; 
   font-weight: bold;
 }
 
-/* Căn giữa tất cả các ô (th và td) trừ cột mô tả */
+
 .movie-categories-management .cinema-table th,
 .movie-categories-management .cinema-table td {
     text-align: center;
     vertical-align: middle;
 }
 
-/* Căn trái cột "Mô tả" */
 .movie-categories-management .cinema-table td:nth-child(3) {
     text-align: left;
 }

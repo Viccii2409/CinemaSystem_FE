@@ -1,4 +1,4 @@
-Styles for Movies Management Component
+/* Styles for Movies Management Component */
 .movies-management {
   background-color: #f4f4f4;
   padding: 20px;
@@ -126,7 +126,7 @@ Styles for Movies Management Component
 .movies-management .cinema-table th,
 .movies-management .cinema-table td {
     text-align: center;
-    vertical-align: middle; /* Căn giữa theo chiều dọc */
+    vertical-align: middle; 
 } 
 
 .movies-management .view-button,
@@ -142,7 +142,7 @@ Styles for Movies Management Component
 
 
 .movies-management .view-button i {
-  color: #17a2b8; /* Màu xanh cho nút xem */
+  color: #17a2b8; 
 }
 
 
@@ -157,7 +157,7 @@ Styles for Movies Management Component
 
 
 .movies-management .view-button:hover i {
-  color: #138496; /* Thay đổi màu khi hover */
+  color: #138496;
 }
 
 
@@ -248,9 +248,9 @@ Styles for Movies Management Component
   background-color: #218838;
 }
 .movie-image {
-  width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng */
-  height: auto; /* Tự động điều chỉnh chiều cao để giữ tỉ lệ ảnh */
-  object-fit: cover; /* Đảm bảo ảnh phủ đầy không gian mà không bị méo, nhưng có thể bị cắt */
+  width: 100%; 
+  height: auto; 
+  object-fit: cover; 
 }
 
 
@@ -268,26 +268,26 @@ Styles for Movies Management Component
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
-  background-color: #4caf50; /* Màu nền */
-  color: white; /* Màu chữ */
+  background-color: #4caf50; 
+  color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 
 .movies-management .pagination button:hover {
-  background-color: #4caf50; /* Màu nền khi hover */
+  background-color: #4caf50;
 }
 
 
 .movies-management .pagination button:disabled {
-  background-color: #cccccc; /* Màu nền khi vô hiệu hóa */
+  background-color: #cccccc; 
   cursor: not-allowed;
 }
 
 
 .movies-management .pagination .active {
-  background-color: #4caf50; /* Màu nền cho trang hiện tại */
+  background-color: #4caf50; 
   font-weight: bold;
 }
 
@@ -305,11 +305,10 @@ Styles for Movies Management Component
   margin-bottom: 20px;
 }
 
-/* Căn chỉnh chung cho các phần tử trong search-container */
 .movies-management .search-container input,
 .movies-management .search-container .genre-filter select,
 .movies-management .search-container .search-button {
-  height: 40px; /* Đồng bộ chiều cao */
+  height: 40px; 
   padding: 0 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -322,7 +321,7 @@ Styles for Movies Management Component
 
 
 .movies-management .search-container .search-button  {
-  padding: 0 16px; /* Khoảng cách padding ngang cho nút */
+  padding: 0 16px; 
   background-color: #4caf50;
   color: #fff;
   border: none;
@@ -359,11 +358,10 @@ Styles for Movies Management Component
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 .cinema-table td img:hover {
-  transform: scale(1.1); /* Phóng to ảnh thêm khi hover */
+  transform: scale(1.1); 
   transition: transform 0.3s ease; 
 }
 
-/* khoảng cách giữa ô tìm kiếm và combobox thể loại */
 
 .movies-management .controls {
   display: flex;
@@ -393,23 +391,23 @@ Styles for Movies Management Component
   cursor: pointer;
 }
 .movies-management .fa-star, .fa-star-half-alt {
-  color: #ffd700; /* Màu vàng cho sao đầy và nửa sao */
-  margin-right: 5px; /* Khoảng cách giữa các sao */
-  font-size: 18px; /* Kích thước sao */
+  color: #ffd700;
+  margin-right: 5px; 
+  font-size: 18px; 
 }
 
 .movies-management .far.fa-star {
-  color: #ccc; /* Màu xám cho sao chưa đánh giá */
+  color: #ccc; 
 }
 
 
 /* thêm  */
 /* Modal container */
 .movies-management .ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Overlay background */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; 
+  align-items: center; 
   position: fixed;
   top: 0;
   left: 0;
@@ -423,12 +421,12 @@ Styles for Movies Management Component
   background-color: #fff;
   padding: 20px;
   width: 80%;
-  max-width: 600px; /* Điều chỉnh chiều rộng tối đa */
+  max-width: 600px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow-y: auto;
-  max-height: 80vh; /* Đảm bảo modal không vượt quá 80% chiều cao màn hình */
+  max-height: 80vh;
 }
 
 /* Modal title */
@@ -465,11 +463,6 @@ Styles for Movies Management Component
   box-sizing: border-box;
   margin-top: 5px;
 }
-
-
-
-
-
 
 
 /* Input file */
@@ -529,10 +522,10 @@ Styles for Movies Management Component
 }
 /* Modal container (overlay) */
 .ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ khi mở modal */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center;
+  align-items: center; 
   position: fixed;
   top: 0;
   left: 0;
@@ -546,21 +539,20 @@ Styles for Movies Management Component
   background-color: #fff;
   padding: 20px;
   width: 80%;
-  max-width: 600px; /* Đảm bảo modal không rộng quá */
+  max-width: 600px; 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow-y: auto;
-  max-height: 80vh; /* Giới hạn chiều cao tối đa */
-  margin: 0 auto; /* Căn giữa modal theo chiều ngang */
+  max-height: 80vh;
+  margin: 0 auto; 
 }
 
-/* Đảm bảo không có margin, padding ở body hoặc container cha */
-body, html {
+/* body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-}
+} */
 
 /* Các yếu tố bên trong modal */
 .ReactModal__Content h2 {
@@ -612,9 +604,9 @@ body, html {
 
 .modal-buttons-container {
   display: flex;
-  justify-content: center; /* Căn giữa các button theo chiều ngang */
-  gap: 10px; /* Khoảng cách giữa các button */
-  width: 100%; /* Căn chỉnh button ra toàn bộ chiều rộng container */
+  justify-content: center; 
+  gap: 10px; 
+  width: 100%; 
 }
 
 /* Input focus effect */

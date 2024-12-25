@@ -10,8 +10,8 @@
   position: fixed; /* Cố định header */
   top: 0;
   left: 0;
-  width: 98%;
-  height: 2vw;
+  width: 100%;
+  height: 3vw;
   z-index: 1000; /* Đặt header lên trên các phần tử khác */
 }
 
@@ -20,6 +20,8 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  line-height: 3vw;
+  padding-top: 1vw;
 }
 
 .homepage-header .header-title a {

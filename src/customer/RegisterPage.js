@@ -15,7 +15,8 @@ import { check, register } from "../config/UserConfig";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { handleLogin, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,9 +46,14 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
+      setIsSubmitting(false);
       return;
     }
     // console.log(formData);
@@ -55,6 +61,7 @@ const RegisterPage = () => {
     console.log(response_check);
     if(response_check){
       alert("Email đã được sử dụng. Vui lòng nhập email khác!");
+      setIsSubmitting(false);
       return;
     }
     else {

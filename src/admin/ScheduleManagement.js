@@ -1,127 +1,138 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrashCan, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import ScheduleManagementService from './ScheduleManagementService';
-import MovieService from './MovieService';
+import {getAllMovies,fetchActiveTheaters,fetchShowtimes,fetchShowtimeById, toggleShowtimeStatus, addShowtime, updateShowtime, deleteShowtime } from '../config/MovieConfig';
 import './ScheduleManagement.css';
 
 function ScheduleManagement() {
-  const [movies, setMovies] = useState([]); // State lưu danh sách phim
-  const [loadingMovies, setLoadingMovies] = useState(false); // Trạng thái tải phim
+  const [movies, setMovies] = useState([]); 
+  const [loadingMovies, setLoadingMovies] = useState(false); 
 
   const [theater, setTheater] = useState('');
   const [date, setDate] = useState('');
   const [rooms, setRooms] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
   const [theaters, setTheaters] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(''); // Thêm state để lưu lỗi
+  const [errorMessage, setErrorMessage] = useState(''); 
   const [loading, setLoading] = useState(false);
-  const [modalVisibleAdd, setModalVisibleAdd] = useState(false); // Hiển thị modal
+  const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
   const [modalVisible, setModalVisible] = useState(false); 
-  const [showtimeToEdit, setShowtimeToEdit] = useState(null);  // Add this line
+  const [showtimeToEdit, setShowtimeToEdit] = useState(null);  
 
   const [newShowtime, setNewShowtime] = useState({
     movieId: null,
     startTime: null,
-    date: '',  // Thêm trường cho ngày
-    theaterId: '',  // Thêm trường cho theaterId
+    date: '', 
+    theaterId: '', 
     roomId: '',
-  }); // Lưu thông tin lịch chiếu mới
+  });
 
   useEffect(() => {
-    setLoadingMovies(true);
-    MovieService.getAllMovies()
-      .then((response) => {
-        // Lọc các phim có status = true
-        const activeMovies = response.data.filter(movie => movie.status === true);
+    const fetchMovies = async () => {
+      setLoadingMovies(true);
+      try {
+        const response = await getAllMovies();
+        console.log(response);
+        const activeMovies = response.filter(movie => movie.status === true);
         setMovies(activeMovies);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Lỗi khi tải danh sách phim:", error);
         setErrorMessage('Không thể tải danh sách phim. Vui lòng thử lại.');
-      })
-      .finally(() => {
+      } finally {
         setLoadingMovies(false);
-      });
+      }
+    };
+  
+    fetchMovies();
   }, []);
   
 
   useEffect(() => {
-    // Lấy danh sách các rạp hoạt động
-    ScheduleManagementService.fetchActiveTheaters()
-      .then(data => {
-        console.log('Dữ liệu rạp:', data); // In ra dữ liệu rạp
+    const fetchTheaters = async () => {
+      try {
+        const data = await fetchActiveTheaters();
+        console.log('Dữ liệu rạp:', data);
         setTheaters(data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("Lỗi khi tải danh sách rạp:", error);
         setErrorMessage('Không thể tải danh sách rạp. Vui lòng thử lại.');
-      });
-  }, []); 
+      }
+    };
+  
+    fetchTheaters();
+  }, []);
+  
 
   useEffect(() => {
-    if (theater && date) {
-      ScheduleManagementService.fetchShowtimes(date, theater)
-        .then(data => {
-          console.log("Dữ liệu phòng trả về từ API:", data); // Kiểm tra dữ liệu phòng
+    const fetchRoomAndShowtimes = async () => {
+      if (theater && date) {
+        try {
+          const data = await fetchShowtimes(date, theater);
+          console.log("Dữ liệu phòng trả về từ API:", data);
+  
           if (data && Array.isArray(data)) {
             const validRooms = data.filter(item => item.showtimes);
             setRooms(validRooms);
           } else {
-            setRooms([]); 
+            setRooms([]);
           }
-        })
-        .catch(error => setErrorMessage('Không thể tải lịch chiếu. Vui lòng thử lại.'));
-    }
+        } catch (error) {
+          setErrorMessage('Không thể tải lịch chiếu. Vui lòng thử lại.');
+        }
+      }
+    };
+  
+    fetchRoomAndShowtimes();
   }, [theater, date]);
   
+  
 
-  const reloadShowtimes = () => {
+  const reloadShowtimes = async () => {
     if (theater && date) {
-      setLoading(true); 
-      ScheduleManagementService.fetchShowtimes(date, theater)
-        .then(data => {
-          console.log("Dữ liệu trả về từ API:", data);
+      setLoading(true);
+      try {
+        const data = await fetchShowtimes(date, theater);
+        console.log("Dữ liệu trả về từ API:", data);
   
-          if (data && Array.isArray(data)) {
-            const validRooms = data.filter(item => item.showtimes); 
-            setRooms(validRooms);  
+        if (data && Array.isArray(data)) {
+          const validRooms = data.filter(item => item.showtimes);
+          setRooms(validRooms);
   
-            const validShowtimes = data.flatMap(room => room.showtimes); 
-            setShowtimes(validShowtimes); 
-          } else {
-            setRooms([]); 
-            setShowtimes([]); 
-          }
-          setLoading(false); 
-        })
-        .catch(error => {
-          console.error("Lỗi khi tải lịch chiếu:", error);
-          setErrorMessage('Không thể tải lịch chiếu. Vui lòng thử lại.');
-          setLoading(false); 
-        });
+          const validShowtimes = data.flatMap(room => room.showtimes);
+          setShowtimes(validShowtimes);
+        } else {
+          setRooms([]);
+          setShowtimes([]);
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải lịch chiếu:", error);
+        setErrorMessage('Không thể tải lịch chiếu. Vui lòng thử lại.');
+      } finally {
+        setLoading(false);
+      }
     } else {
       setErrorMessage('Vui lòng chọn rạp và ngày.');
       setLoading(false);
     }
   };
   
+  
 
-  const handleStatusToggle = (showtimeId) => {
-    ScheduleManagementService.toggleShowtimeStatus(showtimeId)
-      .then(() => {
-        setShowtimes(prevShowtimes => 
-          prevShowtimes.map(showtime => 
-            showtime.id === showtimeId ? { ...showtime, status: !showtime.status } : showtime
-          )
-        );
-        reloadShowtimes(); 
-      })
-      .catch(error => {
-        console.error("Lỗi khi thay đổi trạng thái lịch chiếu:", error);
-        setLoading(false); 
-      });
+  const handleStatusToggle = async (showtimeId) => {
+    try {
+      await toggleShowtimeStatus(showtimeId);
+      setShowtimes(prevShowtimes => 
+        prevShowtimes.map(showtime => 
+          showtime.id === showtimeId ? { ...showtime, status: !showtime.status } : showtime
+        )
+      );
+      await reloadShowtimes(); 
+    } catch (error) {
+      console.error("Lỗi khi thay đổi trạng thái lịch chiếu:", error);
+      setLoading(false);
+    }
   };
+  
 
   const handleStartTimeChange = (e) => {
     let timeValue = e.target.value;
@@ -145,36 +156,32 @@ function ScheduleManagement() {
   };
   
 
-  const handleAddShowtime = () => {
+  const handleAddShowtime = async () => {
     if (!newShowtime.movieId || !newShowtime.startTime || !newShowtime.roomId || !theater || !date) {
       setErrorMessage('Vui lòng điền đầy đủ thông tin!');
-      console.log("Thông tin chưa đầy đủ:", newShowtime); // Kiểm tra thông tin
+      console.log("Thông tin chưa đầy đủ:", newShowtime); 
       return;
     }
   
     const showtimeData = {
       ...newShowtime,
-      theaterId: theater, // Đảm bảo theaterId không rỗng
-      date: date, // Đảm bảo date không rỗng
+      theaterId: theater,
+      date: date,
     };
   
-    console.log("Dữ liệu gửi lên API: ", showtimeData); // Kiểm tra lại dữ liệu gửi lên API
-  
-    ScheduleManagementService.addShowtime(showtimeData)
-      .then(() => {
-        setModalVisibleAdd(false);
-        reloadShowtimes();
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 400) {
-          // Hiển thị thông báo lỗi chi tiết từ backend
-          alert(error.response.data.message);  // Lỗi từ backend (nếu có)
-        } else {
-          // Trường hợp lỗi không xác định (chẳng hạn mạng, lỗi server, ...)
-          alert('Lỗi khi thêm lịch chiếu. Vui lòng thử lại.');
-        }
-      });
+    try {
+      await addShowtime(showtimeData);
+      setModalVisibleAdd(false);
+      reloadShowtimes();
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message); // Lỗi từ backend
+      } else {
+        alert('Lỗi khi thêm lịch chiếu. Vui lòng thử lại.');
+      }
+    }
   };
+  
   
   useEffect(() => {
     setNewShowtime(prevState => ({
@@ -189,92 +196,85 @@ function ScheduleManagement() {
   const openModalForRoom = (roomId) => {
     setNewShowtime(prevState => {
       const updatedState = { ...prevState, roomId: roomId };
-      console.log("newShowtime khi mở modal: ", updatedState);  // Kiểm tra giá trị của newShowtime
+      console.log("newShowtime khi mở modal: ", updatedState); 
       return updatedState;
     });
-    setModalVisibleAdd(true); // Hiển thị modal
+    setModalVisibleAdd(true); 
   };
   
-  const handleEditShowtime = () => {
-    if (!showtimeToEdit) return;  
+  const handleEditShowtime = async () => {
+    if (!showtimeToEdit) return;
+  
     const updatedShowtime = {
       ...newShowtime,
-      startTime: appendSecondsToTime(newShowtime.startTime), // Thêm giây vào thời gian
-    };  
-    console.log("test",newShowtime);
-    console.log("Dữ liệu gửi lên backend:", updatedShowtime);
-
-    ScheduleManagementService.updateShowtime(showtimeToEdit.id, updatedShowtime)
-      .then(() => {
-        setModalVisible(false);
-        reloadShowtimes();
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 400) {
-          // Hiển thị thông báo lỗi chi tiết từ backend
-          alert(error.response.data.message);  // Lỗi từ backend (nếu có)
-        } else {
-          // Trường hợp lỗi không xác định (chẳng hạn mạng, lỗi server, ...)
-          alert('Lỗi khi sửa lịch chiếu. Vui lòng thử lại.');
-        }
-      });
+      startTime: appendSecondsToTime(newShowtime.startTime), 
+    };
+  
+    try {
+      await updateShowtime(showtimeToEdit.id, updatedShowtime);
+      setModalVisible(false);
+      reloadShowtimes();
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message); // Lỗi từ backend 
+      } else {
+        alert('Lỗi khi sửa lịch chiếu. Vui lòng thử lại.');
+      }
+    }
   };
+  
 
-  const openModalForRoomEdit = (showtimeId) => {
+  const openModalForRoomEdit = async (showtimeId) => {
     console.log("id showtime:", showtimeId);
   
-    ScheduleManagementService.fetchShowtimeById(showtimeId)
-      .then(response => {
-        console.log("Toàn bộ phản hồi từ API:", response);
-        console.log("Dữ liệu response.data:", response.data);
-
-        const showtimeData = response;
-        // if (showtimeData && showtimeData.id && showtimeData.movieId && showtimeData.roomId) {
-        if (showtimeData && showtimeData.id && showtimeData.movieId && showtimeData.roomId) {
-          console.log("Thông tin showtime nhận được:", showtimeData);
-          console.log("Dữ liệu nhận được từ API:", showtimeData);
-          console.log("Kiểm tra các trường:", {
-            id: typeof showtimeData.id,
-            movieId: typeof showtimeData.movieId,
-            roomId: typeof showtimeData.roomId,
-          });
-
-
-          setShowtimeToEdit(showtimeData);
+    try {
+      const response = await fetchShowtimeById(showtimeId);
+      console.log("Toàn bộ phản hồi từ API:", response);
+      console.log("Dữ liệu response.data:", response.data);
   
-          // Định dạng dữ liệu cho modal
-          setNewShowtime({
-            movieId: showtimeData.movieId,
-            startTime: formatTimeForInput(showtimeData.startTime),
-            date: showtimeData.date,
-            theaterId: showtimeData.theaterId,
-            roomId: showtimeData.roomId,
-          });
-          console.log("Dữ liệu newShowtime sau khi mở modal:", {
-            movieId: showtimeData.movieId,
-            // startTime: formatTimeForInput(showtimeData.startTime),
-            startTime: showtimeData.startTime,
-            date: showtimeData.date,
-            theaterId: showtimeData.theaterId,
-            roomId: showtimeData.roomId,
-          });
-          
-          setModalVisible(true);
-        } else {
-          console.error("Dữ liệu không hợp lệ. Các trường kiểm tra:", {
-            id: showtimeData?.id,
-            movieId: showtimeData?.movieId,
-            roomId: showtimeData?.roomId,
-          });
-        }
-      })
-      .catch(error => {
-        console.error("Lỗi khi lấy thông tin lịch chiếu:", error);
-        alert("Lỗi khi lấy thông tin lịch chiếu");
-      });
-      console.log("Modal hiển thị: ", modalVisible);
-
+      const showtimeData = response;
+      if (showtimeData && showtimeData.id && showtimeData.movieId && showtimeData.roomId) {
+        console.log("Thông tin showtime nhận được:", showtimeData);
+        console.log("Dữ liệu nhận được từ API:", showtimeData);
+        console.log("Kiểm tra các trường:", {
+          id: typeof showtimeData.id,
+          movieId: typeof showtimeData.movieId,
+          roomId: typeof showtimeData.roomId,
+        });
+  
+        setShowtimeToEdit(showtimeData);
+  
+        setNewShowtime({
+          movieId: showtimeData.movieId,
+          startTime: formatTimeForInput(showtimeData.startTime),
+          date: showtimeData.date,
+          theaterId: showtimeData.theaterId,
+          roomId: showtimeData.roomId,
+        });
+        console.log("Dữ liệu newShowtime sau khi mở modal:", {
+          movieId: showtimeData.movieId,
+          startTime: showtimeData.startTime,
+          date: showtimeData.date,
+          theaterId: showtimeData.theaterId,
+          roomId: showtimeData.roomId,
+        });
+  
+        setModalVisible(true);
+      } else {
+        console.error("Dữ liệu không hợp lệ. Các trường kiểm tra:", {
+          id: showtimeData?.id,
+          movieId: showtimeData?.movieId,
+          roomId: showtimeData?.roomId,
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin lịch chiếu:", error);
+      alert("Lỗi khi lấy thông tin lịch chiếu");
+    }
+  
+    console.log("Modal hiển thị: ", modalVisible);
   };
+  
   
   const formatTimeForInput = (time) => {
     return time ? time.slice(0, 5) : ""; // Lấy 5 ký tự đầu "HH:mm"
@@ -287,31 +287,30 @@ function ScheduleManagement() {
   
       // Nếu thời gian có 2 phần (giờ và phút), thêm giây vào
       if (timeParts.length === 2) {
-        time = `${timeParts[0]}:${timeParts[1]}:00`;  // Thêm giây "00"
+        time = `${timeParts[0]}:${timeParts[1]}:00`;  
       }
     }
   
-    return time; // Trả về thời gian đã hoàn chỉnh
+    return time; 
   };
   
 
   //xóa lịch chiếu
-  const handleDeleteShowtime = (showtimeId) => {
+  const handleDeleteShowtime = async (showtimeId) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa lịch chiếu này?')) {
-      setLoading(true); 
-      ScheduleManagementService.deleteShowtime(showtimeId)
-        .then(() => {
-          reloadShowtimes();
-        })
-        .catch((error) => {
-          console.error("Lỗi khi xóa lịch chiếu:", error);
-          setErrorMessage('Không thể xóa lịch chiếu. Vui lòng thử lại.');
-        })
-        .finally(() => {
-          setLoading(false); 
-        });
+      setLoading(true);
+      try {
+        await deleteShowtime(showtimeId);
+        reloadShowtimes();
+      } catch (error) {
+        console.error("Lỗi khi xóa lịch chiếu:", error);
+        setErrorMessage('Không thể xóa lịch chiếu. Vui lòng thử lại.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
+  
   
 
   return (

@@ -260,9 +260,7 @@
 
 .cinema-management-system .image_old {
   display: flex;
-  /* Sử dụng flex để đặt các thành phần cạnh nhau */
   align-items: center;
-  /* Đặt hai phần tử cùng chiều cao (căn giữa theo chiều dọc) */
   gap: 10px;
 }
 
@@ -303,22 +301,21 @@
 
 .cinema-management-system .permission-group {
   display: flex;
-  flex-wrap: wrap; /* Cho phép các checkbox xuống dòng nếu không đủ không gian */
-  gap: 20px; /* Khoảng cách giữa các phần tử checkbox */
-  /* margin-bottom: 10px; */
+  flex-wrap: wrap; 
+  gap: 20px; 
 }
 
 .cinema-management-system .permission-item {
   display: flex;
   align-items: center;
-  gap: 5px; /* Khoảng cách giữa checkbox và tên quyền */
+  gap: 5px;
   font-size: 14px;
 }
 
 .cinema-management-system .permission-item .modal-input {
   width: 20px;
   height: 20px;
-  margin: 0; /* Loại bỏ khoảng cách mặc định của checkbox */
+  margin: 0; 
 }
 
 .cinema-management-system .permission-item span {
@@ -328,7 +325,7 @@
 }
 
 .cinema-management-system .permission-item input:checked + span {
-  color: #007bff; /* Thay đổi màu khi checkbox được chọn */
+  color: #007bff; 
 }
 
 
@@ -350,18 +347,18 @@
 }
 
 .cinema-management-system .pagination button:hover {
-  background-color: #d0f0d0; /* Màu nền khi hover vào nút */
+  background-color: #d0f0d0; 
 }
 
 .cinema-management-system .pagination button:disabled {
-  background-color: #f0f0f0; /* Nút vô hiệu hóa có màu nền nhạt hơn */
+  background-color: #f0f0f0; 
   cursor: not-allowed;
 }
 
 .cinema-management-system .pagination .active {
-  background-color: #4CAF50; /* Nút hiện tại có màu nền xanh lá */
+  background-color: #4CAF50;
   color: white;
-  border: 1px solid #4CAF50; /* Viền nút hiện tại cũng là màu xanh lá */
+  border: 1px solid #4CAF50; 
 }
 
 .cinema-management-system .pagination button:first-child, .pagination button:last-child {
@@ -370,7 +367,7 @@
 
 .cinema-management-system .pagination button:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Hiệu ứng focus với màu xanh lá */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
 .cinema-management-system .profile-info {

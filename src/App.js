@@ -20,7 +20,8 @@ import CinemaTicket_2 from './admin/CinemaTicket_2';
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 import ManagerRole from "./admin/ManagerRole";
 import EmployeeInfor from "./admin/EmployeeInfor";
-import MovieDetailAdmin from "./admin/MovieDetail"
+import MovieDetailAdmin from "./admin/MovieDetail";
+import Revenue from "./admin/Revenue";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./context/TheaterContext";
@@ -42,26 +43,21 @@ import { AuthContext } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
-  const { user, loading } = useContext(AuthContext);
-  const [statusEmployee, setStatusEmployee] = useState(true);
-
-  useEffect(() => {
-    if (loading) return;
-    if (user) {
-      setStatusEmployee(user.statusEmployee);
-    }
-  }, [user, loading]);
+  const { user } = useContext(AuthContext);
 
   return (
     <Router>
       <Routes>
         <Route path="/*" element={<CustomerLayout />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
-        {/* <Route path="/admin/*" element={
-          <ProtectedRoute isAllowed={statusEmployee}>
+        {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
+        {user && (
+        <Route path="/admin/*" element={
+          <ProtectedRoute isAllowed={user?.statusEmployee}>
             <AdminLayout />
           </ProtectedRoute>
-        } /> */}
+        } />
+
+        )}
       </Routes>
     </Router>
   );
@@ -126,7 +122,7 @@ function AdminLayout() {
             <Route path="role" element={<ManagerRole />} />
             <Route path="staff" element={<EmployeeManagement />} />
             <Route path="customers" element={<CustomerManagement />} />
-            <Route path="statistics" element={<div>Thống kê Content</div>} />
+            <Route path="statistics" element={<Revenue />} />
             <Route path="account" element={<EmployeeInfor />} />
             <Route path="logout" element={<div>Thoát Content</div>} />
           </Routes>

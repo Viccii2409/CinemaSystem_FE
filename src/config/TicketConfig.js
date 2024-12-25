@@ -1,6 +1,8 @@
 import api from '../Api.js';
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import moment from 'moment';
+
 
 // export const getDiscount = () => api.get("/ticket/public/discount");
 
@@ -42,6 +44,15 @@ export const getTypeDiscount = async () => {
 
 export const getAllDiscount = async () => {
     return api.get('/ticket/public/discount')
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Error getAllDiscount", error);
+        return null;
+    })
+}
+
+export const getDiscountHomepage = async () => {
+    return api.get('/ticket/public/discount/homepage')
     .then(response => response.data)
     .catch(error => {
         console.error("Error getAllDiscount", error);
@@ -351,3 +362,149 @@ export const deleteDiscount = async (id) => {
 }
 
 
+// export const fetchRevenueData = (filterType, { movieId, theaterId, startDate, endDate }) => {
+//     let url = '';
+//     let params = {};
+  
+//     const startDateFormatted = startDate ? moment(startDate).format('YYYY-MM-DDT00:00:00') : undefined;
+//     const endDateFormatted = endDate ? moment(endDate).format('YYYY-MM-DDT23:59:59') : undefined;
+  
+//     if (filterType === 'movie') {
+//       if (movieId) {
+//         // API cho movie với movieId
+//         url = '/movie/movie-revenue';
+//         params = { movieId, startDate: startDateFormatted, endDate: endDateFormatted };
+//       } else if (startDate && endDate) {
+//         // API cho tất cả phim với ngày cụ thể
+//         url = '/movie/by-movie';
+//         params = {
+//           startDate: startDateFormatted,
+//           endDate: endDateFormatted,
+//         };
+//       } else {
+//         // API cho tất cả phim không có ngày cụ thể
+//         url = '/movie/by-movie';
+//         params = {};
+//       }
+//     } else if (filterType === 'theater') {
+//       if (theaterId) {
+//         // API cho theater với theaterId
+//         url = '/theater/theater-revenue';
+//         params = { theaterId, startDate: startDateFormatted, endDate: endDateFormatted };
+//       } else if (startDate && endDate) {
+//         // API cho tất cả rạp với ngày cụ thể
+//         url = '/theater/by-theater';
+//         params = {
+//           startDate: startDateFormatted,
+//           endDate: endDateFormatted,
+//         };
+//       } else {
+//         // API cho tất cả rạp không có ngày cụ thể
+//         url = '/theater/by-theater';
+//         params = {};
+//       }
+//     } else if (filterType === 'time') {
+//       if (startDate && endDate) {
+//         // API cho ticket với ngày cụ thể
+//         url = '/ticket/daily-revenue';
+//         params = {
+//           startDate: startDateFormatted,
+//           endDate: endDateFormatted,
+//         };
+//       } else {
+//         // API cho tất cả ticket không có ngày cụ thể
+//         url = '/ticket/by-month';
+//         params = {};
+//       }
+//     } else {
+//       throw new Error(`Invalid filterType: ${filterType}`);
+//     }
+  
+//     return api.get(url, { params })
+//       .then(response => response.data)
+//       .catch(error => {
+//         console.error(`Error fetching ${filterType} data:`, error);
+//         throw error;
+//       });
+//   };
+export const fetchRevenueData = (filterType, { movieId, theaterId, startDate, endDate }) => {
+    let url = '';
+    let params = {};
+
+    const startDateFormatted = startDate ? moment(startDate).format('YYYY-MM-DDT00:00:00') : undefined;
+    const endDateFormatted = endDate ? moment(endDate).format('YYYY-MM-DDT23:59:59') : undefined;
+
+    if (filterType === 'movie') {
+        if (movieId) {
+            // API cho movie với movieId
+            url = '/movie/movie-revenue';
+            params = { movieId, startDate: startDateFormatted, endDate: endDateFormatted };
+        } else if (startDate && endDate) {
+            // API cho tất cả phim với ngày cụ thể
+            url = '/movie/by-movie';
+            params = {
+                startDate: startDateFormatted,
+                endDate: endDateFormatted,
+            };
+        } else {
+            // API cho tất cả phim không có ngày cụ thể
+            url = '/movie/by-movie';
+            params = {};
+        }
+    } else if (filterType === 'theater') {
+        if (theaterId) {
+            // API cho theater với theaterId
+            url = '/theater/theater-revenue';
+            params = { theaterId, startDate: startDateFormatted, endDate: endDateFormatted };
+        } else if (startDate && endDate) {
+            // API cho tất cả rạp với ngày cụ thể
+            url = '/theater/by-theater';
+            params = {
+                startDate: startDateFormatted,
+                endDate: endDateFormatted,
+            };
+        } else {
+            // API cho tất cả rạp không có ngày cụ thể
+            url = '/theater/by-theater';
+            params = {};
+        }
+    } else if (filterType === 'time') {
+        if (startDate && endDate) {
+            // API cho ticket với ngày cụ thể
+            url = '/ticket/daily-revenue';
+            params = {
+                startDate: startDateFormatted,
+                endDate: endDateFormatted,
+            };
+        } else {
+            // API cho tất cả ticket không có ngày cụ thể
+            url = '/ticket/by-month';
+            params = {};
+        }
+    } else {
+        throw new Error(`Invalid filterType: ${filterType}`);
+    }
+
+    return api.get(url, { params })
+    .then(response => {
+        const data = response.data;
+
+        if (Array.isArray(data)) {
+            const sortedData = data.sort((a, b) => b.totalRevenue - a.totalRevenue);
+            return sortedData;
+        } else if (data && data.details && Array.isArray(data.details)) {
+            const sortedData = data.details.sort((a, b) => b.totalRevenue - a.totalRevenue);
+            return sortedData;
+        } else {
+            console.error('Dữ liệu trả về không có mảng hoặc thuộc tính details:', data);
+            return [];
+        }
+    })
+    .catch(error => {
+        console.error(`Error fetching ${filterType} data:`, error);
+        throw error;
+    });
+
+
+
+};

@@ -265,10 +265,10 @@ export const getRecommendMovie = async (customerID) => {
 
 export const addFeedback = async (formData) => {
   return api
-    .post("/feedback/add-feedback", formData)
+    .post("/movie/add-feedback", formData)
     .then((response) => response.data)
     .catch((error) => {
-      console.log("Error addRole: ", error);
+      console.log("Error addFeedback: ", error);
       return null;
     });
 };

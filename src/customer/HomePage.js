@@ -15,11 +15,12 @@ import {
   getMovieNow,
   getMovieSoon,
   getSlideshow,
-  getAllGenres,
+  getTopMovies,
+  getAllGenre,
 } from "../config/MovieConfig.js";
 import { getAllNameTheater } from "../config/TheaterConfig.js";
 import { getRecommendMovie } from "../config/UserConfig.js";
-import { getAllDiscount } from "../config/TicketConfig.js";
+import { getAllDiscount, getDiscountHomepage } from "../config/TicketConfig.js";
 import { AuthContext } from "../context/AuthContext";
 
 const HomePage = () => {
@@ -34,16 +35,18 @@ const HomePage = () => {
   const [selectedDay, setSelectedDay] = useState("");
   const maxDaysToShow = 5;
   const [showtime, setShowtime] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState(0);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [genres, setGenres] = useState([]);
-  useEffect(() => {
-    filterMoviesByGenre();
-  }, [selectedGenre]);
+  // useEffect(() => {
+  //   filterMoviesByGenre();
+  // }, [selectedGenre]);
+
   useEffect(() => {
     const fetchMovieNow = async () => {
       try {
         const response = await getMovieNow();
+        console.log(response.data);
         setMovieNow(response.data);
         setFilteredMovies(
           response.data.map((movie) => ({
@@ -75,17 +78,31 @@ const HomePage = () => {
     setSelectedTheater(theater.id);
   }
 
-  const filterMoviesByGenre = () => {
-    if (selectedGenre) {
+  // const filterMoviesByGenre = () => {
+  //   if (selectedGenre) {
+  //     setFilteredMovies(
+  //       movienows.filter((movie) =>
+  //         movie.genres.some((genre) => genre.id === selectedGenre)
+  //       )
+  //     );
+  //   } else {
+  //     setFilteredMovies(movienows);
+  //   }
+  // };
+
+  const handleSelectGenre = (genreid) => {
+    setSelectedGenre(genreid);
+    if (Number(genreid) === 0) setFilteredMovies(movienows);
+    else {
       setFilteredMovies(
         movienows.filter((movie) =>
-          movie.genres.some((genre) => genre.name === selectedGenre)
+          movie.genre.some((genre) => genre.id === Number(genreid))
         )
       );
-    } else {
-      setFilteredMovies(movienows);
     }
-  };
+  }
+
+
   const [moviesoons, setMovieSoon] = useState([]);
   useEffect(() => {
     const fetchMovieSoon = async () => {
@@ -99,6 +116,26 @@ const HomePage = () => {
     fetchMovieSoon(); // Gọi hàm fetchTheater khi component được render lần đầu
   }, []);
 
+  // top movies
+  const [topmovies, setTopMovies] = useState([]);
+  useEffect(() => {
+    const fetchTopMovies = async () => {
+      try {
+        const response = await getTopMovies();
+        console.log("response", response);
+        setTopMovies(response);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách Phim:", error);
+      }
+    };
+    fetchTopMovies();
+
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedGenre);
+  }, [selectedGenre])
+
   const [discounts, setDiscounts] = useState([]);
   useEffect(() => {
     fetchGenres();
@@ -106,7 +143,7 @@ const HomePage = () => {
 
   const fetchGenres = async () => {
     try {
-      const response = await getAllGenres();
+      const response = await getAllGenre();
       setGenres(response);
     } catch (error) {
       console.error("Error fetching genres:", error);
@@ -115,7 +152,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchDiscount = async () => {
       try {
-        const response = await getAllDiscount();
+        const response = await getDiscountHomepage();
         setDiscounts(response); // Lưu dữ liệu vào state cinemas
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Ưu đãi:", error);
@@ -179,7 +216,7 @@ const HomePage = () => {
 
   const handleShowtimeSelect = (showtimeid) => {
     console.log(showtimeid);
-    navigate("/seat-selection", { state: { id: showtimeid, theaterid : selectedTheater } });
+    navigate("/seat-selection", { state: { id: showtimeid, theaterid: selectedTheater } });
   };
 
   const [slides, setSlides] = useState([]);
@@ -281,17 +318,54 @@ const HomePage = () => {
       </div>
 
       <section className="movie-section">
+
+
+        <div className="section-title">
+          <h2>PHIM HOT</h2>
+        </div>
+        <div className="movie-list">
+          {Array.isArray(topmovies) && topmovies.length > 0 ? (
+            (() => {
+              return topmovies.map((topmovie, index) => (
+                <div className="movie-item" key={topmovie.movieId}>
+                  <div className="image-container">
+                    <Link to="/movie-detail" state={{ id: topmovie.movieId, theaterid: selectedTheater }}>
+                      <img
+                        src={topmovie.movieImage}
+                        alt="movie"
+                        className="movie-thumbnail"
+                      />
+                    </Link>
+                    <button className="iconPause">
+                      <FontAwesomeIcon
+                        icon={faCirclePlay}
+                        className="control-icon"
+                      />
+                    </button>
+                  </div>
+
+                  <h3 className="movietitle">
+                    <Link to="/movie-detail" state={{ id: topmovie.movieId, theaterid: selectedTheater }}>
+                      {topmovie.movieTitle}
+                    </Link>
+                  </h3>
+                </div>
+              ));
+            })()
+          ) : null}
+        </div>
+
         <div className="section-title">
           <h2>PHIM ĐANG CHIẾU</h2>
         </div>
         <select
           className="selector"
           value={selectedGenre}
-          onChange={(e) => setSelectedGenre(e.target.value)}
+          onChange={(e) => handleSelectGenre(e.target.value)}
         >
-          <option value="">Tất cả</option>
+          <option value={0}>Tất cả</option>
           {genres.map((genre) => (
-            <option key={genre.id} value={genre.name}>
+            <option key={genre.id} value={genre.id}>
               {genre.name}
             </option>
           ))}
@@ -301,7 +375,7 @@ const HomePage = () => {
             filteredMovies.map((movienow) => (
               <div className="movie-item" key={movienow.id}>
                 <div className="image-container">
-                  <Link to="/movie-detail" state={{ id: movienow.id, theaterid : selectedTheater }}>
+                  <Link to="/movie-detail" state={{ id: movienow.id, theaterid: selectedTheater }}>
                     <img
                       src={movienow.image}
                       alt="movie"
@@ -322,7 +396,7 @@ const HomePage = () => {
                   </button>
                 </div>
                 <h3 className="movietitle">
-                  <Link to="/movie-detail" state={{ id: movienow.id, theaterid : selectedTheater }}>
+                  <Link to="/movie-detail" state={{ id: movienow.id, theaterid: selectedTheater }}>
                     {movienow.title}
                   </Link>
                 </h3>
@@ -338,41 +412,98 @@ const HomePage = () => {
           )}
         </div>
 
-        <div className="section-title">
-          <h2>PHIM SẮP CHIẾU</h2>
-        </div>
-        <div className="movie-list">
-          {moviesoons.map((moviesoon, index) => (
-            <div className="movie-item" key={moviesoon.id}>
-              <div className="image-container">
-                <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid : selectedTheater }}>
-                  <img
-                    src={moviesoon.image}
-                    alt="movie"
-                    className="movie-thumbnail"
-                  />
-                </Link>
-                <button className="iconPause">
-                  <FontAwesomeIcon
-                    icon={faCirclePlay}
-                    className="control-icon"
-                  />
-                </button>
-              </div>
+        {moviesoons.length > 0 && (
+          <>
 
-              <h3 className="movietitle">
-                <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid : selectedTheater }}>
-                  {moviesoon.title}
-                </Link>
-              </h3>
-              {/* {moviesoon.title.length > 18 && (
+            <div className="section-title">
+              <h2>PHIM SẮP CHIẾU</h2>
+            </div>
+            <div className="movie-list">
+              {moviesoons.map((moviesoon, index) => (
+                <div className="movie-item" key={moviesoon.id}>
+                  <div className="image-container">
+                    <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid: selectedTheater }}>
+                      <img
+                        src={moviesoon.image}
+                        alt="movie"
+                        className="movie-thumbnail"
+                      />
+                    </Link>
+                    <button className="iconPause">
+                      <FontAwesomeIcon
+                        icon={faCirclePlay}
+                        className="control-icon"
+                      />
+                    </button>
+                  </div>
+
+                  <h3 className="movietitle">
+                    <Link to="/movie-detail" state={{ id: moviesoon.id, theaterid: selectedTheater }}>
+                      {moviesoon.title}
+                    </Link>
+                  </h3>
+                  {/* {moviesoon.title.length > 18 && (
                 <span className="hover-text">{moviesoon.title}</span>
               )} */}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </>
 
+        )}
+
+
+
+        {loading ? (
+          <div>Loading...</div> // Hiển thị trong lúc chờ tải dữ liệu
+        ) : user ? (
+          <div className="movie-section">
+            {recoms.length > 0 && (
+              <>
+                <div className="section-title">
+                  <h2>Gợi ý Phim</h2>
+                </div>
+                <div className="movie-list">
+                  {recoms.map((recom) => (
+                    <div className="movie-item" key={recom.id}>
+                      <div className="image-container">
+                        <Link to="/movie-detail" state={{ id: recom.id }}>
+                          <img
+                            src={recom.image || "placeholder-image.jpg"} // Dùng ảnh placeholder nếu `link` bị null
+                            alt="movie"
+                            className="movie-thumbnail"
+                          />
+                        </Link>
+                        <button className="iconPause">
+                          <FontAwesomeIcon
+                            icon={faCirclePlay}
+                            className="control-icon"
+                          />
+                        </button>
+                        <button
+                          className="buy-ticket-button"
+                          onClick={() => handleScheduleModal(recom.id)}
+                        >
+                          MUA VÉ NGAY
+                        </button>
+                      </div>
+                      <h3 className="movietitle">
+                        <Link to="/movie-detail" state={{ id: recom.id }}>
+                          {recom.title}
+                        </Link>
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        ) : (
+          "" // Thông báo nếu chưa đăng nhập
+        )}
+
+
+      </section>
       <section id="discount-section" className="promotions-section">
         <div className="category">
           <h2>ƯU ĐÃI</h2>
@@ -479,54 +610,6 @@ const HomePage = () => {
         </div>
       )}
 
-
-      {loading ? (
-        <div>Loading...</div> // Hiển thị trong lúc chờ tải dữ liệu
-      ) : user ? (
-        <div className="movie-section">
-          {recoms.length > 0 && (
-            <>
-            <div className="section-title">
-            <h2>Gợi ý Phim</h2>
-        </div>
-              <div className="movie-list">
-                {recoms.map((recom) => (
-                  <div className="movie-item" key={recom.id}>
-                    <div className="image-container">
-                      <Link to="/movie-detail" state={{ id: recom.id }}>
-                        <img
-                          src={recom.image || "placeholder-image.jpg"} // Dùng ảnh placeholder nếu `link` bị null
-                          alt="movie"
-                          className="movie-thumbnail"
-                        />
-                      </Link>
-                      <button className="iconPause">
-                        <FontAwesomeIcon
-                          icon={faCirclePlay}
-                          className="control-icon"
-                        />
-                      </button>
-                      <button
-                        className="buy-ticket-button"
-                        onClick={() => handleScheduleModal(recom.id)}
-                      >
-                        MUA VÉ NGAY
-                      </button>
-                    </div>
-                    <h3 className="movietitle">
-                      <Link to="/movie-detail" state={{ id: recom.id }}>
-                        {recom.title}
-                      </Link>
-                    </h3>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      ) : (
-        "" // Thông báo nếu chưa đăng nhập
-      )}
 
 
       {selectedTheater === null && (

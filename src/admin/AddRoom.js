@@ -231,7 +231,7 @@ function AddRoom() {
           <input
             type="text"
             value={roomName}
-            onChange={(e) => setRoomName(e.target.value)}
+            onChange={(e) => setRoomName(e.target.value.toUpperCase())}
             className="input" />
         </div>
 

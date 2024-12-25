@@ -209,7 +209,7 @@ const AccountPage = () => {
   const [success, setSuccess] = useState(false);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  
+
   const handleFeedback = (bookingId) => {
     setSelectedBooking({ bookingId });
     setShowFeedbackForm(true);
@@ -310,7 +310,6 @@ const AccountPage = () => {
                   )}
                   {currentUser.role?.id === 4 && (
                     <>
-                      Điểm: {currentUser.points} |
                       Tổng chi tiêu: {currentUser.revenue}<br />
                     </>
                   )}
@@ -499,8 +498,8 @@ const AccountPage = () => {
               Prev
             </button>
             {[...Array(totalPages)].map((_, index) => {
-              const startPage = Math.max(currentPage - 2, 0); 
-              const endPage = Math.min(currentPage + 2, totalPages-1); 
+              const startPage = Math.max(currentPage - 2, 0);
+              const endPage = Math.min(currentPage + 2, totalPages - 1);
 
               if (index >= startPage && index <= endPage) {
                 return (
