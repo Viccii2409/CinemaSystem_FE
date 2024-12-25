@@ -7,6 +7,8 @@ import { getAllMovies } from "../config/MovieConfig";
 import { getAllNameTheater } from "../config/TheaterConfig"; 
 import { fetchRevenueData } from '../config/TicketConfig';
 import "./Revenue.css";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -27,7 +29,7 @@ const Revenue = () => {
     const fetchMovies = async () => {
       try {
         const response = await getAllMovies();
-        setMovies(response); //  trả về danh sách phim
+        setMovies(response); 
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu phim:", error);
       }
@@ -50,8 +52,8 @@ const Revenue = () => {
 
   const fetchRevenue = async () => {
     setLoading(true);
-    setData([]); // Reset data
-    setTotalRevenue(0); // Reset total revenue
+    setData([]); 
+    setTotalRevenue(0); 
   
     try {
       const startDateFormatted = startDate ? moment(startDate).format('YYYY-MM-DDT00:00:00') : undefined;
@@ -66,6 +68,7 @@ const Revenue = () => {
       console.log('Dữ liệu trả về từ response:', response);
   
       if (response.details && response.details.length > 0) {
+        console.log('response.details',response.details )
         // Xử lý dữ liệu nếu response có phần `details`
         const monthData = response.details.map(item => ({
           month: item.month || '-',
@@ -82,13 +85,17 @@ const Revenue = () => {
         const filteredData = response.filter(item =>
           item.date !== 'Total' && item.movieTitle !== 'Total' && item.theaterName !== 'Total'
         );
-  
-        const totalRevenue = response.find(item =>
-          item.date === 'Total' || item.movieTitle === 'Total' || item.theaterName === 'Total'
-        )?.totalRevenue || 0;
-  
+      
+        // Tính tổng doanh thu từ tất cả các mục trong response, loại trừ mục 'Total'
+        const totalRevenue = response
+          .filter(item => item.date !== 'Total' && item.movieTitle !== 'Total' && item.theaterName !== 'Total') 
+          .reduce((acc, item) => acc + (item.totalRevenue || 0), 0);
+      
         setData(filteredData);
-        setTotalRevenue(totalRevenue);
+        setTotalRevenue(totalRevenue); 
+  
+      
+      
       } else {
         message.warning("Không có dữ liệu!");
       }
@@ -102,6 +109,18 @@ const Revenue = () => {
     }
   };
   
+  // Chức năng xuất Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(data); // data dữ liệu xuất
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Doanh thu');
+  
+    // Tạo đối tượng Blob và xuất tệp Excel
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const excelBlob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  
+    saveAs(excelBlob, 'Doanh_Thu.xlsx');
+  };
 
   // Render cột ngày/tháng
   const columns = [
@@ -110,6 +129,12 @@ const Revenue = () => {
       dataIndex: 'date',
       key: 'date',
       render: (value, record) => {
+
+        if (filterType === 'movie' || filterType === 'theater') {
+          if (!movieId && filterType === 'movie') return '-';  
+          if (!theaterId && filterType === 'theater') return '-';  
+        }
+        
         if(!startDate || !endDate)
             return record.month && record.year ? `${record.month}/${record.year}` : '-';
         else {const dateToDisplay = (startDate || endDate) ? moment(record.date).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY');
@@ -121,7 +146,7 @@ const Revenue = () => {
       title: filterType === 'movie' ? 'Tên phim' : (filterType === 'theater' ? 'Tên rạp' : 'Ngày'),
       dataIndex: filterType === 'movie' ? 'movieTitle' : (filterType === 'theater' ? 'theaterName' : 'date'),
       key: 'name',
-      className: filterType === 'time' ? 'hidden-column' : '',  // Ẩn nếu chọn 'time'
+      className: filterType === 'time' ? 'hidden-column' : '', 
     },
     { 
       title: 'Doanh thu (VND)', 
@@ -174,7 +199,7 @@ const handleFilterChange = (value) => {
             setEndDate(dates ? dates[1].format('YYYY-MM-DD') : null);
           }}
           style={{ marginRight: 10 }}
-          disabledDate={(current) => filterType === 'time' && current && current > moment().endOf('day')} // Để vô hiệu hóa ngày tương lai nếu là thống kê theo thời gian
+          disabledDate={(current) => filterType === 'time' && current && current > moment().endOf('day')} 
         />
 
         {/* Chọn phim */}
@@ -210,6 +235,11 @@ const handleFilterChange = (value) => {
         {/* Nút tải dữ liệu */}
         <Button type="primary" onClick={fetchRevenue} loading={loading}>
           Thống kê
+        </Button>
+
+        {/* Nút xuất Excel */}
+        <Button type="default" onClick={exportToExcel} style={{ marginLeft: 10 }}>
+          Xuất Excel
         </Button>
       </div>
 
