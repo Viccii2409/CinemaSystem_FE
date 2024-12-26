@@ -373,16 +373,21 @@ function ScheduleManagement() {
                           </label>
                           </td>
                           <td>
-                          <button 
-                            className="action-button edit-button" 
-                            onClick={() => openModalForRoomEdit(showtime.id)}>
-                              <FontAwesomeIcon icon={faEdit}/>
-                            </button>
-                          <button 
-                            className="action-button delete-button" 
-                            onClick={() => handleDeleteShowtime(showtime.id)}>
-                              <FontAwesomeIcon icon={faTrashCan}/>
-                            </button>
+                            {showtime.action === "upcoming" && (
+                            <>
+                              <button 
+                                className="action-button edit-button" 
+                                onClick={() => openModalForRoomEdit(showtime.id)}>
+                                  <FontAwesomeIcon icon={faEdit} />
+                              </button>
+                              <button 
+                                className="action-button delete-button" 
+                                onClick={() => handleDeleteShowtime(showtime.id)}>
+                                  <FontAwesomeIcon icon={faTrashCan} />
+                              </button>
+                            </>
+                          )}
+
                           </td>
                         </tr>
                       ))
