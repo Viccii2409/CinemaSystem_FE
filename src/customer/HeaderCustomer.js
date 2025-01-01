@@ -5,9 +5,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { getAllNameTheater, getTheater } from "../config/TheaterConfig.js";
 import { TheaterContext } from "../context/TheaterContext.js";
-import { AuthContext } from '../context/AuthContext';
-
-
+import { AuthContext } from "../context/AuthContext";
 
 const HeaderCustomer = () => {
   const { user, handleLogout } = useContext(AuthContext);
@@ -34,7 +32,7 @@ const HeaderCustomer = () => {
 
   const handleLogoutData = () => {
     handleLogout();
-  }
+  };
 
   return (
     <header className="homepage-header">
@@ -42,14 +40,21 @@ const HeaderCustomer = () => {
         <Link to="/home">LAL CINEMA</Link>
       </div>
       <nav className="navbar">
-        <Link to="/">Lịch chiếu</Link>
+        <Link to="/lich-chieu">Lịch chiếu</Link>
         <Link to="/cinema-system">Hệ thống rạp</Link>
-        <a href="#discount-section">Ưu đãi</a>
-        <Link to="/">Thể loại</Link>
+        <a href="/discount">Ưu đãi</a>
+        <Link to="/the-loai">Thể loại</Link>
       </nav>
 
-      <select name="id" className="location-selector" value={selectedTheater || ''} onChange={(e) => handleSelectTheater(e.target.value)}>
-        <option value="" disabled>---Chọn rạp---</option>
+      <select
+        name="id"
+        className="location-selector"
+        value={selectedTheater || ""}
+        onChange={(e) => handleSelectTheater(e.target.value)}
+      >
+        <option value="" disabled>
+          ---Chọn rạp---
+        </option>
         {theaters.map((theater) => (
           <option key={theater.id} value={theater.id}>
             {theater.name}
@@ -66,7 +71,12 @@ const HeaderCustomer = () => {
                 src={user.image}
                 alt="User Avatar"
                 className="customer-avatar"
-                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  marginRight: "10px",
+                }}
               />
             ) : (
               // Nếu không có hình ảnh, hiển thị biểu tượng mặc định
@@ -86,10 +96,7 @@ const HeaderCustomer = () => {
               </Link>
             )}
             {/* Hiển thị tên người dùng */}
-            <button
-              className="logout-button"
-              onClick={handleLogoutData}
-            >
+            <button className="logout-button" onClick={handleLogoutData}>
               / Thoát
             </button>
           </div>

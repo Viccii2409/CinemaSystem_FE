@@ -1,10 +1,8 @@
 import api from "../Api.js";
 
-
-
 export const getAllNameTheater = () => {
   try {
-    return api.get('/theater/public/all');
+    return api.get("/theater/public/all");
   } catch (error) {
     console.error("Error getAllNameTheater", error);
     return null;
@@ -27,7 +25,7 @@ export const deleteTheater = (id) => {
   }
 };
 
-export const getTheater = () => api.get("/theater/all");
+export const getTheater = () => api.get("/theater/public/all");
 
 export const getTheaterById = (id) => {
   try {

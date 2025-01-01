@@ -1,26 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HeaderAdmin from './admin/HeaderAdmin';
-import Sidebar from './admin/Sidebar';
-import CinemaManagement from './admin/TheaterManagement';
-import MovieCategories from './admin/MovieCategories';
-import Movies from './admin/Movies';
-import RoomManagement from './admin/RoomManagement';
-import TicketPriceManagement from './admin/TicketPriceManagement';
-import ScheduleManagement from './admin/ScheduleManagement';
-import EmployeeManagement from './admin/EmployeeManagement';
-import CustomerManagement from './admin/CustomerManagement';
-import DiscountManagement from './admin/DiscountManagement';
-import AddRoom from './admin/AddRoom';
-import ViewRoom from './admin/ViewRoom';
-import EditRoom from './admin/EditRoom';
-import CinemaTicket from './admin/CinemaTicket';
-import CinemaTicket_2 from './admin/CinemaTicket_2';
+import React, { useState, useEffect, useContext } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HeaderAdmin from "./admin/HeaderAdmin";
+import Sidebar from "./admin/Sidebar";
+import CinemaManagement from "./admin/TheaterManagement";
+import MovieCategories from "./admin/MovieCategories";
+import Movies from "./admin/Movies";
+import RoomManagement from "./admin/RoomManagement";
+import TicketPriceManagement from "./admin/TicketPriceManagement";
+import ScheduleManagement from "./admin/ScheduleManagement";
+import EmployeeManagement from "./admin/EmployeeManagement";
+import CustomerManagement from "./admin/CustomerManagement";
+import DiscountManagement from "./admin/DiscountManagement";
+import AddRoom from "./admin/AddRoom";
+import ViewRoom from "./admin/ViewRoom";
+import EditRoom from "./admin/EditRoom";
+import CinemaTicket from "./admin/CinemaTicket";
+import CinemaTicket_2 from "./admin/CinemaTicket_2";
 import ViewTicketAdmin from "./admin/ViewTicketAdmin";
 import ManagerRole from "./admin/ManagerRole";
 import EmployeeInfor from "./admin/EmployeeInfor";
-import MovieDetailAdmin from "./admin/MovieDetail"
+import MovieDetailAdmin from "./admin/MovieDetail";
 
 import HeaderCustomer from "./customer/HeaderCustomer";
 import { TheaterProvider } from "./context/TheaterContext";
@@ -35,10 +35,12 @@ import SeatSelection from "./customer/SeatSelection";
 import MovieDetail from "./customer/MovieDetail";
 import UserInfor from "./customer/UserInfor";
 import ViewBooking from "./customer/ViewBooking";
-
+import LichChieu from "./customer/LichChieu";
+import Discount from "./customer/Discount";
+import TheLoai from "./customer/TheLoai";
 import Error403 from "./error/Error403";
-import { AuthContext } from './context/AuthContext';
-import ProtectedRoute from './context/ProtectedRoute';
+import { AuthContext } from "./context/AuthContext";
+import ProtectedRoute from "./context/ProtectedRoute";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -82,13 +84,16 @@ function CustomerLayout() {
             <Route path="movie-detail" element={<MovieDetail />} />
             <Route path="cinema-system" element={<CinemaSystem />} />
             <Route path="movie-detail" element={<MovieDetail />} />
-            <Route path="cinema-system/theater-detail" element={<TheaterDetails />} />
+            <Route
+              path="cinema-system/theater-detail"
+              element={<TheaterDetails />}
+            />
             <Route path="theater-detail" element={<TheaterDetails />} />
             <Route path="user-infor" element={<UserInfor />} />
-
-
+            <Route path="lich-chieu" element={<LichChieu />} />
+            <Route path="discount" element={<Discount />} />
+            <Route path="the-loai" element={<TheLoai />} />
             <Route path="/403" element={<Error403 />} />
-
           </Routes>
         </div>
         <Footer />
@@ -114,11 +119,15 @@ function AdminLayout() {
             <Route path="ticket-prices" element={<TicketPriceManagement />} />
             <Route path="movie-categories" element={<MovieCategories />} />
             <Route path="movies" element={<Movies />} />
-            <Route path="movie-detail" element={<MovieDetailAdmin />} /> // xem chi tiết movie
+            <Route path="movie-detail" element={<MovieDetailAdmin />} /> // xem
+            chi tiết movie
             <Route path="showtimes" element={<ScheduleManagement />} />
             <Route path="promotions" element={<DiscountManagement />} />
             <Route path="ticket-sales" element={<CinemaTicket />} />
-            <Route path="ticket-sales/booking-seat" element={<CinemaTicket_2 />} />
+            <Route
+              path="ticket-sales/booking-seat"
+              element={<CinemaTicket_2 />}
+            />
             <Route path="view-ticket-admin" element={<ViewTicketAdmin />} />
             <Route path="role" element={<ManagerRole />} />
             <Route path="staff" element={<EmployeeManagement />} />
