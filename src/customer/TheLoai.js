@@ -29,19 +29,10 @@ const HomePage = () => {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   useEffect(() => {
-    filterMoviesByGenre();
-  }, [selectedGenre]);
-  useEffect(() => {
     const fetchMovieNow = async () => {
       try {
         const response = await getMovieNow();
         setMovieNow(response.data);
-        setFilteredMovies(
-          response.data.map((movie) => ({
-            ...movie,
-            genre: Array.isArray(movie.genres) ? movie.genres : [], // Normalize genre
-          }))
-        );
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Phim:", error);
       }
@@ -54,27 +45,29 @@ const HomePage = () => {
       try {
         const response = await getMovieSoon();
         setMovieSoon(response.data); // Lưu dữ liệu vào state cinemas
-        setFilteredMovies(
-          response.data.map((movie) => ({
-            ...movie,
-            genre: Array.isArray(movie.genres) ? movie.genres : [], // Normalize genre
-          }))
-        );
       } catch (error) {
         console.error("Lỗi khi lấy danh sách Phim:", error);
       }
     };
     fetchMovieSoon(); // Gọi hàm fetchTheater khi component được render lần đầu
   }, []);
-  const filterMoviesByGenre = () => {
-    if (selectedGenre) {
-      setFilteredMovies(
-        [...movienows, ...moviesoons].filter((movie) =>
-          movie.genre.some((genre) => genre.name === selectedGenre)
-        )
+  const [filteredMoviesNow, setFilteredMoviesNow] = useState([]);
+  const [filteredMoviesSoon, setFilteredMoviesSoon] = useState([]);
+  useEffect(() => {
+    const filterMoviesByGenre = () => {
+      const filterNow = movienows.filter((movie) =>
+        movie.genre.some((genre) => genre.name === selectedGenre)
       );
-    }
-  };
+      const filterSoon = moviesoons.filter((movie) =>
+        movie.genre.some((genre) => genre.name === selectedGenre)
+      );
+      setFilteredMoviesNow(filterNow);
+      setFilteredMoviesSoon(filterSoon);
+    };
+
+    filterMoviesByGenre();
+  }, [selectedGenre, movienows, moviesoons]); // Chạy khi selectedGenre, movieNow hoặc movieSoon thay đổi
+
   useEffect(() => {
     fetchGenres();
   }, []);
@@ -82,6 +75,10 @@ const HomePage = () => {
     try {
       const response = await getAllGenres();
       setGenres(response);
+      // Set thể loại đầu tiên là mặc định
+      if (response.length > 0) {
+        setSelectedGenre(response[0].name); // Chọn thể loại đầu tiên
+      }
     } catch (error) {
       console.error("Error fetching genres:", error);
     }
@@ -170,8 +167,8 @@ const HomePage = () => {
         </div>
 
         <div className="movie-list">
-          {filteredMovies.length > 0 ? (
-            filteredMovies
+          {filteredMoviesNow.length > 0 ? (
+            filteredMoviesNow
               .filter((movienow) => movienow.status === true)
               .map((movienow) => (
                 <div className="movie-item" key={movienow.id}>
@@ -214,8 +211,8 @@ const HomePage = () => {
           <h2>PHIM SẮP CHIẾU</h2>
         </div>
         <div className="movie-list">
-          {filteredMovies.length > 0 ? (
-            filteredMovies
+          {filteredMoviesSoon.length > 0 ? (
+            filteredMoviesSoon
               .filter((moviesoon) => moviesoon.status === true)
               .map((moviesoon, index) => (
                 <div className="movie-item" key={moviesoon.id}>
