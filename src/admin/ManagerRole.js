@@ -243,7 +243,7 @@ const ManagerRole = () => {
                 <>
                     <div className="modal-overlay" onClick={handleCloseModal}></div>
                     <div className="modal">
-                        <div className="modal-header">Thêm vai trò mới</div>
+                        <div className="modal-header">Sửa vai trò</div>
                         <form
                             className="modal-info"
                             onSubmit={handleEditSubmit}

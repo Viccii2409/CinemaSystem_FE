@@ -46,7 +46,7 @@ function EmployeeManagement() {
       const response_theater = await getAllNameTheater();
       setEmployees(response_employees);
       setEmployeeFilter(response_employees);
-      setTheaters(response_theater.data);
+      setTheaters(response_theater);
       setRoles(response_role.filter(role => role.name !== 'CUSTOMER'));
       // console.log(response_employees);
     }
