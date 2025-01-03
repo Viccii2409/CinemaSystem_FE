@@ -1,0 +1,125 @@
+.homepage .category {
+  border: 1.5px solid #7add58;
+  background-color: #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.homepage .promotions-section {
+  display: flex;
+  flex-direction: column;
+  background-color: #efe7e7;
+  padding-top: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.homepage .promotions-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 0px 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #7add58;
+}
+
+.promotion-carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.discount-item {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: auto;
+  overflow: hidden;
+}
+
+.discount-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.discount-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.discount-content {
+  padding: 15px;
+  text-align: center;
+}
+
+.discount-content h3 {
+  font-size: 16px;
+  color: #34c759;
+  margin-bottom: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.discount-content p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+.homepage .showtime-overlay2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.homepage .showtime-modal2 {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: space-around;
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.homepage .showtime-modal h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+.homepage .showtime-modal h3 {
+  font-size: 1.2em;
+  color: #7add58;
+  margin-bottom: 20px;
+}
+.showtime-des {
+  text-align: left;
+  margin-left: 30px;
+}
+.showtime-des h2 {
+  cursor: pointer;
+}

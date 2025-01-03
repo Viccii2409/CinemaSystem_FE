@@ -1,0 +1,124 @@
+.homepage .movie-section {
+  margin-bottom: 15px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.homepage .section-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border: 1.5px solid #7add58;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.homepage .section-title h2 {
+  text-decoration: none;
+  color: #7add58;
+  align-items: center;
+  padding: 0px 25px;
+  margin: 5px 0px;
+}
+
+.homepage .movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.homepage .movie-item {
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 215px;
+  height: 318px;
+  margin-bottom: 50px;
+}
+
+.homepage .image-container {
+  position: relative;
+  display: block;
+  transition: border-color 0.3s ease;
+  border: 2px solid transparent;
+  overflow: hidden;
+  width: 215px;
+  height: 318px;
+}
+
+.homepage .movie-item:hover .image-container {
+  border-color: #b3e3a3;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px #85d16c;
+}
+
+.homepage .movie-item .movie-thumbnail {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.homepage .movie-details {
+  margin-top: 20px;
+}
+
+.homepage .buy-ticket-button {
+  background-color: #7add58;
+  color: #fff;
+  width: 140px;
+  height: 40px;
+  font-size: 14px;
+  font-family: sans-serif;
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.5s;
+  font-weight: bold;
+  display: none;
+}
+
+.homepage .image-container:hover .buy-ticket-button {
+  display: flex;
+}
+
+.homepage .image-container .iconPause {
+  position: absolute;
+  background-color: transparent;
+  color: #7add58;
+  display: none;
+  cursor: pointer;
+  bottom: 50%;
+  border: none;
+  font-size: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.homepage .image-container:hover .iconPause {
+  display: flex;
+}
+
+.homepage .buy-ticket-button:hover {
+  background-color: #04c14d;
+}
+
+.homepage .movie-item-placeholder {
+  background-color: #e0e0e0;
+  height: 200px;
+  border-radius: 10px;
+}

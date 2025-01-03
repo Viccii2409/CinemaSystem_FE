@@ -1,7 +1,5 @@
 import api from "../Api.js";
 
-
-
 export const getAllNameTheater = () => {
   return api.get('/theater/public/all')
   .then(response => response.data)
